@@ -1,0 +1,12 @@
+jupyter
+matplotlib
+numpy
+pandas
+pitchscapes==0.1.7
+pyulib==0.1.0
+ruptures
+scipy
+seaborn
+torch
+tqdm
+treeparser==0.1.1
