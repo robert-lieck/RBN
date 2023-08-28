@@ -1,6 +1,14 @@
 # Recursive Bayesian Networks
 
-A Python implementation of Recursive Bayesian Networks
+[![tests](https://github.com/robert-lieck/RBN/actions/workflows/tests.yml/badge.svg)](https://github.com/robert-lieck/RBN/actions/workflows/tests.yml)
+
+![build](https://github.com/robert-lieck/RBN/workflows/build/badge.svg)
+[![PyPI version](https://badge.fury.io/py/rbnet.svg)](https://badge.fury.io/py/rbnet)
+
+[![doc](https://github.com/robert-lieck/RBN/actions/workflows/doc.yml/badge.svg)](https://robert-lieck.github.io/RBN/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+The Python `rbnet` package providing implementations of Recursive Bayesian Networks.
 
 Lieck R, Rohrmeier M (2021) **Recursive Bayesian Networks: Generalising and Unifying Probabilistic Context-Free Grammars and Dynamic Bayesian Networks**. In: *Proceedings of the 35th Conference on Neural Information Processing Systems (NeurIPS 2021)*
 

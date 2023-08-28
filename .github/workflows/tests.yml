@@ -39,8 +39,10 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov=rbnet --cov-report=xml --cov-report=html --junitxml=junit/test-results.xml
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         env_vars: OS,PYTHON
         fail_ci_if_error: true
