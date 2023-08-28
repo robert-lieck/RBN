@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.pcfg.DiscreteBinaryNonTerminalTransition &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rbnet.pcfg.DiscreteNonTermVar" href="rbnet.pcfg.DiscreteNonTermVar.html" />
+    <link rel="prev" title="rbnet.pcfg.AbstractedPCFG" href="rbnet.pcfg.AbstractedPCFG.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html">rbnet.pcfg.DiscreteNonTermVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html">rbnet.pcfg.DiscretePrior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.ExpandedPCFG.html">rbnet.pcfg.ExpandedPCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.PCFG.html">rbnet.pcfg.PCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.StaticCell.html">rbnet.pcfg.StaticCell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.pcfg.html">rbnet.pcfg</a></li>
+      <li class="breadcrumb-item active">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rbnet-pcfg-discretebinarynonterminaltransition">
+<h1>rbnet.pcfg.DiscreteBinaryNonTerminalTransition<a class="headerlink" href="#rbnet-pcfg-discretebinarynonterminaltransition" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteBinaryNonTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></p>
+<p>A binary non-terminal transition for discrete non-terminal variables.</p>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Public Methods:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(weights[, left_idx, right_idx])</p></td>
+<td><p>Initialise a non-terminal transition p(a, b | c) for random variables <cite>a</cite>, <cite>b</cite>, <cite>c</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
+<td><p>Compute the marginals over inside probabilities</p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
+<td><p>Compute the marginals over inside probabilities</p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Private Data Attributes:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition._abc_impl" title="rbnet.base.Transition._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<hr class="docutils" />
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals">
+<span class="sig-name descname"><span class="pre">inside_marginals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inside_chart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminal_chart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition.inside_marginals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals" title="Link to this definition"></a></dt>
+<dd><p>Compute the marginals over inside probabilities</p>
+<div class="math">
+<p><span class="math">\widetilde{\beta}_{i:\ldots:k}(x_{i:k})
+=
+{\int\cdots\int}_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+p_{\tau}(v_{i:j_1}, \ldots, v_{j_{\eta-1}:k} \mid x_{i:k})
+\prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+\beta(v_{j:j^\prime}),</span></p>
+</div><p>for all possible splitting points (also see <a class="reference internal" href="../recursive_bayesian_networks.html#general-inside-probabilities"><span class="std std-ref">here</span></a>). In particular,
+<code class="docutils literal notranslate"><span class="pre">location</span></code> specifies the variable’s location in the parse chart (the indices <span class="math">i</span> and <span class="math">k</span> in the
+equation above), from which the possible splitting points follow (<span class="math">\eta</span> splitting points <span class="math">j_1,
+\ldots,j_{\eta-1}</span> for transitions of arity <span class="math">\eta</span>). The marginals should always be returned in an
+array or iterable where the first dimension corresponds to all possible combinations of splitting points,
+even for transitions with arity <span class="math">\eta\neq2</span> (i.e. for <span class="math">\eta=1</span>, where there are no splits,
+the first dimension should be of size 1 and for <span class="math">\eta&gt;1</span> all possible combinations of the
+<span class="math">\eta-1</span> splitting points should be listed in a flattened form in the first dimension). Additional
+dimensions, may be used to represent the dependency of the marginal on the variable <span class="math">x_{i:k}</span> (e.g. for
+a discrete variable, the second dimension may list the marginal for each possible value <span class="math">x_{i:k}</span> can
+take; and for a continuous variable, the marginal may be represented by a set of parameters).</p>
+<p>The output of this function is typically handled by a custom implementation of
+<a class="reference internal" href="rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>location</strong> – location of the variable for which to compute the inside marginals</p></li>
+<li><p><strong>inside_chart</strong> – a lookup chart with inside probabilities for other variables</p></li>
+<li><p><strong>terminal_chart</strong> – a lookup chart with values of the terminal variables</p></li>
+<li><p><strong>value</strong> – value of the variable for which to compute the inside marginals or <code class="docutils literal notranslate"><span class="pre">None</span></code>; if value is
+provided this means that <em>conditional</em> inside probabilities should be computed (for the given value);
+otherwise general inside marginals (as a function of the variable) should be computed; also see
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">RBN.non_terminals()</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array-like or iterable with inside probabilities; if the transition is not possible, this should be
+of length zero or contain only inside probabilities representing zero</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbnet.pcfg.AbstractedPCFG.html" class="btn btn-neutral float-left" title="rbnet.pcfg.AbstractedPCFG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.pcfg.DiscreteNonTermVar.html" class="btn btn-neutral float-right" title="rbnet.pcfg.DiscreteNonTermVar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

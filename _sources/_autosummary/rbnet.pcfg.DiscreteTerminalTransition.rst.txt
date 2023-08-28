@@ -1,0 +1,13 @@
+rbnet.pcfg.DiscreteTerminalTransition
+=====================================
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: DiscreteTerminalTransition
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

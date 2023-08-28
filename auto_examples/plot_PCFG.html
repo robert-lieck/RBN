@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Probabilistic Context-Free Grammar (PCFG) &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Summary" href="../api_summary.html" />
+    <link rel="prev" title="Gallery and Examples" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery and Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Probabilistic Context-Free Grammar (PCFG)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-the-pcfg">Defining the PCFG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-sentences">Parsing Sentences</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Gallery and Examples</a></li>
+      <li class="breadcrumb-item active">Probabilistic Context-Free Grammar (PCFG)</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-pcfg-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="probabilistic-context-free-grammar-pcfg">
+<span id="sphx-glr-auto-examples-plot-pcfg-py"></span><h1>Probabilistic Context-Free Grammar (PCFG)<a class="headerlink" href="#probabilistic-context-free-grammar-pcfg" title="Link to this heading"></a></h1>
+<p>This is an example of defining a simple discrete RBN equivalent to a PCFG.</p>
+<section id="defining-the-pcfg">
+<h2>Defining the PCFG<a class="headerlink" href="#defining-the-pcfg" title="Link to this heading"></a></h2>
+<p>We use an <a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rbnet.pcfg</span> <span class="kn">import</span> <span class="n">AbstractedPCFG</span>
+</pre></div>
+</div>
+<p>First we define a number of words (terminal symbols) of different categories that sentences can be composed of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;You&quot;</span><span class="p">,</span> <span class="s2">&quot;We&quot;</span><span class="p">,</span> <span class="s2">&quot;They&quot;</span><span class="p">]</span>
+<span class="n">verbs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="s2">&quot;drink&quot;</span><span class="p">,</span> <span class="s2">&quot;sleep&quot;</span><span class="p">]</span>
+<span class="n">adverb_non_gradable</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a-lot&quot;</span><span class="p">,</span> <span class="s2">&quot;alone&quot;</span><span class="p">]</span>
+<span class="n">adverb_gradable</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fast&quot;</span><span class="p">,</span> <span class="s2">&quot;slowly&quot;</span><span class="p">,</span> <span class="s2">&quot;quickly&quot;</span><span class="p">]</span>
+<span class="n">grade</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;very&quot;</span><span class="p">,</span> <span class="s2">&quot;veeery&quot;</span><span class="p">,</span> <span class="s2">&quot;really&quot;</span><span class="p">]</span>
+<span class="n">verb_qualifier</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;rarely&quot;</span><span class="p">,</span> <span class="s2">&quot;do-not&quot;</span><span class="p">,</span> <span class="s2">&quot;never&quot;</span><span class="p">,</span> <span class="s2">&quot;always&quot;</span><span class="p">]</span>
+<span class="n">terminals</span> <span class="o">=</span> <span class="n">subjects</span> <span class="o">+</span> <span class="n">verbs</span> <span class="o">+</span> <span class="n">adverb_non_gradable</span> <span class="o">+</span> <span class="n">adverb_gradable</span> <span class="o">+</span> <span class="n">grade</span> <span class="o">+</span> <span class="n">verb_qualifier</span>
+</pre></div>
+</div>
+<p>Then we define some non-terminals symbols (a start symbol and one symbol for each category of words used above):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">non_terminals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;subject&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;verb&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;gradable_adverb&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;non_gradable_adverb&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;verb_qualifier&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;grade&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Finally, we define the rules and give them a weight (for simplicity we use a weight of 1 everywhere):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">non_terminal_rules</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;start --&gt; subject verb&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;verb --&gt; verb_qualifier verb&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;verb --&gt; verb gradable_adverb&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;verb --&gt; verb non_gradable_adverb&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;gradable_adverb --&gt; grade gradable_adverb&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                      <span class="p">(</span><span class="s2">&quot;grade --&gt; grade grade&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+<span class="n">terminal_rules</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">non_terminal_symbol</span><span class="p">,</span> <span class="n">corresponding_list_of_terminal_symbols</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+        <span class="n">non_terminals</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>  <span class="c1"># skip the start symbol</span>
+        <span class="p">[</span><span class="n">subjects</span><span class="p">,</span> <span class="n">verbs</span><span class="p">,</span> <span class="n">adverb_gradable</span><span class="p">,</span> <span class="n">adverb_non_gradable</span><span class="p">,</span> <span class="n">verb_qualifier</span><span class="p">,</span> <span class="n">grade</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="k">for</span> <span class="n">terminal_symbol</span> <span class="ow">in</span> <span class="n">corresponding_list_of_terminal_symbols</span><span class="p">:</span>
+        <span class="n">terminal_rules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">non_terminal_symbol</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">terminal_symbol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now we can define our PCFG by providing it with the terminals, non-terminals, rules, and start symbol.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcfg</span> <span class="o">=</span> <span class="n">AbstractedPCFG</span><span class="p">(</span><span class="n">terminals</span><span class="o">=</span><span class="n">terminals</span><span class="p">,</span>
+                      <span class="n">non_terminals</span><span class="o">=</span><span class="n">non_terminals</span><span class="p">,</span>
+                      <span class="n">rules</span><span class="o">=</span><span class="n">non_terminal_rules</span> <span class="o">+</span> <span class="n">terminal_rules</span><span class="p">,</span>
+                      <span class="n">start</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="parsing-sentences">
+<h2>Parsing Sentences<a class="headerlink" href="#parsing-sentences" title="Link to this heading"></a></h2>
+<p>Let’s test the grammar by computing the marginal likelihood of some grammatical sentences
+(which should be greater than zero) and for some un-grammatical ones (which should have zero marginal likelihood)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="c1"># grammatical</span>
+    <span class="s2">&quot;I run&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;You never run&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;We run very veeery slowly&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;They always run alone&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;I never sleep really very quickly&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;You do-not drink very quickly&quot;</span><span class="p">,</span>
+    <span class="c1"># un-grammatical</span>
+    <span class="s2">&quot;I You&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;run fast&quot;</span>
+<span class="p">]:</span>
+    <span class="n">marginal_likelihood</span> <span class="o">=</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">marginal_likelihood</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>I run --&gt; 0.011999999999999997
+You never run --&gt; 0.00023999999999999992
+We run very veeery slowly --&gt; 4.095999999999997e-06
+They always run alone --&gt; 1.9199999999999992e-05
+I never sleep really very quickly --&gt; 1.638399999999999e-07
+You do-not drink very quickly --&gt; 1.0239999999999992e-06
+I You --&gt; 0.0
+run fast --&gt; 0.0
+</pre></div>
+</div>
+<p>We can also print a simple textual visualisation of the parse chart, which shows
+<code class="docutils literal notranslate"><span class="pre">non-terminal</span> <span class="pre">symbol|inside</span> <span class="pre">probability</span></code> at each location</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;You never run&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">map_inside_chart</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>                                   ╱╲
+                                  ╱  ╲
+                                 ╱    ╲
+                                ╱      ╲
+                               ╱        ╲
+                              ╱          ╲
+                             ╱            ╲
+                            ╱              ╲
+                           ╱                ╲
+                          ╱                  ╲
+                         ╱                    ╲
+                        ╱         start|2.4e-04╲
+                       ╱╲                      ╱╲
+                      ╱  ╲                    ╱  ╲
+                     ╱    ╲                  ╱    ╲
+                    ╱      ╲                ╱      ╲
+                   ╱        ╲              ╱        ╲
+                  ╱          ╲            ╱          ╲
+                 ╱            ╲          ╱            ╲
+                ╱              ╲        ╱              ╲
+               ╱                ╲      ╱                ╲
+              ╱                  ╲    ╱                  ╲
+             ╱                    ╲  ╱                    ╲
+            ╱                    []╲╱           verb|4.e-03╲
+           ╱╲                      ╱╲                      ╱╲
+          ╱  ╲                    ╱  ╲                    ╱  ╲
+         ╱    ╲                  ╱    ╲                  ╱    ╲
+        ╱      ╲                ╱      ╲                ╱      ╲
+       ╱        ╲              ╱        ╲              ╱        ╲
+      ╱          ╲            ╱          ╲            ╱          ╲
+     ╱            ╲          ╱            ╲          ╱            ╲
+    ╱              ╲        ╱              ╲        ╱              ╲
+   ╱                ╲      ╱                ╲      ╱                ╲
+  ╱                  ╲    ╱                  ╲    ╱                  ╲
+ ╱                    ╲  ╱                    ╲  ╱                    ╲
+╱       subject|1.5e-01╲╱verb_qualifier|1.5e-01╲╱           verb|2.e-01╲
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.013 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-pcfg-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c510416e2cc60bc81f8b6069e2a7bcd9/plot_PCFG.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_PCFG.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/cfcf0afa49cfde57bfef252aaa21d878/plot_PCFG.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_PCFG.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Gallery and Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_summary.html" class="btn btn-neutral float-right" title="API Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

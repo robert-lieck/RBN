@@ -1,0 +1,13 @@
+rbnet.base.Transition
+=====================
+
+.. currentmodule:: rbnet.base
+
+.. autoclass:: Transition
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

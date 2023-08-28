@@ -1,0 +1,13 @@
+rbnet.pcfg.DiscreteBinaryNonTerminalTransition
+==============================================
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: DiscreteBinaryNonTerminalTransition
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

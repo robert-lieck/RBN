@@ -1,0 +1,34 @@
+rbnet.multivariate\_normal
+==========================
+
+.. automodule:: rbnet.multivariate_normal
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      ApproximateMixture
+      MultivariateNormal
+      PairwiseProduct
+      Product
+   
+   
+
+   
+   
+   
+
+
+

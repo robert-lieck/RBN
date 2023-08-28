@@ -1,0 +1,35 @@
+﻿rbnet
+=====
+
+.. automodule:: rbnet
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   rbnet.base
+   rbnet.multivariate_normal
+   rbnet.pcfg
+   rbnet.util
+

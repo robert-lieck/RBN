@@ -1,0 +1,13 @@
+rbnet.pcfg.DiscreteNonTermVar
+=============================
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: DiscreteNonTermVar
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

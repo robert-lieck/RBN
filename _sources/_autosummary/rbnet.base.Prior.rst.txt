@@ -1,0 +1,13 @@
+rbnet.base.Prior
+================
+
+.. currentmodule:: rbnet.base
+
+.. autoclass:: Prior
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

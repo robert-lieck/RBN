@@ -1,0 +1,13 @@
+rbnet.base.RBN
+==============
+
+.. currentmodule:: rbnet.base
+
+.. autoclass:: RBN
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

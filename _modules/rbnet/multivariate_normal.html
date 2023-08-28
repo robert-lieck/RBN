@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.multivariate_normal &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_summary.html">API Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rbnet.multivariate_normal</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rbnet.multivariate_normal</h1><div class="highlight"><pre>
+<span></span><span class="c1">#  Copyright (c) 2021 Robert Lieck</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.distributions</span> <span class="kn">import</span> <span class="n">MultivariateNormal</span> <span class="k">as</span> <span class="n">TorchMultivariateNormal</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="MultivariateNormal">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal">[docs]</a>
+<span class="k">class</span> <span class="nc">MultivariateNormal</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a random variable with a multivariate normal distribution. It wraps PyTorch&#39;s</span>
+<span class="sd">    :class:`torch.distributions.MultivariateNormal` (available via the :attr:`torch` property) but extends it with</span>
+<span class="sd">    additional functionality.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__FULL__</span> <span class="o">=</span> <span class="s2">&quot;__FULL__&quot;</span>
+    <span class="n">__DIAG__</span> <span class="o">=</span> <span class="s2">&quot;__DIAG__&quot;</span>
+    <span class="n">__SCAL__</span> <span class="o">=</span> <span class="s2">&quot;__SCAL__&quot;</span>
+
+<div class="viewcode-block" id="MultivariateNormal._expand_scalar">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal._expand_scalar">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_expand_scalar</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">diag</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expand an array of scalars into an array of diagonal matrices.</span>
+
+<span class="sd">        :param diag: Array of arbitrary shape (...) with scalars that specify the value on the diagonal of the matrices.</span>
+<span class="sd">        :param dim: Dimensionality of the resulting matrices.</span>
+<span class="sd">        :return: Array of shape (..., dim, dim) with diagonal matrices.</span>
+
+<span class="sd">        .. testsetup::</span>
+
+<span class="sd">            from rbnet.multivariate_normal import MultivariateNormal</span>
+<span class="sd">            import torch</span>
+
+<span class="sd">        .. testcode::</span>
+
+<span class="sd">            diag = torch.arange(3, dtype=torch.float)</span>
+<span class="sd">            print(diag)</span>
+<span class="sd">            print(MultivariateNormal._expand_scalar(diag=diag, dim=3))</span>
+
+<span class="sd">        .. testoutput::</span>
+
+<span class="sd">            tensor([0., 1., 2.])</span>
+<span class="sd">            tensor([[[0., 0., 0.],</span>
+<span class="sd">                     [0., 0., 0.],</span>
+<span class="sd">                     [0., 0., 0.]],</span>
+
+<span class="sd">                    [[1., 0., 0.],</span>
+<span class="sd">                     [0., 1., 0.],</span>
+<span class="sd">                     [0., 0., 1.]],</span>
+
+<span class="sd">                    [[2., 0., 0.],</span>
+<span class="sd">                     [0., 2., 0.],</span>
+<span class="sd">                     [0., 0., 2.]]])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diag_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diag</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+        <span class="n">diag_</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span> <span class="o">=</span> <span class="n">diag</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">diag_</span></div>
+
+
+<div class="viewcode-block" id="MultivariateNormal._expand_diagonal">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal._expand_diagonal">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_expand_diagonal</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">diag</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expand an array of diagonals into an array of diagonal matrices.</span>
+
+<span class="sd">        :param diag: Array of shape (..., dim) with entries that specify the values on the diagonal of the matrices.</span>
+<span class="sd">        :param dim: Dimensionality of the resulting matrices.</span>
+<span class="sd">        :return: Array of shape (..., dim, dim) with diagonal matrices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="n">diag</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">diag</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">dim</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Last dimension of tensor has size </span><span class="si">{</span><span class="n">diag</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;cannot expand to diagonal of size </span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">mat_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">diag</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">dim</span><span class="p">,))</span>
+        <span class="n">mat_</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span> <span class="o">=</span> <span class="n">diag</span>
+        <span class="k">return</span> <span class="n">mat_</span></div>
+
+
+<div class="viewcode-block" id="MultivariateNormal._to_tensor">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal._to_tensor">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_to_tensor</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return `t` as a pytorch tensor. If `t` already is a tensor it is returned as is, otherwise ``torch.tensor(t)``</span>
+<span class="sd">        is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">t</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                 <span class="n">covariance_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">precision_matrix</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">scale_tril</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">norm</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">log_norm</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">validate_args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">dim</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise variable with given mean and covariance or precision matrix. :attr:`loc`</span>
+
+<span class="sd">        :param loc:</span>
+<span class="sd">        :param covariance_matrix:</span>
+<span class="sd">        :param precision_matrix:</span>
+<span class="sd">        :param scale_tril:</span>
+<span class="sd">        :param norm:</span>
+<span class="sd">        :param log_norm:</span>
+<span class="sd">        :param validate_args:</span>
+<span class="sd">        :param dim: explicitly specify the event dimensionality if `loc` is a (batch of) scalars; otherwise this is</span>
+<span class="sd">         taken to correspond to the last axis of `loc`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make sure at most one of &#39;norm&#39; and &#39;log_norm&#39; is provided</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">norm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">log_norm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At most one of &#39;norm&#39; and &#39;log_norm&#39; may be specified.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">norm</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">log_norm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">log_norm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">log_norm</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># norm is not None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span>
+
+        <span class="c1"># get the location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dim</span><span class="p">:</span>
+            <span class="c1"># event dimensionality explicitly defined</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_event_dim</span> <span class="o">=</span> <span class="n">dim</span>
+            <span class="c1"># expand scalar locations accordingly</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="n">dim</span><span class="p">,))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># event dimensionality given by last axis of loc</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># loc is scalar</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_event_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="o">.</span><span class="n">shape</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># loc is scalar</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_event_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">covariance_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">scale_tril</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">precision_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Exactly one of covariance_matrix or precision_matrix or scale_tril must be specified.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">scale_tril</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scale_tril</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">scale_tril</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">covariance_matrix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariance_matrix</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">covariance_matrix</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_precision_matrix</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensor</span><span class="p">(</span><span class="n">precision_matrix</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat_type</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__SCAL__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__FULL__</span><span class="p">][</span><span class="n">mat</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_batch_shape</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">broadcast_shapes</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                                                   <span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_args</span> <span class="o">=</span> <span class="n">validate_args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="MultivariateNormal._expand_mat">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal._expand_mat">[docs]</a>
+    <span class="k">def</span> <span class="nf">_expand_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mat</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__SCAL__</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_scalar</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_dim</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">__DIAG__</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expand_diagonal</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_event_dim</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mat</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">torch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_scale_tril&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="p">,</span>
+                                                      <span class="n">scale_tril</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expand_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale_tril</span><span class="p">),</span>
+                                                      <span class="n">validate_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_validate_args</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_covariance_matrix&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="p">,</span>
+                                                      <span class="n">covariance_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expand_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariance_matrix</span><span class="p">),</span>
+                                                      <span class="n">validate_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_validate_args</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_precision_matrix&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expanded_loc</span><span class="p">,</span>
+                                                      <span class="n">precision_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_expand_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_precision_matrix</span><span class="p">),</span>
+                                                      <span class="n">validate_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_validate_args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">MultivariateNormal</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prod</span> <span class="o">=</span> <span class="n">PairwiseProduct</span><span class="p">(</span><span class="n">mean1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_loc</span><span class="p">,</span> <span class="n">cov1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">covariance_matrix</span><span class="p">,</span>
+                                   <span class="n">mean2</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">_loc</span><span class="p">,</span> <span class="n">cov2</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">covariance_matrix</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+                                      <span class="n">scale_tril</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">torch</span><span class="o">.</span><span class="n">scale_tril</span><span class="p">,</span>
+                                      <span class="n">log_norm</span><span class="o">=</span><span class="n">prod</span><span class="o">.</span><span class="n">log_norm</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_log_norm</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">_log_norm</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="PairwiseProduct">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct">[docs]</a>
+<span class="k">class</span> <span class="nc">PairwiseProduct</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean1</span><span class="p">,</span> <span class="n">mean2</span><span class="p">,</span> <span class="n">cov1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cov2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cov1</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prec1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;either cov1 or prec1 needs to be provided&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cov2</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prec2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="s2">&quot;either cov2 or prec2 needs to be provided&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean1</span> <span class="o">=</span> <span class="n">mean1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean2</span> <span class="o">=</span> <span class="n">mean2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cov1</span> <span class="o">=</span> <span class="n">cov1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cov2</span> <span class="o">=</span> <span class="n">cov2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prec1</span> <span class="o">=</span> <span class="n">prec1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prec2</span> <span class="o">=</span> <span class="n">prec2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="PairwiseProduct._cost_comp">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cost_comp">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_cost_comp</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cost1</span><span class="p">,</span> <span class="n">cost2</span><span class="p">,</span> <span class="n">comp</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares cost1 and cost2 using comp. Costs are numpy arrays [i, mm, mv, ma, va] with i indicating the number of</span>
+<span class="sd">        matrix inversion, mm that of matrix-matrix multiplications, mv that of matrix-vector multiplications, ma that</span>
+<span class="sd">        of matrix-matrix additions, and va that of vector-vector additions. Comparison is performed element-wise in this</span>
+<span class="sd">        order, that is::</span>
+
+<span class="sd">            if comp(i1, i2):</span>
+<span class="sd">                return True</span>
+<span class="sd">            elif not i1 == i2:</span>
+<span class="sd">                return False</span>
+
+<span class="sd">        continue with mm1 and mm2 etc...</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cost1</span><span class="p">,</span> <span class="n">cost2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">comp</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._cost_lt">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cost_lt">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_cost_lt</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cost1</span><span class="p">,</span> <span class="n">cost2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_cost_comp</span><span class="p">(</span><span class="n">cost1</span><span class="o">=</span><span class="n">cost1</span><span class="p">,</span> <span class="n">cost2</span><span class="o">=</span><span class="n">cost2</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">lt</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cov1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cov1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prec1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov1</span>
+
+<div class="viewcode-block" id="PairwiseProduct._cov1_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov1_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov1_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cov1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cov2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cov2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prec2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov2</span>
+
+<div class="viewcode-block" id="PairwiseProduct._cov2_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov2_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov2_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cov2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prec1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prec1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cov1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec1</span>
+
+<div class="viewcode-block" id="PairwiseProduct._prec1_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._prec1_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_prec1_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prec2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prec2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cov2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec2</span>
+
+<div class="viewcode-block" id="PairwiseProduct._prec2_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._prec2_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_prec2_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sum_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov</span>
+
+<div class="viewcode-block" id="PairwiseProduct._sum_cov_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._sum_cov_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_sum_cov_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov1_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov2_cost</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sum_cov_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sum_cov</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv</span>
+
+<div class="viewcode-block" id="PairwiseProduct._sum_cov_inv_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._sum_cov_inv_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_sum_cov_inv_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_cost</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec_v1_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec_v2_cost</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span>
+
+<div class="viewcode-block" id="PairwiseProduct._prec_v1_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._prec_v1_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_prec_v1_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Cost of computing precision by adding prec1 and prec2&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec1_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec2_cost</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._prec_v2_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._prec_v2_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_prec_v2_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cost of computing precision by inverting cov (if cov is not present assume infinite costsfor tie-breaking).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._prec_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._prec_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_prec_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec_v1_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec_v2_cost</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._cov_v1">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov_v1">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov_v1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute covariance from prec1 and prec2&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._cov_v1_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov_v1_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov_v1_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec_cost</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._cov_v2">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov_v2">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov_v2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute covariance from cov1 and cov2&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cov1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_cov_inv</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._cov_v2_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov_v2_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov_v2_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov1_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov2_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv_cost</span><span class="p">()</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cov</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute covariance matrix using the least expensive method&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cov_v1_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_v2_cost</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_v1</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_v2</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span>
+
+<div class="viewcode-block" id="PairwiseProduct._cov_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._cov_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_cov_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cov_v1_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_v2_cost</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._mean_v1">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._mean_v1">[docs]</a>
+    <span class="k">def</span> <span class="nf">_mean_v1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute mean from cov, prec1, and prec2&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean1</span><span class="p">)</span> <span class="o">+</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._mean_v1_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._mean_v1_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_mean_v1_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec1_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec2_cost</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._mean_v2">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._mean_v2">[docs]</a>
+    <span class="k">def</span> <span class="nf">_mean_v2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute mean from cov, prec1, and prec2&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov2</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_cov_inv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean1</span><span class="p">))</span> <span class="o">+</span> \
+               <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cov1</span><span class="p">,</span>
+                            <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sum_cov_inv</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="PairwiseProduct._mean_v2_cost">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct._mean_v2_cost">[docs]</a>
+    <span class="k">def</span> <span class="nf">_mean_v2_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov1_cost</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov2_cost</span><span class="p">()</span></div>
+
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute mean using the least expensive method&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean_v1_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean_v2_cost</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean_v1</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mean_v2</span><span class="p">()</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">torch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the product distribution as torch MultivariateNormal&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span> <span class="o">=</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">covariance_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cov</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_torch</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">log_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute log-normalisation using the least expensive method&quot;&quot;&quot;</span>
+        <span class="c1"># if both have equal costs use precision matrix, which is less expensive within TorchMultivariateNormal</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_lt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_cost</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sum_cov_inv_cost</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean1</span><span class="p">,</span> <span class="n">covariance_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sum_cov</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean1</span><span class="p">,</span> <span class="n">precision_matrix</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sum_cov_inv</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean2</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Product">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product">[docs]</a>
+<span class="k">class</span> <span class="nc">Product</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">means</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                 <span class="n">covariances</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">precisions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">determinants</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">scaled_means</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents the product of N multivariate normal distributions over the same random variable. The inputs</span>
+<span class="sd">        may additionally have an arbitrary number of batch dimensions (indicated as &#39;...&#39; below). The means and</span>
+<span class="sd">        either the covariances or precisions have to be provided, the remaining parameters are computed from them</span>
+<span class="sd">        (providing them will avoid recomputation). The &#39;method&#39; argument determines which method is used for</span>
+<span class="sd">        computing the normalisation factor. Methods return a triplet (log scaling factor (...), mean (...xD), covariance</span>
+<span class="sd">        matrix (...xDxD) of the product), which are also available as log_norm, mean, covariance properties, respectively.</span>
+
+<span class="sd">        :param means: Nx...xD array of means</span>
+<span class="sd">        :param covariances: Nx...xDxD array of covariance matrices</span>
+<span class="sd">        :param precisions: Nx...xDxD array of precision matrices</span>
+<span class="sd">        :param determinants: Nx... array with determinants of the covariance matrices</span>
+<span class="sd">        :param scaled_means: Nx...xD array with products of precision matrices and means</span>
+<span class="sd">        :param method: method to use for computing the scaling factor (None/&#39;default&#39;, &#39;iter&#39;, &#39;pair&#39;, &#39;commute&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_means</span> <span class="o">=</span> <span class="n">means</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># make sure we have both the covariance and precision matrices</span>
+        <span class="k">assert</span> <span class="n">covariances</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">precisions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">covariances</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span> <span class="o">=</span> <span class="n">covariances</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_precisions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">covariances</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">precisions</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_precisions</span> <span class="o">=</span> <span class="n">precisions</span>
+        <span class="c1"># compute determinants</span>
+        <span class="k">if</span> <span class="n">determinants</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_determinants</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_determinants</span> <span class="o">=</span> <span class="n">determinants</span>
+        <span class="c1"># compute scaled means</span>
+        <span class="k">if</span> <span class="n">scaled_means</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;n...ab,n...b-&gt;n...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precisions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span> <span class="o">=</span> <span class="n">scaled_means</span>
+        <span class="c1"># compute parameters of product distribution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precisions</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,...b-&gt;...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">det</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">covariance</span><span class="p">)</span>
+        <span class="c1"># compute normalisation factor</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;iter&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_product</span><span class="p">(</span><span class="n">means</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">,</span> <span class="n">covariances</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;pair&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span> <span class="o">=</span> <span class="n">PairwiseProduct</span><span class="p">(</span><span class="n">mean1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cov1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                            <span class="n">mean2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cov2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">log_norm</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;commute&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commuting_product</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Product.product">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product.product">[docs]</a>
+    <span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">quad_factor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;n...a,n...a-&gt;n...&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">mixed_factor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;n...a,m...a-&gt;nm...&#39;</span><span class="p">,</span>
+                                    <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;...ab,n...b-&gt;n...a&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span><span class="p">),</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_scaled_means</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">exp_factor</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">quad_factor</span> <span class="o">-</span> <span class="n">mixed_factor</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">det</span><span class="o">.</span><span class="n">log</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determinants</span><span class="o">.</span><span class="n">log</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">det_factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi</span> <span class="o">+</span> <span class="n">div</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">det_factor</span> <span class="o">+</span> <span class="n">exp_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span></div>
+
+
+<div class="viewcode-block" id="Product.iter_product">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product.iter_product">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">iter_product</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">):</span>
+        <span class="n">ret_log_fac</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">ret_mean</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">ret_cov</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">cov</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">covariances</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">ret_mean</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ret_cov</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ret_mean</span> <span class="o">=</span> <span class="n">m</span>
+                <span class="n">ret_cov</span> <span class="o">=</span> <span class="n">cov</span>
+                <span class="k">continue</span>
+            <span class="n">pp</span> <span class="o">=</span> <span class="n">PairwiseProduct</span><span class="p">(</span><span class="n">mean1</span><span class="o">=</span><span class="n">ret_mean</span><span class="p">,</span> <span class="n">cov1</span><span class="o">=</span><span class="n">ret_cov</span><span class="p">,</span> <span class="n">mean2</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">cov2</span><span class="o">=</span><span class="n">cov</span><span class="p">)</span>
+            <span class="n">ret_log_fac</span> <span class="o">+=</span> <span class="n">pp</span><span class="o">.</span><span class="n">log_norm</span>
+            <span class="n">ret_mean</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">mean</span>
+            <span class="n">ret_cov</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">cov</span>
+        <span class="k">return</span> <span class="n">ret_log_fac</span><span class="p">,</span> <span class="n">ret_mean</span><span class="p">,</span> <span class="n">ret_cov</span></div>
+
+
+<div class="viewcode-block" id="Product.commuting_product">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product.commuting_product">[docs]</a>
+    <span class="k">def</span> <span class="nf">commuting_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exp_factor</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">):</span>
+                <span class="n">cov_ij</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_covariances</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">exp_factor</span> <span class="o">+=</span> <span class="n">TorchMultivariateNormal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">cov_ij</span><span class="p">)</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">det_factor</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span>
+                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_determinants</span><span class="o">.</span><span class="n">log</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span>
+                      <span class="bp">self</span><span class="o">.</span><span class="n">det</span><span class="o">.</span><span class="n">log</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                      <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">det_factor</span> <span class="o">+</span> <span class="n">exp_factor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ApproximateMixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.multivariate_normal.ApproximateMixture.html#rbnet.multivariate_normal.ApproximateMixture">[docs]</a>
+<span class="k">class</span> <span class="nc">ApproximateMixture</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">means</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]],</span>
+                 <span class="n">log_weights</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">covariances</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cat</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Approximate a mixture of N multivariate normal distributions with a single one by matching moments (equivalent to</span>
+<span class="sd">        minimising the KL-divergence or cross-entropy from the mixture to the approximation, and the neg-log-likelihood</span>
+<span class="sd">        if means are data points).</span>
+
+<span class="sd">        :param means: (N,X,D) array with means / locations of data points; X are arbitrary batch dimensions</span>
+<span class="sd">        :param log_weights: (N,X) array of weights of the components (optional; default is to assume uniform weights)</span>
+<span class="sd">        :param covariances: (N,X,D,D) array of covariance matrices of the components (optional; default is to assume</span>
+<span class="sd">         zero covariance, which corresponds to the components being treated as single data points)</span>
+<span class="sd">        :param cat: If true assume the inputs are iterables of tensors, which need to be concatenated first</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># first concatenate inputs if requested</span>
+        <span class="k">if</span> <span class="n">cat</span><span class="p">:</span>
+            <span class="n">means</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">means</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">log_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">log_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">log_weights</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">covariances</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">covariances</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">covariances</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># remember means</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_means</span> <span class="o">=</span> <span class="n">means</span>
+        <span class="c1"># get dimensions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># init uniform weights if not provided; get normalisation</span>
+        <span class="k">if</span> <span class="n">log_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span> <span class="o">=</span> <span class="n">log_weights</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_log_weights</span> <span class="o">=</span> <span class="n">log_weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_norm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm_log_weights</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+        <span class="c1"># compute mean</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_weights</span><span class="p">[:,</span> <span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># compute covariance component of means</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_means</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">mean_cov</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_weights</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">diff</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">diff</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># compute covariance</span>
+        <span class="k">if</span> <span class="n">covariances</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># only means component is non-zero (case for single data points)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span> <span class="o">=</span> <span class="n">mean_cov</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># compute component of covariances and add to component of means</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cov_cov</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">norm_weights</span><span class="p">[:,</span> <span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">covariances</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">covariance</span> <span class="o">=</span> <span class="n">mean_cov</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cov_cov</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+rbnet.multivariate\_normal.Product
+==================================
+
+.. currentmodule:: rbnet.multivariate_normal
+
+.. autoclass:: Product
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

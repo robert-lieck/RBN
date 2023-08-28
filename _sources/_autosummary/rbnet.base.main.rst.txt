@@ -1,0 +1,6 @@
+rbnet.base.main
+===============
+
+.. currentmodule:: rbnet.base
+
+.. autofunction:: main

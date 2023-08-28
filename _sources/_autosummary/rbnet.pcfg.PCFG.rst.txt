@@ -1,0 +1,13 @@
+rbnet.pcfg.PCFG
+===============
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: PCFG
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

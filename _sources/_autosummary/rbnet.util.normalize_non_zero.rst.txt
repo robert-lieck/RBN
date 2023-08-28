@@ -1,0 +1,6 @@
+rbnet.util.normalize\_non\_zero
+===============================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: normalize_non_zero

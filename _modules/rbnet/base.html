@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.base &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_summary.html">API Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rbnet.base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rbnet.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+
+<div class="viewcode-block" id="RBN">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN">[docs]</a>
+<span class="k">class</span> <span class="nc">RBN</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for RBNs.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RBN.inside_schedule">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">inside_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate through (batches of) non-terminal locations for computing inside probabilities. The iteration order</span>
+<span class="sd">        has to respect dependencies, i.e., non-terminals :math:`x&#39;` that depend on another non-terminal :math:`x` (in</span>
+<span class="sd">        the generative direction, i.e. :math:`x` generates :math:`x&#39;`: :math:`x \rightarrow x&#39;`) have to be iterated</span>
+<span class="sd">        BEFORE the non-terminals they depend on (:math:`x&#39;` has to be visited before :math:`x`).</span>
+
+<span class="sd">        :return: location or batch of locations</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.root_location">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.root_location">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">root_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the location of the root variables. This is typically the value returned in the last iteration of</span>
+<span class="sd">        :meth:`inside_schedule`</span>
+
+<span class="sd">        :return: location of the root variables</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.non_terminals">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.non_terminals">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">non_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate through all non-terminal variables, yielding tuples of a variable&#39;s values at the specified locations</span>
+<span class="sd">        and its associated cell. If `locations` specifies a batch of locations, the tuple contains the corresponding</span>
+<span class="sd">        batch of variables&#39; values, but still only the single associated cell.</span>
+
+<span class="sd">        Returning ``None`` for the variable&#39;s values indicates that should be marginalised out; returning proper values</span>
+<span class="sd">        indicates that variables should be conditioned on these values.</span>
+
+<span class="sd">        :param locations: location or batch of locations of variables in chart</span>
+<span class="sd">        :yield: (variable&#39;s value, cell) or (batch of variables&#39; values, cell)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.init_inside">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.init_inside">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise for parsing a new input. This function is called by :meth:`inside` with all provided parameters.</span>
+<span class="sd">        Derived classes may override it to implement tasks such as initialising charts for the non-terminal variables.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="RBN.update_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.update_inside_chart">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">update_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For the specified variable, update the chart for inside probabilities with given values at given locations.</span>
+
+<span class="sd">        :param var_idx: specifies the variable</span>
+<span class="sd">        :param locations: locations to update</span>
+<span class="sd">        :param values: values to store in chart</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.get_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.get_inside_chart">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the chart with inside probabilities for all variables.</span>
+
+<span class="sd">        :return: inside chart</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.get_terminal_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.get_terminal_chart">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_terminal_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the chart with terminal variables.</span>
+
+<span class="sd">        :return: terminal chart</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.prior">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.prior">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the prior transition (typically an instance of :class:`Prior`), which has to implement</span>
+<span class="sd">        :meth:`Prior.marginal_likelihood`.</span>
+
+<span class="sd">        :return: prior</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="RBN.inside">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside">[docs]</a>
+    <span class="k">def</span> <span class="nf">inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the inside probabilities and return the marginal data likelihood.</span>
+
+<span class="sd">        :return: marginal likelihood</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># perform any initialisations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_inside</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># get the next batch of non-terminal locations (e.g. level in CYK)</span>
+        <span class="k">for</span> <span class="n">non_term_loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_schedule</span><span class="p">():</span>
+            <span class="c1"># go through all variables and associated cells (which contain the allowed transitions) at these locations</span>
+            <span class="k">for</span> <span class="n">non_term_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">non_term_value</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">non_terminals</span><span class="p">(</span><span class="n">non_term_loc</span><span class="p">)):</span>
+                <span class="c1"># go through the possible transitions allowed for this non-terminal and collect inside marginals</span>
+                <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">transitions</span><span class="p">():</span>
+                    <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">transition</span><span class="o">.</span><span class="n">inside_marginals</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">non_term_loc</span><span class="p">,</span>
+                                                    <span class="n">inside_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_inside_chart</span><span class="p">(),</span>
+                                                    <span class="n">terminal_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_terminal_chart</span><span class="p">(),</span>
+                                                    <span class="n">value</span><span class="o">=</span><span class="n">non_term_value</span><span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="c1"># compute the mixture over inside marginals and update chart for variable(s)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_inside_chart</span><span class="p">(</span><span class="n">var_idx</span><span class="o">=</span><span class="n">non_term_idx</span><span class="p">,</span>
+                                         <span class="n">locations</span><span class="o">=</span><span class="n">non_term_loc</span><span class="p">,</span>
+                                         <span class="n">values</span><span class="o">=</span><span class="n">cell</span><span class="o">.</span><span class="n">inside_mixture</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">))</span>
+        <span class="c1"># add the prior likelihood for the root location</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="p">()</span><span class="o">.</span><span class="n">marginal_likelihood</span><span class="p">(</span><span class="n">root_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_location</span><span class="p">(),</span>
+                                                <span class="n">inside_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_inside_chart</span><span class="p">())</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Transition">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Transition.html#rbnet.base.Transition">[docs]</a>
+<span class="k">class</span> <span class="nc">Transition</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for RBN transitions, which have to implement :meth:`~Transition.inside_marginals`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Transition.inside_marginals">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the marginals over inside probabilities</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \widetilde{\beta}_{i:\ldots:k}(x_{i:k})</span>
+<span class="sd">            =</span>
+<span class="sd">            {\int\cdots\int}_{\{v_{j:j^\prime}\in\mathcal{X}\}}</span>
+<span class="sd">            p_{\tau}(v_{i:j_1}, \ldots, v_{j_{\eta-1}:k} \mid x_{i:k})</span>
+<span class="sd">            \prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}</span>
+<span class="sd">            \beta(v_{j:j^\prime}),</span>
+
+<span class="sd">        for all possible splitting points (also see :ref:`here &lt;general inside probabilities&gt;`). In particular,</span>
+<span class="sd">        ``location`` specifies the variable&#39;s location in the parse chart (the indices :math:`i` and :math:`k` in the</span>
+<span class="sd">        equation above), from which the possible splitting points follow (:math:`\eta` splitting points :math:`j_1,</span>
+<span class="sd">        \ldots,j_{\eta-1}` for transitions of arity :math:`\eta`). The marginals should always be returned in an</span>
+<span class="sd">        array or iterable where the first dimension corresponds to all possible combinations of splitting points,</span>
+<span class="sd">        even for transitions with arity :math:`\eta\neq2` (i.e. for :math:`\eta=1`, where there are no splits,</span>
+<span class="sd">        the first dimension should be of size 1 and for :math:`\eta&gt;1` all possible combinations of the</span>
+<span class="sd">        :math:`\eta-1` splitting points should be listed in a flattened form in the first dimension). Additional</span>
+<span class="sd">        dimensions, may be used to represent the dependency of the marginal on the variable :math:`x_{i:k}` (e.g. for</span>
+<span class="sd">        a discrete variable, the second dimension may list the marginal for each possible value :math:`x_{i:k}` can</span>
+<span class="sd">        take; and for a continuous variable, the marginal may be represented by a set of parameters).</span>
+
+<span class="sd">        The output of this function is typically handled by a custom implementation of</span>
+<span class="sd">        :meth:`Cell.inside_mixture() &lt;rbnet.base.Cell.inside_mixture&gt;`.</span>
+
+<span class="sd">        :param location: location of the variable for which to compute the inside marginals</span>
+<span class="sd">        :param inside_chart: a lookup chart with inside probabilities for other variables</span>
+<span class="sd">        :param terminal_chart: a lookup chart with values of the terminal variables</span>
+<span class="sd">        :param value: value of the variable for which to compute the inside marginals or ``None``; if value is</span>
+<span class="sd">         provided this means that *conditional* inside probabilities should be computed (for the given value);</span>
+<span class="sd">         otherwise general inside marginals (as a function of the variable) should be computed; also see</span>
+<span class="sd">         :meth:`RBN.non_terminals`</span>
+<span class="sd">        :return: array-like or iterable with inside probabilities; if the transition is not possible, this should be</span>
+<span class="sd">         of length zero or contain only inside probabilities representing zero</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Prior">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Prior.html#rbnet.base.Prior">[docs]</a>
+<span class="k">class</span> <span class="nc">Prior</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for prior transitions. Prior transitions are similar to normal Transition&#39;s, but cannot directly generate</span>
+<span class="sd">    terminal variables and have no parent variables.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Prior.marginal_likelihood">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the marginal data likelihood</span>
+
+<span class="sd">            .. math::</span>
+<span class="sd">                p(\mathbf{Y}) = \sum_{x\in\mathcal{X}} w_x \int \beta(x_{0:n}) \ p_P(x_{0:n}) \ dx_{0:n},</span>
+
+<span class="sd">        as described in more detail :ref:`here &lt;marginal likelihood&gt;`.</span>
+
+<span class="sd">        :param root_location: location of the root variables</span>
+<span class="sd">        :param inside_chart: chart of inside probabilities</span>
+<span class="sd">        :return: marginal likelihood</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="NonTermVar">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.NonTermVar.html#rbnet.base.NonTermVar">[docs]</a>
+<span class="k">class</span> <span class="nc">NonTermVar</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for non-terminal variables&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NonTermVar.get_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.get_chart">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Cell">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Cell.html#rbnet.base.Cell">[docs]</a>
+<span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for RBN cells associated to a non-terminal template variable. Cells hold the parse chart for that</span>
+<span class="sd">    variable, accessible via :meth:`get_chart`, all transitions that are possible from that variable, accessible via</span>
+<span class="sd">    :meth:`transitions`, and implement computation of the mixture of inside probabilities over that variable in</span>
+<span class="sd">    :meth:`inside_mixture`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A cell for a given non-terminal variable</span>
+
+<span class="sd">        :param variable: non-terminal variable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="o">=</span> <span class="n">variable</span>
+
+<div class="viewcode-block" id="Cell.transitions">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Cell.html#rbnet.base.Cell.transitions">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iterate through all possible transitions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="Cell.inside_mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">inside_mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inside_marginals</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For a list of inside marginals :math:`\widetilde{\beta}_{i:\ldots:k}(x_{i:k})`, compute the mixture</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \beta(x_{i:k})</span>
+<span class="sd">            =</span>
+<span class="sd">            \sum_{\tau \in \mathcal{T}_x}</span>
+<span class="sd">            p_S(z_{i:k}=\tau \mid x_{i:k})</span>
+<span class="sd">            {\sum\cdots\sum}_{i&lt;j_1&lt;\ldots&lt;j_{\eta-1}&lt;k} \ \widetilde{\beta}_{i:\ldots:k}(x_{i:k})</span>
+
+<span class="sd">        as described in more detail :ref:`here &lt;general inside probabilities&gt;`.</span>
+
+<span class="sd">        The inside marginals are typically computed by a custom implementation of</span>
+<span class="sd">        :meth:`Transition.inside_marginals() &lt;rbnet.base.Transition.inside_marginals&gt;`</span>
+
+<span class="sd">        :param inside_marginals: iterable over inside marginals (as returned by :meth:`Transition.inside_marginals`)</span>
+<span class="sd">        :return: representation of the inside probability :math:`\beta(x_{i:k})`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CYKRBN">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN">[docs]</a>
+<span class="k">class</span> <span class="nc">CYKRBN</span><span class="p">(</span><span class="n">RBN</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cells</span> <span class="o">=</span> <span class="n">cells</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span> <span class="o">=</span> <span class="n">prior</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="CYKRBN.init_inside">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.init_inside">[docs]</a>
+    <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="n">sequence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_chart</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.inside_schedule">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.inside_schedule">[docs]</a>
+    <span class="k">def</span> <span class="nf">inside_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="n">span</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">span</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.root_location">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.root_location">[docs]</a>
+    <span class="k">def</span> <span class="nf">root_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.non_terminals">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.non_terminals">[docs]</a>
+    <span class="k">def</span> <span class="nf">non_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.update_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.update_inside_chart">[docs]</a>
+    <span class="k">def</span> <span class="nf">update_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="n">var_idx</span><span class="p">][</span><span class="n">locations</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.get_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_inside_chart">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.get_terminal_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_terminal_chart">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_terminal_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span></div>
+
+
+<div class="viewcode-block" id="CYKRBN.prior">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.prior">[docs]</a>
+    <span class="k">def</span> <span class="nf">prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.main.html#rbnet.base.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">pass</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

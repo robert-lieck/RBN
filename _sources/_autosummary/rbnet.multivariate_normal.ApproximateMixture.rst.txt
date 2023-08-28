@@ -1,0 +1,13 @@
+rbnet.multivariate\_normal.ApproximateMixture
+=============================================
+
+.. currentmodule:: rbnet.multivariate_normal
+
+.. autoclass:: ApproximateMixture
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

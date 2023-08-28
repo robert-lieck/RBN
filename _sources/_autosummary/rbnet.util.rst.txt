@@ -1,0 +1,30 @@
+rbnet.util
+==========
+
+.. automodule:: rbnet.util
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      normalize_non_zero
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

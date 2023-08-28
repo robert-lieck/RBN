@@ -1,0 +1,13 @@
+rbnet.pcfg.AbstractedPCFG
+=========================
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: AbstractedPCFG
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

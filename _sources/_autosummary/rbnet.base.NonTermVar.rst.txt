@@ -1,0 +1,13 @@
+rbnet.base.NonTermVar
+=====================
+
+.. currentmodule:: rbnet.base
+
+.. autoclass:: NonTermVar
+   :members:
+   :undoc-members:
+   :private-members:
+   :inherited-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

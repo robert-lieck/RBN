@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.pcfg.ExpandedPCFG &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rbnet.pcfg.PCFG" href="rbnet.pcfg.PCFG.html" />
+    <link rel="prev" title="rbnet.pcfg.DiscreteTerminalTransition" href="rbnet.pcfg.DiscreteTerminalTransition.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html">rbnet.pcfg.DiscreteNonTermVar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html">rbnet.pcfg.DiscretePrior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.pcfg.ExpandedPCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.PCFG.html">rbnet.pcfg.PCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.StaticCell.html">rbnet.pcfg.StaticCell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.pcfg.html">rbnet.pcfg</a></li>
+      <li class="breadcrumb-item active">rbnet.pcfg.ExpandedPCFG</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rbnet-pcfg-expandedpcfg">
+<h1>rbnet.pcfg.ExpandedPCFG<a class="headerlink" href="#rbnet-pcfg-expandedpcfg" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">ExpandedPCFG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_term_variables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#ExpandedPCFG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a></p>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Public Methods:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(non_terminals, terminals, ...)</p></td>
+<td><p>An ExpandedPCFG...</p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior, terminal_indices, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.init_inside" title="rbnet.pcfg.PCFG.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
+<td><p>Initialise for parsing a new input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.map_inside_chart" title="rbnet.pcfg.PCFG.map_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map_inside_chart</span></code></a>([precision])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN" title="rbnet.base.CYKRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">CYKRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.init_inside" title="rbnet.base.CYKRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
+<td><p>Initialise for parsing a new input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.inside_schedule" title="rbnet.base.CYKRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.root_location" title="rbnet.base.CYKRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
+<td><p>Return the location of the root variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.non_terminals" title="rbnet.base.CYKRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
+<td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.update_inside_chart" title="rbnet.base.CYKRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
+<td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_inside_chart" title="rbnet.base.CYKRBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
+<td><p>Return the chart with inside probabilities for all variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_terminal_chart" title="rbnet.base.CYKRBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
+<td><p>Return the chart with terminal variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.prior" title="rbnet.base.CYKRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
+<td><p>Return the prior transition (typically an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code>), which has to implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.root_location" title="rbnet.base.RBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
+<td><p>Return the location of the root variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.non_terminals" title="rbnet.base.RBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
+<td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.init_inside" title="rbnet.base.RBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Initialise for parsing a new input.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.update_inside_chart" title="rbnet.base.RBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
+<td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.get_inside_chart" title="rbnet.base.RBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
+<td><p>Return the chart with inside probabilities for all variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.get_terminal_chart" title="rbnet.base.RBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
+<td><p>Return the chart with terminal variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.prior" title="rbnet.base.RBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
+<td><p>Return the prior transition (typically an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code>), which has to implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Compute the inside probabilities and return the marginal data likelihood.</p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Private Data Attributes:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.ExpandedPCFG._abc_impl" title="rbnet.pcfg.ExpandedPCFG._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG._abc_impl" title="rbnet.pcfg.PCFG._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN" title="rbnet.base.CYKRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">CYKRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN._abc_impl" title="rbnet.base.CYKRBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN._abc_impl" title="rbnet.base.RBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<hr class="docutils" />
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG._abc_impl" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.get_inside_chart">
+<span class="sig-name descname"><span class="pre">get_inside_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.get_inside_chart" title="Link to this definition"></a></dt>
+<dd><p>Return the chart with inside probabilities for all variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>inside chart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.get_terminal_chart">
+<span class="sig-name descname"><span class="pre">get_terminal_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.get_terminal_chart" title="Link to this definition"></a></dt>
+<dd><p>Return the chart with terminal variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>terminal chart</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.init_inside">
+<span class="sig-name descname"><span class="pre">init_inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.init_inside" title="Link to this definition"></a></dt>
+<dd><p>Initialise for parsing a new input. This function is called by <a class="reference internal" href="#rbnet.pcfg.ExpandedPCFG.inside" title="rbnet.pcfg.ExpandedPCFG.inside"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside()</span></code></a> with all provided parameters.
+Derived classes may override it to implement tasks such as initialising charts for the non-terminal variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.inside">
+<span class="sig-name descname"><span class="pre">inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.inside" title="Link to this definition"></a></dt>
+<dd><p>Compute the inside probabilities and return the marginal data likelihood.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>marginal likelihood</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.inside_schedule">
+<span class="sig-name descname"><span class="pre">inside_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.inside_schedule" title="Link to this definition"></a></dt>
+<dd><p>Iterate through (batches of) non-terminal locations for computing inside probabilities. The iteration order
+has to respect dependencies, i.e., non-terminals <span class="math">x'</span> that depend on another non-terminal <span class="math">x</span> (in
+the generative direction, i.e. <span class="math">x</span> generates <span class="math">x'</span>: <span class="math">x \rightarrow x'</span>) have to be iterated
+BEFORE the non-terminals they depend on (<span class="math">x'</span> has to be visited before <span class="math">x</span>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>location or batch of locations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.map_inside_chart">
+<span class="sig-name descname"><span class="pre">map_inside_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.map_inside_chart" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.non_terminals">
+<span class="sig-name descname"><span class="pre">non_terminals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.non_terminals" title="Link to this definition"></a></dt>
+<dd><p>Iterate through all non-terminal variables, yielding tuples of a variable’s values at the specified locations
+and its associated cell. If <cite>locations</cite> specifies a batch of locations, the tuple contains the corresponding
+batch of variables’ values, but still only the single associated cell.</p>
+<p>Returning <code class="docutils literal notranslate"><span class="pre">None</span></code> for the variable’s values indicates that should be marginalised out; returning proper values
+indicates that variables should be conditioned on these values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locations</strong> – location or batch of locations of variables in chart</p>
+</dd>
+<dt class="field-even">Yield<span class="colon">:</span></dt>
+<dd class="field-even"><p>(variable’s value, cell) or (batch of variables’ values, cell)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.prior">
+<span class="sig-name descname"><span class="pre">prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.prior" title="Link to this definition"></a></dt>
+<dd><p>Return the prior transition (typically an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code>), which has to implement
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>prior</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.root_location">
+<span class="sig-name descname"><span class="pre">root_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.root_location" title="Link to this definition"></a></dt>
+<dd><p>Return the location of the root variables. This is typically the value returned in the last iteration of
+<a class="reference internal" href="#rbnet.pcfg.ExpandedPCFG.inside_schedule" title="rbnet.pcfg.ExpandedPCFG.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>location of the root variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.ExpandedPCFG.update_inside_chart">
+<span class="sig-name descname"><span class="pre">update_inside_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.pcfg.ExpandedPCFG.update_inside_chart" title="Link to this definition"></a></dt>
+<dd><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var_idx</strong> – specifies the variable</p></li>
+<li><p><strong>locations</strong> – locations to update</p></li>
+<li><p><strong>values</strong> – values to store in chart</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbnet.pcfg.DiscreteTerminalTransition.html" class="btn btn-neutral float-left" title="rbnet.pcfg.DiscreteTerminalTransition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.pcfg.PCFG.html" class="btn btn-neutral float-right" title="rbnet.pcfg.PCFG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.pcfg.DiscretePrior &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="rbnet.pcfg.DiscreteTerminalTransition" href="rbnet.pcfg.DiscreteTerminalTransition.html" />
+    <link rel="prev" title="rbnet.pcfg.DiscreteNonTermVar" href="rbnet.pcfg.DiscreteNonTermVar.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html">rbnet.pcfg.DiscreteNonTermVar</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.pcfg.DiscretePrior</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.ExpandedPCFG.html">rbnet.pcfg.ExpandedPCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.PCFG.html">rbnet.pcfg.PCFG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.StaticCell.html">rbnet.pcfg.StaticCell</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
+          <li class="breadcrumb-item"><a href="rbnet.pcfg.html">rbnet.pcfg</a></li>
+      <li class="breadcrumb-item active">rbnet.pcfg.DiscretePrior</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rbnet-pcfg-discreteprior">
+<h1>rbnet.pcfg.DiscretePrior<a class="headerlink" href="#rbnet-pcfg-discreteprior" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscretePrior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscretePrior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscretePrior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscretePrior" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a></p>
+<p>A prior distribution over discrete non-terminal variables.</p>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Public Methods:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(struc_weights, prior_weights)</p></td>
+<td><p>Initialise prior with structural distribution p(z) and individual prior distributions p(a1), ..., p(an) for n non-terminal variables a1, ..., an.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscretePrior.marginal_likelihood" title="rbnet.pcfg.DiscretePrior.marginal_likelihood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marginal_likelihood</span></code></a>(root_location, ...)</p></td>
+<td><p>Compute the marginal data likelihood</p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">marginal_likelihood</span></code></a>(root_location, ...)</p></td>
+<td><p>Compute the marginal data likelihood</p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Private Data Attributes:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscretePrior._abc_impl" title="rbnet.pcfg.DiscretePrior._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior._abc_impl" title="rbnet.base.Prior._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<hr class="docutils" />
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscretePrior._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.pcfg.DiscretePrior._abc_impl" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscretePrior.marginal_likelihood">
+<span class="sig-name descname"><span class="pre">marginal_likelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inside_chart</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscretePrior.marginal_likelihood"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscretePrior.marginal_likelihood" title="Link to this definition"></a></dt>
+<dd><p>Compute the marginal data likelihood</p>
+<blockquote>
+<div><div class="math">
+<p><span class="math">p(\mathbf{Y}) = \sum_{x\in\mathcal{X}} w_x \int \beta(x_{0:n}) \ p_P(x_{0:n}) \ dx_{0:n},</span></p>
+</div></div></blockquote>
+<p>as described in more detail <a class="reference internal" href="../recursive_bayesian_networks.html#marginal-likelihood"><span class="std std-ref">here</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_location</strong> – location of the root variables</p></li>
+<li><p><strong>inside_chart</strong> – chart of inside probabilities</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>marginal likelihood</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rbnet.pcfg.DiscreteNonTermVar.html" class="btn btn-neutral float-left" title="rbnet.pcfg.DiscreteNonTermVar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.pcfg.DiscreteTerminalTransition.html" class="btn btn-neutral float-right" title="rbnet.pcfg.DiscreteTerminalTransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
