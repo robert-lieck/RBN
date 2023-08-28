@@ -4,3 +4,4 @@ myst-parser
 sphinx-autodoc-typehints
 autoclasstoc
 sphinx-gallery
+matplotlib
