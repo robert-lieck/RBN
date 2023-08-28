@@ -5,7 +5,6 @@ on:
     branches:
       - main
     tags: '*'
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -16,7 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
+      - name: Install LaTeX for math support
+        run: |
+          sudo apt-get update
+          sudo apt-get install texlive-full
       - name: generate doc
         run: |
           pip install -r requirements.txt
@@ -24,6 +26,7 @@ jobs:
           cd doc/
           make html
           make linkcheck
+          make doctest
 
       - name: Deploy doc
         uses: peaceiris/actions-gh-pages@v3

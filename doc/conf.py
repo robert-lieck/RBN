@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'rbnet'
-copyright = '2022, Robert Lieck'
+copyright = '2021, Robert Lieck'
 author = 'Robert Lieck'
 
 
@@ -58,7 +58,7 @@ html_theme = "sphinx_rtd_theme"
 # don't show the "View page source" link in the RTD theme
 html_show_sourcelink = False
 # use svg in imgmath extension
-imgmath_image_format='svg'
+imgmath_image_format = 'svg'
 # intersphinx mappings
 intersphinx_mapping = {}
 # report broken links
