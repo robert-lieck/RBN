@@ -10,7 +10,7 @@ from scipy.spatial.transform import Rotation as R
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from multivariate_normal import Product, ApproximateMixture, PairwiseProduct, MultivariateNormal
+from rbnet.multivariate_normal import Product, ApproximateMixture, PairwiseProduct, MultivariateNormal
 
 rng = np.random.default_rng(seed=0)
 
