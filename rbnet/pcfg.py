@@ -3,8 +3,8 @@ from typing import Iterable
 import numpy as np
 
 from triangularmap import TMap
-from pyulib import normalize_non_zero
 
+from rbnet.util import normalize_non_zero
 from rbnet.base import Cell, Transition, Prior, NonTermVar, CYKRBN
 
 
