@@ -1,6 +1,7 @@
 # Recursive Bayesian Networks
 
 [![tests](https://github.com/robert-lieck/RBN/actions/workflows/tests.yml/badge.svg)](https://github.com/robert-lieck/RBN/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/robert-lieck/RBN/graph/badge.svg?token=6VZ2LIFSL9)](https://codecov.io/gh/robert-lieck/RBN)
 
 ![build](https://github.com/robert-lieck/RBN/workflows/build/badge.svg)
 [![PyPI version](https://badge.fury.io/py/rbnet.svg)](https://badge.fury.io/py/rbnet)
