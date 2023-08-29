@@ -180,7 +180,7 @@ class DiscreteNonTermVar(NonTermVar):
 
     def __init__(self, cardinality, chart_type="TMap"):
         """
-        A discrete non-terminal variable with cardinality `n`.
+        A discrete non-terminal variable with cardinality ``n``.
 
         :param cardinality: cardinality
         :param chart_type: type of chart to use ("dict" or "TMap")
@@ -200,6 +200,29 @@ class DiscreteNonTermVar(NonTermVar):
             return TMap(np.zeros((TMap.size_from_n(n), self.cardinality)))
         else:
             raise ValueError(f"Unknown chart type '{self.chart_type}'")
+
+    def mixture(self, components, weights=None, axis=0):
+        """
+        Compute a mixture distribution over a discrete variable.
+
+        :param components: array-like with mixture components along ``axis``
+        :param weights: weights of the mixture components in an array-like of shape ``axis``
+        :param axis: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to
+         compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)
+        :return: distribution corresponding to the mixture
+        """
+        components = np.asfarray(components)
+        if not isinstance(axis, tuple):
+            axis = (axis,)
+        if weights is not None:
+            weights = np.asfarray(weights)
+            if len(weights.shape) != len(axis):
+                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'axis' has {len(axis)} entries "
+                                 f"but they must be the same")
+            # bring 'weights' into broadcastable shape, keeping dimension at right location according to 'axis'
+            idx = tuple(slice(None) if i in axis else None for i in range(len(components.shape)))
+            components = weights[idx] * components
+        return components.sum(axis=axis)
 
 
 class DiscretePrior(Prior):
@@ -339,10 +362,12 @@ class StaticCell(Cell):
     def inside_mixture(self, inside_marginals):
         # iterate over possible transitions
         s = []
-        for pt, i in zip(self.transition_probabilities, inside_marginals):
+        valid_transitions = np.zeros(shape=self.transition_probabilities.shape, dtype=bool)
+        for idx, i in enumerate(inside_marginals):
             # if there are possible transitions
             if len(i) > 0:
-                # sum out possible splitting points (first dimension) and weight with transition probability
-                s.append(pt * np.array(i).sum(axis=0))
-        # sum out transitions and return
-        return np.array(s).sum(axis=0)
+                # compute mixture over possible splitting points
+                s.append(self.variable.mixture(components=i))
+                valid_transitions[idx] = True
+        # computed weighted mixture over transitions and return
+        return self.variable.mixture(components=s, weights=self.transition_probabilities[valid_transitions])

@@ -189,19 +189,35 @@ class Prior(ABC):
 
 
 class NonTermVar(ABC):
-    """Base class for non-terminal variables"""
+    """
+    Base class for non-terminal variables. Instances of :class:`NonTermVar` represent a specific type of template
+    variable. A parse chart for that variable for specific input data can be requested via :meth:`get_chart`. Mixtures
+    over this variable type can be computed via :meth:`mixture`.
+    """
 
     @abstractmethod
     def get_chart(self, *args, **kwargs):
+        """
+        Return a parse chart to store this variable type in. The specific arguments depend on the implementation but
+        typically include information about the input data for which the parse chart is requested (e.g. the length of
+        the sequence for sequential input data).
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def mixture(self, *args, **kwargs):
+        """
+        Compute a mixture over this variable type. The specific arguments depend on the implementation but typically
+        include iterables over the mixture components and possibly their weights.
+        """
         raise NotImplementedError
 
 
 class Cell(ABC):
     """
-    Base class for RBN cells associated to a non-terminal template variable. Cells hold the parse chart for that
-    variable, accessible via :meth:`get_chart`, all transitions that are possible from that variable, accessible via
-    :meth:`transitions`, and implement computation of the mixture of inside probabilities over that variable in
-    :meth:`inside_mixture`.
+    Base class for RBN cells associated to a non-terminal template variable. Cells hold all transitions that are
+    possible from that variable, accessible via :meth:`transitions`, and implement computation of the mixture of
+    inside probabilities over that variable in :meth:`inside_mixture`.
     """
 
     def __init__(self, variable):
