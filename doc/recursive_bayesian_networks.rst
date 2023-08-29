@@ -93,7 +93,7 @@ We denote the second line as *inside marginals* :math:`\widetilde{\beta}_{i:\ldo
     \beta(v_{j:j^\prime}),
 
 where the subscript :math:`i:\ldots:k` indicates the dependency on :math:`i<j_1<\ldots<j_{\eta-1}<k`.
-This is implemented in :meth:`Transition.inside_marginals() <rbn.base.Transition.inside_marginals>`, which returns
+This is implemented in :meth:`Transition.inside_marginals() <rbnet.base.Transition.inside_marginals>`, which returns
 an array or iterable over all possible inside marginals :math:`\widetilde{\beta}_{i:\ldots:k}(x_{i:k})` for the
 different (combinations of) splitting points.
 
@@ -108,7 +108,7 @@ points as well as the sum over possible transitions weighted by the structural d
     p_S(z_{i:k}=\tau \mid x_{i:k})
     {\sum\cdots\sum}_{i<j_1<\ldots<j_{\eta-1}<k} \ \widetilde{\beta}_{i:\ldots:k}(x_{i:k})
 
-This is implemented in :meth:`Cell.inside_mixture() <rbn.base.Cell.inside_mixture>`.
+This is implemented in :meth:`Cell.inside_mixture() <rbnet.base.Cell.inside_mixture>`.
 
 To explain the different parts of the equation in more detail, we have:
 
@@ -151,7 +151,10 @@ To explain the different parts of the equation in more detail, we have:
 Marginal Likelihood
 -------------------
 
-The marginal likelihood :math:`p(\mathbf{Y})` is the probability of the observed data after marginalising out all latent variables of the model. This is the quantity typically used to measure how well a model describes the data and model parameters are optimised to minimise the marginal negative log likelihood :math:`- \log p(\mathbf{Y})`. We obtain the marginal likelihood from the inside probabilities at the root node
+The marginal likelihood :math:`p(\mathbf{Y})`is the probability of the observed data after marginalising out all
+latent variables of the model. This is the quantity typically used to measure how well a model describes the data and
+model parameters are optimised to minimise the marginal negative log likelihood :math:`- \log p(\mathbf{Y})`. We
+obtain the marginal likelihood from the inside probabilities at the root node
 
 .. important::
     .. math::
@@ -162,16 +165,16 @@ where :math:`p_P(x_{0:n})` is the prior transition that generates a non-terminal
 the same as for normal transitions (:math:`w_x` is the equivalent of the structural distribution), except that some
 things simplify as we do not condition on another non-terminal variable and do not have to consider possible splitting points
 as we are generating only a single new non-terminal variable. Computing marginal likelihoods from the inside probabilities
-at the root node is implemented in :meth:`Prior.marginal_likelihood() <rbn.base.Prior.marginal_likelihood>`,
-which essentially corresponds to combining the :meth:`Transition.inside_marginals() <rbn.base.Transition.inside_marginals>`
-and :meth:`Cell.inside_mixture() <rbn.base.Cell.inside_mixture>` methods for the special case of the prior.
+at the root node is implemented in :meth:`Prior.marginal_likelihood() <rbnet.base.Prior.marginal_likelihood>`,
+which essentially corresponds to combining the :meth:`Transition.inside_marginals() <rbnet.base.Transition.inside_marginals>`
+and :meth:`Cell.inside_mixture() <rbnet.base.Cell.inside_mixture>` methods for the special case of the prior.
 
 Parsing
 -------
 
 To compute marginal likelihoods, we have to recursively evaluate the equation for general inside probabilities
-to obtain their values at the root node. This is done by the :meth:`RBN.inside() <rbn.base.RBN.inside>` method.
-It iterates over all inside variables using :meth:`~rbn.base.RBN.inside_schedule`,
-delegating the marginalisation of variables to :meth:`Transition.inside_marginals() <rbn.base.Transition.inside_marginals>`
-and computing mixtures to :meth:`Cell.inside_mixture() <rbn.base.Cell.inside_mixture>`, before returning the
-marginal likelihood computed via :meth:`Prior.marginal_likelihood() <rbn.base.Prior.marginal_likelihood>`.
+to obtain their values at the root node. This is done by the :meth:`RBN.inside() <rbnet.base.RBN.inside>` method.
+It iterates over all inside variables using :meth:`~rbnet.base.RBN.inside_schedule`,
+delegating the marginalisation of variables to :meth:`Transition.inside_marginals() <rbnet.base.Transition.inside_marginals>`
+and computing mixtures to :meth:`Cell.inside_mixture() <rbnet.base.Cell.inside_mixture>`, before returning the
+marginal likelihood computed via :meth:`Prior.marginal_likelihood() <rbnet.base.Prior.marginal_likelihood>`.
