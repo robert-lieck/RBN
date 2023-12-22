@@ -26,11 +26,11 @@ rbnet.base
       :toctree:
       :template: custom-class-template.rst
    
-      CYKRBN
       Cell
       NonTermVar
       Prior
       RBN
+      SequentialRBN
       Transition
    
    

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recursive Bayesian Networks &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -164,7 +166,7 @@ p_{\tau}(v_{i:j_1}, \ldots, v_{j_{\eta-1}:k} \mid x_{i:k})
 \prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}
 \beta(v_{j:j^\prime}),"/></p>
 </div><p>where the subscript <img class="math" src="_images/math/857fc47d8a75282808a2ca56167a0fea695f9d72.svg" alt="i:\ldots:k"/> indicates the dependency on <img class="math" src="_images/math/48d45282df2b7588f94d20d53802e868ee55d4a4.svg" alt="i&lt;j_1&lt;\ldots&lt;j_{\eta-1}&lt;k"/>.
-This is implemented in <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code>, which returns
+This is implemented in <a class="reference internal" href="_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code></a>, which returns
 an array or iterable over all possible inside marginals <img class="math" src="_images/math/1a553e1552dd63399f9c62567051189758dc49e7.svg" alt="\widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/> for the
 different (combinations of) splitting points.</p>
 <p>We denote the summation in the first line as <em>inside mixture</em>. It uses the inside marginals
@@ -176,7 +178,7 @@ points as well as the sum over possible transitions weighted by the structural d
 \sum_{\tau \in \mathcal{T}_x}
 p_S(z_{i:k}=\tau \mid x_{i:k})
 {\sum\cdots\sum}_{i&lt;j_1&lt;\ldots&lt;j_{\eta-1}&lt;k} \ \widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/></p>
-</div><p>This is implemented in <code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code>.</p>
+</div><p>This is implemented in <a class="reference internal" href="_autosummary/rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code></a>.</p>
 <p>To explain the different parts of the equation in more detail, we have:</p>
 <ul class="simple">
 <li><p>The sum over all possible transitions for the given variable, weighting each transition by its probability to
@@ -216,7 +218,10 @@ both non-terminal variables and terminal variables:</p></li>
 </section>
 <section id="marginal-likelihood">
 <span id="id2"></span><h2>Marginal Likelihood<a class="headerlink" href="#marginal-likelihood" title="Link to this heading"></a></h2>
-<p>The marginal likelihood <img class="math" src="_images/math/f789dffdd3bf098dc89bcf1c9aeedf421e41025c.svg" alt="p(\mathbf{Y})"/> is the probability of the observed data after marginalising out all latent variables of the model. This is the quantity typically used to measure how well a model describes the data and model parameters are optimised to minimise the marginal negative log likelihood <img class="math" src="_images/math/6e94318be31cbc5b568cede309899496bec86c02.svg" alt="- \log p(\mathbf{Y})"/>. We obtain the marginal likelihood from the inside probabilities at the root node</p>
+<p>The marginal likelihood <img class="math" src="_images/math/bae49464891f8bcfc4264328c7c5f4e002412158.svg" alt="p(\mathbf{Y})`is the probability of the observed data after marginalising out all
+latent variables of the model. This is the quantity typically used to measure how well a model describes the data and
+model parameters are optimised to minimise the marginal negative log likelihood :math:"/>- log p(mathbf{Y})`. We
+obtain the marginal likelihood from the inside probabilities at the root node</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <div class="math">
@@ -227,18 +232,18 @@ both non-terminal variables and terminal variables:</p></li>
 the same as for normal transitions (<img class="math" src="_images/math/761dd59b284079b25d7b0a4159b30a813df6863a.svg" alt="w_x"/> is the equivalent of the structural distribution), except that some
 things simplify as we do not condition on another non-terminal variable and do not have to consider possible splitting points
 as we are generating only a single new non-terminal variable. Computing marginal likelihoods from the inside probabilities
-at the root node is implemented in <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>,
-which essentially corresponds to combining the <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code>
-and <code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code> methods for the special case of the prior.</p>
+at the root node is implemented in <a class="reference internal" href="_autosummary/rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>,
+which essentially corresponds to combining the <a class="reference internal" href="_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code></a>
+and <a class="reference internal" href="_autosummary/rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code></a> methods for the special case of the prior.</p>
 </section>
 <section id="parsing">
 <h2>Parsing<a class="headerlink" href="#parsing" title="Link to this heading"></a></h2>
 <p>To compute marginal likelihoods, we have to recursively evaluate the equation for general inside probabilities
-to obtain their values at the root node. This is done by the <code class="xref py py-meth docutils literal notranslate"><span class="pre">RBN.inside()</span></code> method.
-It iterates over all inside variables using <code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code>,
-delegating the marginalisation of variables to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code>
-and computing mixtures to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code>, before returning the
-marginal likelihood computed via <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p>
+to obtain their values at the root node. This is done by the <a class="reference internal" href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-meth docutils literal notranslate"><span class="pre">RBN.inside()</span></code></a> method.
+It iterates over all inside variables using <a class="reference internal" href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a>,
+delegating the marginalisation of variables to <a class="reference internal" href="_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code></a>
+and computing mixtures to <a class="reference internal" href="_autosummary/rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Cell.inside_mixture()</span></code></a>, before returning the
+marginal likelihood computed via <a class="reference internal" href="_autosummary/rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p>
 </section>
 </section>
 

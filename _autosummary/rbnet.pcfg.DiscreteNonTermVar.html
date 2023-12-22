@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg.DiscreteNonTermVar &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -105,22 +107,37 @@
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteNonTermVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cardinality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TMap'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a></p>
+<p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cardinality</strong> – cardinality</p></li>
+<li><p><strong>chart_type</strong> – type of chart to use (“dict” or “TMap”)</p></li>
+</ul>
+</dd>
+</dl>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cardinality[, chart_type])</p></td>
-<td><p>A discrete non-terminal variable with cardinality <cite>n</cite>.</p></td>
+<td><p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar.get_chart" title="rbnet.pcfg.DiscreteNonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(n, *args, **kwargs)</p></td>
 <td><p>Initialise a chart for sequence of length <cite>n</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="rbnet.pcfg.DiscreteNonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(components[, weights, axis])</p></td>
+<td><p>Compute a mixture distribution over a discrete variable.</p></td>
 </tr>
 </tbody>
 </table>
 <details><summary>Inherited from <a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(*args, **kwargs)</p></td>
-<td><p></p></td>
+<td><p>Return a parse chart to store this variable type in.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.mixture" title="rbnet.base.NonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Compute a mixture over this variable type.</p></td>
 </tr>
 </tbody>
 </table>
@@ -162,6 +179,25 @@
 :type n: 
 :param n: length of the sequence
 :return: chart</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar.mixture">
+<span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar.mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="Link to this definition"></a></dt>
+<dd><p>Compute a mixture distribution over a discrete variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>components</strong> – array-like with mixture components along <code class="docutils literal notranslate"><span class="pre">axis</span></code></p></li>
+<li><p><strong>weights</strong> – weights of the mixture components in an array-like of shape <code class="docutils literal notranslate"><span class="pre">axis</span></code></p></li>
+<li><p><strong>axis</strong> – integer or tuple of integers indicating the dimensions or axes of <code class="docutils literal notranslate"><span class="pre">components</span></code> along which to
+compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>distribution corresponding to the mixture</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

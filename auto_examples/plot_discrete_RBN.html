@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discrete RBN &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Summary" href="../api_summary.html" />
+    <link rel="prev" title="Abstracted PCFGs" href="plot_PCFG.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery and Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_PCFG.html">Abstracted PCFGs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Discrete RBN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-pcfg">Abstract PCFG</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-sequences">Parsing Sequences</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#expanded-pcfg">Expanded PCFG</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Gallery and Examples</a></li>
+      <li class="breadcrumb-item active">Discrete RBN</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-discrete-rbn-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code</p>
+</div>
+<section class="sphx-glr-example-title" id="discrete-rbn">
+<span id="sphx-glr-auto-examples-plot-discrete-rbn-py"></span><h1>Discrete RBN<a class="headerlink" href="#discrete-rbn" title="Link to this heading"></a></h1>
+<p>This examples goes through all the steps involved in defining a discrete RBN for sequential data.</p>
+<p>Discrete RBNs are equivalent to PCFGs and, compared to continuous RBNs, easier to inspect and instructive as a first
+step before moving towards continuous variables.</p>
+<section id="abstract-pcfg">
+<h2>Abstract PCFG<a class="headerlink" href="#abstract-pcfg" title="Link to this heading"></a></h2>
+<p>We start with the simplest non-trivial example of an RBN with a single,
+discrete, binary non-terminal variable. This example could equivalently be written as a PCFG with two
+non-terminal symbols <img class="math" src="../_images/math/f20cb2024a183a980cb6c507b51cbbf34f5a168a.svg" alt="\{0, 1\}"/>, two terminal symbols <img class="math" src="../_images/math/5a9a29e454ff6ac2f610d0f3af69d7852bb56be8.svg" alt="\{\bar{0}, \bar{1}\}"/>, and four rules</p>
+<div class="math">
+<p><img src="../_images/math/5c7ec23f63911e7579386efbb3c9c702cf70c5d5.svg" alt="0 &amp; \longrightarrow 1 0 \\
+1 &amp; \longrightarrow 0 1 \\
+0 &amp; \longrightarrow \bar{0} \\
+1 &amp; \longrightarrow \bar{1}~."/></p>
+</div><p>These rules correspond to the non-zero entries in the transition matrices below (two non-terminal and two terminal
+rules). This is an example where the entire PCFG is <cite>abstracted</cite> into a single RBN variable. The
+<a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> class provides a convenient interface for defining this type of RBN,
+but we will here build one from scratch for demonstration purposes. The second example below shows an alternative
+way (<cite>expansion</cite>) of using a PCFG to define an RBN.</p>
+<p>We start by importing some classes for discrete RBNs from the <code class="docutils literal notranslate"><span class="pre">pcfg</span></code> submodule.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rbnet.pcfg</span> <span class="kn">import</span> <span class="n">DiscreteNonTermVar</span><span class="p">,</span> <span class="n">DiscretePrior</span><span class="p">,</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">,</span> <span class="n">DiscreteTerminalTransition</span><span class="p">,</span> <span class="n">StaticCell</span>
+<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">SequentialRBN</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<p>We first define a discrete binary non-terminal variable (<a class="reference internal" href="../_autosummary/rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar" title="rbnet.pcfg.DiscreteNonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscreteNonTermVar</span></code></a>) and a corresponding
+<a class="reference internal" href="../_autosummary/rbnet.pcfg.DiscretePrior.html#rbnet.pcfg.DiscretePrior" title="rbnet.pcfg.DiscretePrior"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscretePrior</span></code></a> that always generates this one variable with a uniform distribution over its value</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">non_term_var</span> <span class="o">=</span> <span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>For the transitions, we use a <a class="reference internal" href="../_autosummary/rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscreteBinaryNonTerminalTransition</span></code></a> <code class="docutils literal notranslate"><span class="pre">p(a,</span> <span class="pre">b</span> <span class="pre">|</span> <span class="pre">c)</span></code> were the
+left child <code class="docutils literal notranslate"><span class="pre">a</span></code> is always the opposite of the parent <code class="docutils literal notranslate"><span class="pre">c</span></code> while the right child <code class="docutils literal notranslate"><span class="pre">b</span></code> is always the same; and a
+<a class="reference internal" href="../_autosummary/rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition" title="rbnet.pcfg.DiscreteTerminalTransition"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiscreteTerminalTransition</span></code></a> that produces a binary observation without changing value</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># p(a, b | c)</span>
+<span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># p(a=1, b=0 | c=0) = 1</span>
+<span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># p(a=0, b=1 | c=1) = 1</span>
+<span class="n">non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># p(a | b)</span>
+<span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># p(a=0 | b=0) = 1</span>
+<span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># p(a=1 | b=1) = 1</span>
+<span class="n">term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now create a <a class="reference internal" href="../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell" title="rbnet.pcfg.StaticCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">StaticCell</span></code></a> for the non-terminal variable, which chooses the terminal
+transition 50% of the time, and define our <a class="reference internal" href="../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">non_term_var</span><span class="p">,</span>
+                  <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+                  <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">non_term_transition</span><span class="p">,</span> <span class="n">term_transition</span><span class="p">])</span>
+<span class="n">rbn</span> <span class="o">=</span> <span class="n">SequentialRBN</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An equivalent RBN can be defined using the <a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> class (see
+<a class="reference internal" href="plot_PCFG.html"><span class="doc">Abstracted PCFGs</span></a> for a more realistic example using <a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a>)</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rbnet.pcfg</span> <span class="kn">import</span> <span class="n">AbstractedPCFG</span>
+
+<span class="n">pcfg</span> <span class="o">=</span> <span class="n">AbstractedPCFG</span><span class="p">(</span><span class="n">non_terminals</span><span class="o">=</span><span class="s2">&quot;SAB&quot;</span><span class="p">,</span> <span class="n">terminals</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;S --&gt; A B&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;S --&gt; B A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># prior + first transition</span>
+    <span class="p">(</span><span class="s2">&quot;A --&gt; B A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B --&gt; A B&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># non-terminal transitions</span>
+    <span class="p">(</span><span class="s2">&quot;A --&gt; a&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B --&gt; b&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>       <span class="c1"># terminal transition</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<section id="parsing-sequences">
+<h3>Parsing Sequences<a class="headerlink" href="#parsing-sequences" title="Link to this heading"></a></h3>
+<p>It is impossible to generate sequences with all zeros or all ones, because children never have the same value and the
+terminal transition does not change the value. Thus, the marginal likelihood for these sequences, returned by the
+<a class="reference internal" href="../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside()</span></code></a> method, is always zero</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;aaaa&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;bbbb&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.0 0.0
+0.0 0.0
+</pre></div>
+</div>
+<p>For other sequences, we see that the marginal likelihood is non-zero, and we can also inspect the parse chart, which
+contains the inside probabilities for the values of the non-terminal variable</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;aaab&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.00390625 0.00390625
+                                               ╱╲
+                                              ╱  ╲
+                                             ╱    ╲
+                                            ╱      ╲
+                                           ╱        ╲
+                                          ╱          ╲
+                                         ╱            ╲
+                                        ╱              ╲
+                                       ╱                ╲
+                                      ╱                  ╲
+                                     ╱                    ╲
+                                    ╱ [0.        0.0078125]╲
+                                   ╱╲                      ╱╲
+                                  ╱  ╲                    ╱  ╲
+                                 ╱    ╲                  ╱    ╲
+                                ╱      ╲                ╱      ╲
+                               ╱        ╲              ╱        ╲
+                              ╱          ╲            ╱          ╲
+                             ╱            ╲          ╱            ╲
+                            ╱              ╲        ╱              ╲
+                           ╱                ╲      ╱                ╲
+                          ╱                  ╲    ╱                  ╲
+                         ╱                    ╲  ╱                    ╲
+                        ╱               [0. 0.]╲╱     [0.      0.03125]╲
+                       ╱╲                      ╱╲                      ╱╲
+                      ╱  ╲                    ╱  ╲                    ╱  ╲
+                     ╱    ╲                  ╱    ╲                  ╱    ╲
+                    ╱      ╲                ╱      ╲                ╱      ╲
+                   ╱        ╲              ╱        ╲              ╱        ╲
+                  ╱          ╲            ╱          ╲            ╱          ╲
+                 ╱            ╲          ╱            ╲          ╱            ╲
+                ╱              ╲        ╱              ╲        ╱              ╲
+               ╱                ╲      ╱                ╲      ╱                ╲
+              ╱                  ╲    ╱                  ╲    ╱                  ╲
+             ╱                    ╲  ╱                    ╲  ╱                    ╲
+            ╱               [0. 0.]╲╱               [0. 0.]╲╱         [0.    0.125]╲
+           ╱╲                      ╱╲                      ╱╲                      ╱╲
+          ╱  ╲                    ╱  ╲                    ╱  ╲                    ╱  ╲
+         ╱    ╲                  ╱    ╲                  ╱    ╲                  ╱    ╲
+        ╱      ╲                ╱      ╲                ╱      ╲                ╱      ╲
+       ╱        ╲              ╱        ╲              ╱        ╲              ╱        ╲
+      ╱          ╲            ╱          ╲            ╱          ╲            ╱          ╲
+     ╱            ╲          ╱            ╲          ╱            ╲          ╱            ╲
+    ╱              ╲        ╱              ╲        ╱              ╲        ╱              ╲
+   ╱                ╲      ╱                ╲      ╱                ╲      ╱                ╲
+  ╱                  ╲    ╱                  ╲    ╱                  ╲    ╱                  ╲
+ ╱                    ╲  ╱                    ╲  ╱                    ╲  ╱                    ╲
+╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.  0.5]╲
+                                                                       ╱╲
+                                                                      ╱  ╲
+                                                                     ╱    ╲
+                                                                    ╱      ╲
+                                                                   ╱        ╲
+                                                                  ╱          ╲
+                                                                 ╱            ╲
+                                                                ╱              ╲
+                                                               ╱                ╲
+                                                              ╱                  ╲
+                                                             ╱                    ╲
+                                                            ╱                      ╲
+                                                           ╱                        ╲
+                                                          ╱                          ╲
+                                                         ╱                            ╲
+                                                        ╱                              ╲
+                                                       ╱                                ╲
+                                                      ╱[0.00390625 0.         0.0078125 ]╲
+                                                     ╱╲                                  ╱╲
+                                                    ╱  ╲                                ╱  ╲
+                                                   ╱    ╲                              ╱    ╲
+                                                  ╱      ╲                            ╱      ╲
+                                                 ╱        ╲                          ╱        ╲
+                                                ╱          ╲                        ╱          ╲
+                                               ╱            ╲                      ╱            ╲
+                                              ╱              ╲                    ╱              ╲
+                                             ╱                ╲                  ╱                ╲
+                                            ╱                  ╲                ╱                  ╲
+                                           ╱                    ╲              ╱                    ╲
+                                          ╱                      ╲            ╱                      ╲
+                                         ╱                        ╲          ╱                        ╲
+                                        ╱                          ╲        ╱                          ╲
+                                       ╱                            ╲      ╱                            ╲
+                                      ╱                              ╲    ╱                              ╲
+                                     ╱                                ╲  ╱                                ╲
+                                    ╱                        [0. 0. 0.]╲╱      [0.015625 0.       0.03125 ]╲
+                                   ╱╲                                  ╱╲                                  ╱╲
+                                  ╱  ╲                                ╱  ╲                                ╱  ╲
+                                 ╱    ╲                              ╱    ╲                              ╱    ╲
+                                ╱      ╲                            ╱      ╲                            ╱      ╲
+                               ╱        ╲                          ╱        ╲                          ╱        ╲
+                              ╱          ╲                        ╱          ╲                        ╱          ╲
+                             ╱            ╲                      ╱            ╲                      ╱            ╲
+                            ╱              ╲                    ╱              ╲                    ╱              ╲
+                           ╱                ╲                  ╱                ╲                  ╱                ╲
+                          ╱                  ╲                ╱                  ╲                ╱                  ╲
+                         ╱                    ╲              ╱                    ╲              ╱                    ╲
+                        ╱                      ╲            ╱                      ╲            ╱                      ╲
+                       ╱                        ╲          ╱                        ╲          ╱                        ╲
+                      ╱                          ╲        ╱                          ╲        ╱                          ╲
+                     ╱                            ╲      ╱                            ╲      ╱                            ╲
+                    ╱                              ╲    ╱                              ╲    ╱                              ╲
+                   ╱                                ╲  ╱                                ╲  ╱                                ╲
+                  ╱                        [0. 0. 0.]╲╱                        [0. 0. 0.]╲╱            [0.0625 0.     0.125 ]╲
+                 ╱╲                                  ╱╲                                  ╱╲                                  ╱╲
+                ╱  ╲                                ╱  ╲                                ╱  ╲                                ╱  ╲
+               ╱    ╲                              ╱    ╲                              ╱    ╲                              ╱    ╲
+              ╱      ╲                            ╱      ╲                            ╱      ╲                            ╱      ╲
+             ╱        ╲                          ╱        ╲                          ╱        ╲                          ╱        ╲
+            ╱          ╲                        ╱          ╲                        ╱          ╲                        ╱          ╲
+           ╱            ╲                      ╱            ╲                      ╱            ╲                      ╱            ╲
+          ╱              ╲                    ╱              ╲                    ╱              ╲                    ╱              ╲
+         ╱                ╲                  ╱                ╲                  ╱                ╲                  ╱                ╲
+        ╱                  ╲                ╱                  ╲                ╱                  ╲                ╱                  ╲
+       ╱                    ╲              ╱                    ╲              ╱                    ╲              ╱                    ╲
+      ╱                      ╲            ╱                      ╲            ╱                      ╲            ╱                      ╲
+     ╱                        ╲          ╱                        ╲          ╱                        ╲          ╱                        ╲
+    ╱                          ╲        ╱                          ╲        ╱                          ╲        ╱                          ╲
+   ╱                            ╲      ╱                            ╲      ╱                            ╲      ╱                            ╲
+  ╱                              ╲    ╱                              ╲    ╱                              ╲    ╱                              ╲
+ ╱                                ╲  ╱                                ╲  ╱                                ╲  ╱                                ╲
+╱                     [0.  0.5 0. ]╲╱                     [0.  0.5 0. ]╲╱                     [0.  0.5 0. ]╲╱                     [0.  0.  0.5]╲
+</pre></div>
+</div>
+<p>Note how</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>values at the bottom are <code class="docutils literal notranslate"><span class="pre">0.5</span></code> because the probability of terminating is <code class="docutils literal notranslate"><span class="pre">0.5</span></code> and the transition is
+deterministic otherwise.</p></li>
+<li><p>with each level, the values decrease by a factor of <code class="docutils literal notranslate"><span class="pre">1/4</span></code>, where a factor of <code class="docutils literal notranslate"><span class="pre">0.5</span></code> comes from the probability
+of (not) terminating and another factor of <code class="docutils literal notranslate"><span class="pre">0.5</span></code> comes from the inside probability of the left child.</p></li>
+<li><p>the marginal likelihood is <code class="docutils literal notranslate"><span class="pre">1/2</span></code> of the top-level inside probability, because the prior is uniform over values.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="expanded-pcfg">
+<h3>Expanded PCFG<a class="headerlink" href="#expanded-pcfg" title="Link to this heading"></a></h3>
+<p>We will now define an RBN by <cite>expanding</cite> the same PCFG used in the example above. When expanding a PCFG to an
+RBN, each non-terminal symbol becomes a separate non-terminal variable in the RBN. The PCFG thus acts as an outer
+skeleton when being expanded, and we are required to additionally define the domain and transitions for the variables.
+The variables could be discrete or continuous, but for this example, we take the trivial case of single-valued
+discrete variable (i.e. it cannot actually change value) and all the dynamics instead happens on the structural level.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">zero_var</span> <span class="o">=</span> <span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">one_var</span> <span class="o">=</span> <span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+
+<span class="n">zero_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mi">1</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">one_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mi">1</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">zero_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">one_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">zero_cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">zero_var</span><span class="p">,</span>
+                       <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+                       <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">zero_non_term_transition</span><span class="p">,</span> <span class="n">zero_term_transition</span><span class="p">])</span>
+<span class="n">one_cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">one_var</span><span class="p">,</span>
+                      <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+                      <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">one_non_term_transition</span><span class="p">,</span> <span class="n">one_term_transition</span><span class="p">])</span>
+
+<span class="n">rbn</span> <span class="o">=</span> <span class="n">SequentialRBN</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">zero_cell</span><span class="p">,</span> <span class="n">one_cell</span><span class="p">],</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                           <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                           <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                           <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+                           <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.0
+0.0
+0.00390625
+               ╱╲
+              ╱  ╲
+             ╱    ╲
+            ╱  [0.]╲
+           ╱╲      ╱╲
+          ╱  ╲    ╱  ╲
+         ╱    ╲  ╱    ╲
+        ╱  [0.]╲╱  [0.]╲
+       ╱╲      ╱╲      ╱╲
+      ╱  ╲    ╱  ╲    ╱  ╲
+     ╱    ╲  ╱    ╲  ╱    ╲
+    ╱  [0.]╲╱  [0.]╲╱  [0.]╲
+   ╱╲      ╱╲      ╱╲      ╱╲
+  ╱  ╲    ╱  ╲    ╱  ╲    ╱  ╲
+ ╱    ╲  ╱    ╲  ╱    ╲  ╱    ╲
+╱ [0.5]╲╱ [0.5]╲╱ [0.5]╲╱  [0.]╲
+                           ╱╲
+                          ╱  ╲
+                         ╱    ╲
+                        ╱      ╲
+                       ╱        ╲
+                      ╱          ╲
+                     ╱ [0.0078125]╲
+                    ╱╲            ╱╲
+                   ╱  ╲          ╱  ╲
+                  ╱    ╲        ╱    ╲
+                 ╱      ╲      ╱      ╲
+                ╱        ╲    ╱        ╲
+               ╱          ╲  ╱          ╲
+              ╱        [0.]╲╱   [0.03125]╲
+             ╱╲            ╱╲            ╱╲
+            ╱  ╲          ╱  ╲          ╱  ╲
+           ╱    ╲        ╱    ╲        ╱    ╲
+          ╱      ╲      ╱      ╲      ╱      ╲
+         ╱        ╲    ╱        ╲    ╱        ╲
+        ╱          ╲  ╱          ╲  ╱          ╲
+       ╱        [0.]╲╱        [0.]╲╱     [0.125]╲
+      ╱╲            ╱╲            ╱╲            ╱╲
+     ╱  ╲          ╱  ╲          ╱  ╲          ╱  ╲
+    ╱    ╲        ╱    ╲        ╱    ╲        ╱    ╲
+   ╱      ╲      ╱      ╲      ╱      ╲      ╱      ╲
+  ╱        ╲    ╱        ╲    ╱        ╲    ╱        ╲
+ ╱          ╲  ╱          ╲  ╱          ╲  ╱          ╲
+╱        [0.]╲╱        [0.]╲╱        [0.]╲╱       [0.5]╲
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.013 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-discrete-rbn-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/541a486d46921e429bc6d69b693c24a9/plot_discrete_RBN.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_discrete_RBN.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/0ec593894379d3958b2aa306169dd825/plot_discrete_RBN.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_discrete_RBN.py</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plot_PCFG.html" class="btn btn-neutral float-left" title="Abstracted PCFGs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_summary.html" class="btn btn-neutral float-right" title="API Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.multivariate_normal &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -100,7 +102,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.multivariate_normal.ApproximateMixture.html#rbnet.multivariate_normal.ApproximateMixture" title="rbnet.multivariate_normal.ApproximateMixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ApproximateMixture</span></code></a>(means[, log_weights, ...])</p></td>
-<td><p></p></td>
+<td><p>Approximate a mixture of N multivariate normal distributions with a single one by matching moments (equivalent to minimising the KL-divergence or cross-entropy from the mixture to the approximation, and the neg-log-likelihood if means are data points).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.multivariate_normal.MultivariateNormal.html#rbnet.multivariate_normal.MultivariateNormal" title="rbnet.multivariate_normal.MultivariateNormal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MultivariateNormal</span></code></a>(loc[, covariance_matrix, ...])</p></td>
 <td><p>Represents a random variable with a multivariate normal distribution.</p></td>
@@ -109,7 +111,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product" title="rbnet.multivariate_normal.Product"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Product</span></code></a>(means[, covariances, precisions, ...])</p></td>
-<td><p></p></td>
+<td><p>Represents the product of N multivariate normal distributions over the same random variable.</p></td>
 </tr>
 </tbody>
 </table>

@@ -1,6 +1,6 @@
 """
-Probabilistic Context-Free Grammar (PCFG)
-=========================================
+Abstracted PCFGs
+================
 
 This is an example of defining a simple discrete RBN equivalent to a PCFG.
 """

@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.base.Cell &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -25,7 +27,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="rbnet.base.NonTermVar" href="rbnet.base.NonTermVar.html" />
-    <link rel="prev" title="rbnet.base.CYKRBN" href="rbnet.base.CYKRBN.html" /> 
+    <link rel="prev" title="rbnet.base.main" href="rbnet.base.main.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,11 +57,11 @@
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.base.html">rbnet.base</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.main.html">rbnet.base.main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.CYKRBN.html">rbnet.base.CYKRBN</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.base.Cell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.NonTermVar.html">rbnet.base.NonTermVar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.Prior.html">rbnet.base.Prior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.RBN.html">rbnet.base.RBN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.base.SequentialRBN.html">rbnet.base.SequentialRBN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.Transition.html">rbnet.base.Transition</a></li>
 </ul>
 </li>
@@ -104,10 +106,15 @@
 <dt class="sig sig-object py" id="rbnet.base.Cell">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">Cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#Cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.Cell" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base class for RBN cells associated to a non-terminal template variable. Cells hold the parse chart for that
-variable, accessible via <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_chart()</span></code>, all transitions that are possible from that variable, accessible via
-<a class="reference internal" href="#rbnet.base.Cell.transitions" title="rbnet.base.Cell.transitions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transitions()</span></code></a>, and implement computation of the mixture of inside probabilities over that variable in
-<a class="reference internal" href="#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_mixture()</span></code></a>.</p>
+<p>Base class for RBN cells associated to a non-terminal template variable. Cells hold all transitions that are
+possible from that variable, accessible via <a class="reference internal" href="#rbnet.base.Cell.transitions" title="rbnet.base.Cell.transitions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transitions()</span></code></a>, and implement computation of the mixture of
+inside probabilities over that variable in <a class="reference internal" href="#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_mixture()</span></code></a>.</p>
+<p>A cell for a given non-terminal variable</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>variable</strong> – non-terminal variable</p>
+</dd>
+</dl>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
@@ -176,7 +183,7 @@ p_S(z_{i:k}=\tau \mid x_{i:k})
 <dd><p>Iterate through all possible transitions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a>]</p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code>[<a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -189,7 +196,7 @@ p_S(z_{i:k}=\tau \mid x_{i:k})
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.base.CYKRBN.html" class="btn btn-neutral float-left" title="rbnet.base.CYKRBN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.base.main.html" class="btn btn-neutral float-left" title="rbnet.base.main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="rbnet.base.NonTermVar.html" class="btn btn-neutral float-right" title="rbnet.base.NonTermVar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -18,8 +18,8 @@
 .. _sphx_glr_auto_examples_plot_PCFG.py:
 
 
-Probabilistic Context-Free Grammar (PCFG)
-=========================================
+Abstracted PCFGs
+================
 
 This is an example of defining a simple discrete RBN equivalent to a PCFG.
 
@@ -31,7 +31,7 @@ We use an :class:`AbstractedPCFG <rbnet.pcfg.AbstractedPCFG>`
 
 .. GENERATED FROM PYTHON SOURCE LINES 12-14
 
-.. code-block:: default
+.. code-block:: Python
 
     from rbnet.pcfg import AbstractedPCFG
 
@@ -48,7 +48,7 @@ First we define a number of words (terminal symbols) of different categories tha
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-24
 
-.. code-block:: default
+.. code-block:: Python
 
     subjects = ["I", "You", "We", "They"]
     verbs = ["run", "drink", "sleep"]
@@ -71,7 +71,7 @@ Then we define some non-terminals symbols (a start symbol and one symbol for eac
 
 .. GENERATED FROM PYTHON SOURCE LINES 26-34
 
-.. code-block:: default
+.. code-block:: Python
 
     non_terminals = ["start",
                      "subject",
@@ -94,7 +94,7 @@ Finally, we define the rules and give them a weight (for simplicity we use a wei
 
 .. GENERATED FROM PYTHON SOURCE LINES 36-50
 
-.. code-block:: default
+.. code-block:: Python
 
     non_terminal_rules = [("start --> subject verb", 1),
                           ("verb --> verb_qualifier verb", 1),
@@ -123,7 +123,7 @@ Now we can define our PCFG by providing it with the terminals, non-terminals, ru
 
 .. GENERATED FROM PYTHON SOURCE LINES 52-56
 
-.. code-block:: default
+.. code-block:: Python
 
     pcfg = AbstractedPCFG(terminals=terminals,
                           non_terminals=non_terminals,
@@ -145,7 +145,7 @@ Let's test the grammar by computing the marginal likelihood of some grammatical 
 
 .. GENERATED FROM PYTHON SOURCE LINES 61-76
 
-.. code-block:: default
+.. code-block:: Python
 
     for sentence in [
         # grammatical
@@ -170,12 +170,12 @@ Let's test the grammar by computing the marginal likelihood of some grammatical 
 
  .. code-block:: none
 
-    I run --> 0.011999999999999997
-    You never run --> 0.00023999999999999992
-    We run very veeery slowly --> 4.095999999999997e-06
-    They always run alone --> 1.9199999999999992e-05
-    I never sleep really very quickly --> 1.638399999999999e-07
-    You do-not drink very quickly --> 1.0239999999999992e-06
+    I run --> 0.011551999999999998
+    You never run --> 0.00017559039999999996
+    We run very veeery slowly --> 1.7309186566826655e-06
+    They always run alone --> 1.0675896319999996e-05
+    I never sleep really very quickly --> 5.261992716315302e-08
+    You do-not drink very quickly --> 4.327296641706664e-07
     I You --> 0.0
     run fast --> 0.0
 
@@ -189,7 +189,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
 
 .. GENERATED FROM PYTHON SOURCE LINES 79-81
 
-.. code-block:: default
+.. code-block:: Python
 
     pcfg.inside(sequence="You never run".split())
     print(pcfg.map_inside_chart(precision=2).pretty())
@@ -212,7 +212,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                                ╱                ╲                           
                               ╱                  ╲                          
                              ╱                    ╲                         
-                            ╱         start|2.4e-04╲                        
+                            ╱        start|1.76e-04╲                        
                            ╱╲                      ╱╲                       
                           ╱  ╲                    ╱  ╲                      
                          ╱    ╲                  ╱    ╲                     
@@ -224,7 +224,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                    ╱                ╲      ╱                ╲               
                   ╱                  ╲    ╱                  ╲              
                  ╱                    ╲  ╱                    ╲             
-                ╱                    []╲╱           verb|4.e-03╲            
+                ╱                    []╲╱         verb|3.85e-03╲            
                ╱╲                      ╱╲                      ╱╲           
               ╱  ╲                    ╱  ╲                    ╱  ╲          
              ╱    ╲                  ╱    ╲                  ╱    ╲         
@@ -236,7 +236,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
        ╱                ╲      ╱                ╲      ╱                ╲   
       ╱                  ╲    ╱                  ╲    ╱                  ╲  
      ╱                    ╲  ╱                    ╲  ╱                    ╲ 
-    ╱       subject|1.5e-01╲╱verb_qualifier|1.5e-01╲╱           verb|2.e-01╲
+    ╱       subject|1.9e-01╲╱verb_qualifier|1.9e-01╲╱         verb|2.53e-01╲
 
 
 
@@ -244,7 +244,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.011 seconds)
+   **Total running time of the script:** (0 minutes 0.008 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_PCFG.py:
@@ -253,16 +253,13 @@ We can also print a simple textual visualisation of the parse chart, which shows
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: plot_PCFG.ipynb <plot_PCFG.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_PCFG.py <plot_PCFG.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: plot_PCFG.ipynb <plot_PCFG.ipynb>`
 
 
 .. only:: html

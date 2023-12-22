@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg.DiscreteBinaryNonTerminalTransition &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -106,6 +108,20 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteBinaryNonTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></p>
 <p>A binary non-terminal transition for discrete non-terminal variables.</p>
+<p>Initialise a non-terminal transition p(a, b | c) for random variables <cite>a</cite>, <cite>b</cite>, <cite>c</cite>. The child variables <cite>b</cite> and
+<cite>c</cite> may be different variables than <cite>a</cite> (if the RBN has multiple non-terminal variables), which is determined by
+the left and right index (the default is to assume index 0, which is the first non-terminal variable – not
+necessarily the same variable as <cite>a</cite>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weights</strong> – Numpy array of shape (K, L, M) with weights proportional to p(a, b | c), where K, L, M are the
+cardinalities of the variables a, b, c, respectively.</p></li>
+<li><p><strong>left_idx</strong> – index of the left child variable</p></li>
+<li><p><strong>right_idx</strong> – index of the right child variable</p></li>
+</ul>
+</dd>
+</dl>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">

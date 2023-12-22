@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -83,12 +85,12 @@
 <span class="kn">from</span> <span class="nn">triangularmap</span> <span class="kn">import</span> <span class="n">TMap</span>
 
 <span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">normalize_non_zero</span>
-<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span><span class="p">,</span> <span class="n">CYKRBN</span>
+<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span><span class="p">,</span> <span class="n">SequentialRBN</span>
 
 
 <div class="viewcode-block" id="PCFG">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG">[docs]</a>
-<span class="k">class</span> <span class="nc">PCFG</span><span class="p">(</span><span class="n">CYKRBN</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">PCFG</span><span class="p">(</span><span class="n">SequentialRBN</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="n">terminal_indices</span><span class="p">,</span> <span class="n">non_terminals</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span> <span class="o">=</span> <span class="n">terminal_indices</span>
@@ -98,7 +100,7 @@
 <div class="viewcode-block" id="PCFG.init_inside">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.init_inside">[docs]</a>
     <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
-        <span class="n">sequence</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
+        <span class="n">sequence</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init_inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">)</span></div>
 
 
@@ -131,10 +133,10 @@
 
 <span class="sd">        :param non_terminals: list or array of non-terminal symbols</span>
 <span class="sd">        :param terminals: list or array of terminal symbols</span>
-<span class="sd">        :param rules: iterable of rules-weight tuples with rules provided either as strings of the form (&quot;X --&gt; Y Z&quot;, w)</span>
-<span class="sd">         or (&quot;X --&gt; Y&quot;, w) for non-terminal and terminal rules, respectively (symbols have to be strings without</span>
-<span class="sd">         whitespace for this), or of the form ((X, (Y, Z)), w) or ((X, (Y,)), w) for arbitrary symbols, where w is the</span>
-<span class="sd">         rule weight.</span>
+<span class="sd">        :param rules: iterable of rules-weight tuples with rules provided either as strings of the form</span>
+<span class="sd">         ``(&quot;X --&gt; Y Z&quot;, w)`` or ``(&quot;X --&gt; Y&quot;, w)`` for non-terminal and terminal rules, respectively (symbols have to</span>
+<span class="sd">          be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for</span>
+<span class="sd">          arbitrary symbols, where w is the rule weight.</span>
 <span class="sd">        :param start: the start symbol</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="n">terminals</span>
@@ -275,7 +277,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cardinality</span><span class="p">,</span> <span class="n">chart_type</span><span class="o">=</span><span class="s2">&quot;TMap&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A discrete non-terminal variable with cardinality `n`.</span>
+<span class="sd">        A discrete non-terminal variable with cardinality ``n``.</span>
 
 <span class="sd">        :param cardinality: cardinality</span>
 <span class="sd">        :param chart_type: type of chart to use (&quot;dict&quot; or &quot;TMap&quot;)</span>
@@ -297,6 +299,32 @@
             <span class="k">return</span> <span class="n">TMap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">TMap</span><span class="o">.</span><span class="n">size_from_n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown chart type &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DiscreteNonTermVar.mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar.mixture">[docs]</a>
+    <span class="k">def</span> <span class="nf">mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute a mixture distribution over a discrete variable.</span>
+
+<span class="sd">        :param components: array-like with mixture components along ``axis``</span>
+<span class="sd">        :param weights: weights of the mixture components in an array-like of shape ``axis``</span>
+<span class="sd">        :param axis: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to</span>
+<span class="sd">         compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)</span>
+<span class="sd">        :return: distribution corresponding to the mixture</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">components</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="n">axis</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;weights&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> dimensions and &#39;axis&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries &quot;</span>
+                                 <span class="sa">f</span><span class="s2">&quot;but they must be the same&quot;</span><span class="p">)</span>
+            <span class="c1"># bring &#39;weights&#39; into broadcastable shape, keeping dimension at right location according to &#39;axis&#39;</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">axis</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">components</span>
+        <span class="k">return</span> <span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 </div>
 
 
@@ -318,12 +346,13 @@
 <span class="sd">        :param prior_weights: iterable over n Numpy arrays if shapes (K1,), ..., (Kn,) with weights for the prior</span>
 <span class="sd">         distribution of the n non-terminal variables.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">struc_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">struc_weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">structural_distributions</span> <span class="o">=</span> <span class="n">struc_weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected one-dimensional numpy array with weights, but got: </span><span class="si">{</span><span class="n">struc_weights</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;struc_weights` must be one-dimensional&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prior_weights</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected as many distributions as weights, but got: &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">prior_weights</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -358,12 +387,13 @@
 <span class="sd">        :param left_idx: index of the left child variable</span>
 <span class="sd">        :param right_idx: index of the right child variable</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected three-dimensional numpy array with weights, but got: </span><span class="si">{</span><span class="n">weights</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; has to be three-dimensional&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span> <span class="o">=</span> <span class="n">left_idx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span> <span class="o">=</span> <span class="n">right_idx</span>
 
@@ -408,12 +438,13 @@
 <span class="sd">         cardinalities of the variables a, b, respectively.</span>
 <span class="sd">        :param term_idx: index of the terminal variable</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected two-dimensional numpy array with weights, but got: </span><span class="si">{</span><span class="n">weights</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; has to be two-dimensional&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">term_idx</span> <span class="o">=</span> <span class="n">term_idx</span>
 
 <div class="viewcode-block" id="DiscreteTerminalTransition.inside_marginals">
@@ -427,7 +458,12 @@
                 <span class="c1"># no terminal transition possible</span>
                 <span class="k">return</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">[</span><span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">],</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                <span class="n">var_val</span> <span class="o">=</span> <span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">term_idx</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">var_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># no terminal transition to THIS terminal variable possible</span>
+                    <span class="k">return</span> <span class="p">[]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">[</span><span class="n">var_val</span><span class="p">,</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected locations to be (start, end) index, but got: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </div>
@@ -441,12 +477,13 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">transitions</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected one-dimensional numpy array with weights, but got: </span><span class="si">{</span><span class="n">weights</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; must be one-dimensional&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span> <span class="o">!=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of transitions and number of weights must be the same, but got: &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -463,13 +500,15 @@
     <span class="k">def</span> <span class="nf">inside_mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inside_marginals</span><span class="p">):</span>
         <span class="c1"># iterate over possible transitions</span>
         <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">pt</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">,</span> <span class="n">inside_marginals</span><span class="p">):</span>
+        <span class="n">valid_transitions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">):</span>
             <span class="c1"># if there are possible transitions</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="c1"># sum out possible splitting points (first dimension) and weight with transition probability</span>
-                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
-        <span class="c1"># sum out transitions and return</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+                <span class="c1"># compute mixture over possible splitting points</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
+                <span class="n">valid_transitions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># computed weighted mixture over transitions and return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">[</span><span class="n">valid_transitions</span><span class="p">])</span></div>
 </div>
 
 </pre></div>

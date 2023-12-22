@@ -1,9 +1,9 @@
-rbnet.base.CYKRBN
-=================
+rbnet.base.SequentialRBN
+========================
 
 .. currentmodule:: rbnet.base
 
-.. autoclass:: CYKRBN
+.. autoclass:: SequentialRBN
    :members:
    :undoc-members:
    :private-members:

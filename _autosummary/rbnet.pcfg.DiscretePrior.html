@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg.DiscretePrior &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -106,6 +108,17 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscretePrior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">struc_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior_weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscretePrior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscretePrior" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a></p>
 <p>A prior distribution over discrete non-terminal variables.</p>
+<p>Initialise prior with structural distribution p(z) and individual prior distributions p(a1), …, p(an) for
+n non-terminal variables a1, …, an. The cardinality of z is n.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>struc_weights</strong> – Numpy array of shape (n,) with weights for the structural distribution</p></li>
+<li><p><strong>prior_weights</strong> – iterable over n Numpy arrays if shapes (K1,), …, (Kn,) with weights for the prior
+distribution of the n non-terminal variables.</p></li>
+</ul>
+</dd>
+</dl>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">

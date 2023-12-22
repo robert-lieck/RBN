@@ -1,12 +1,12 @@
 
 :orphan:
 
-.. _sphx_glr_auto_examples_sg_execution_times:
+.. _sphx_glr_sg_execution_times:
 
 
 Computation times
 =================
-**00:00.021** total execution time for 2 files **from auto_examples**:
+**00:00.021** total execution time for 2 files **from all galleries**:
 
 .. container::
 
@@ -32,9 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_plot_discrete_RBN.py` (``plot_discrete_RBN.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_discrete_RBN.py` (``../examples/plot_discrete_RBN.py``)
      - 00:00.013
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_plot_PCFG.py` (``plot_PCFG.py``)
+   * - :ref:`sphx_glr_auto_examples_plot_PCFG.py` (``../examples/plot_PCFG.py``)
      - 00:00.008
      - 0.0

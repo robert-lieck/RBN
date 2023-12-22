@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg.AbstractedPCFG &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -105,6 +107,24 @@
 <dt class="sig sig-object py" id="rbnet.pcfg.AbstractedPCFG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">AbstractedPCFG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#AbstractedPCFG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.AbstractedPCFG" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a></p>
+<p>An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable
+with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>non_terminals</strong> – list or array of non-terminal symbols</p></li>
+<li><p><strong>terminals</strong> – list or array of terminal symbols</p></li>
+<li><p><strong>rules</strong> – <p>iterable of rules-weight tuples with rules provided either as strings of the form
+<code class="docutils literal notranslate"><span class="pre">(&quot;X</span> <span class="pre">--&gt;</span> <span class="pre">Y</span> <span class="pre">Z&quot;,</span> <span class="pre">w)</span></code> or <code class="docutils literal notranslate"><span class="pre">(&quot;X</span> <span class="pre">--&gt;</span> <span class="pre">Y&quot;,</span> <span class="pre">w)</span></code> for non-terminal and terminal rules, respectively (symbols have to</p>
+<blockquote>
+<div><p>be strings without whitespace for this), or of the form <code class="docutils literal notranslate"><span class="pre">((X,</span> <span class="pre">(Y,</span> <span class="pre">Z)),</span> <span class="pre">w)</span></code> or <code class="docutils literal notranslate"><span class="pre">((X,</span> <span class="pre">(Y,)),</span> <span class="pre">w)</span></code> for
+arbitrary symbols, where w is the rule weight.</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>start</strong> – the start symbol</p></li>
+</ul>
+</dd>
+</dl>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
@@ -127,33 +147,33 @@
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN" title="rbnet.base.CYKRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">CYKRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.init_inside" title="rbnet.base.CYKRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.init_inside" title="rbnet.base.SequentialRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
 <td><p>Initialise for parsing a new input.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.inside_schedule" title="rbnet.base.CYKRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.root_location" title="rbnet.base.CYKRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.root_location" title="rbnet.base.SequentialRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
 <td><p>Return the location of the root variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.non_terminals" title="rbnet.base.CYKRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.non_terminals" title="rbnet.base.SequentialRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
 <td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.update_inside_chart" title="rbnet.base.CYKRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart" title="rbnet.base.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
 <td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_inside_chart" title="rbnet.base.CYKRBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.get_inside_chart" title="rbnet.base.SequentialRBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
 <td><p>Return the chart with inside probabilities for all variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_terminal_chart" title="rbnet.base.CYKRBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.get_terminal_chart" title="rbnet.base.SequentialRBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
 <td><p>Return the chart with terminal variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.prior" title="rbnet.base.CYKRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.prior" title="rbnet.base.SequentialRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
 <td><p>Return the prior transition (typically an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code>), which has to implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p></td>
 </tr>
 </tbody>
@@ -206,9 +226,9 @@
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN" title="rbnet.base.CYKRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">CYKRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.CYKRBN.html#rbnet.base.CYKRBN._abc_impl" title="rbnet.base.CYKRBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN._abc_impl" title="rbnet.base.SequentialRBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>

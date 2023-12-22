@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rbnet.base.CYKRBN &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/autoclasstoc.css" type="text/css" />
+  <title>rbnet.base.SequentialRBN &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -24,8 +26,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rbnet.base.Cell" href="rbnet.base.Cell.html" />
-    <link rel="prev" title="rbnet.base.main" href="rbnet.base.main.html" /> 
+    <link rel="next" title="rbnet.base.Transition" href="rbnet.base.Transition.html" />
+    <link rel="prev" title="rbnet.base.RBN" href="rbnet.base.RBN.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,11 +57,11 @@
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.base.html">rbnet.base</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.main.html">rbnet.base.main</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.base.CYKRBN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.Cell.html">rbnet.base.Cell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.NonTermVar.html">rbnet.base.NonTermVar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.Prior.html">rbnet.base.Prior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.RBN.html">rbnet.base.RBN</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.base.SequentialRBN</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.base.Transition.html">rbnet.base.Transition</a></li>
 </ul>
 </li>
@@ -89,7 +91,7 @@
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
           <li class="breadcrumb-item"><a href="rbnet.base.html">rbnet.base</a></li>
-      <li class="breadcrumb-item active">rbnet.base.CYKRBN</li>
+      <li class="breadcrumb-item active">rbnet.base.SequentialRBN</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -98,11 +100,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rbnet-base-cykrbn">
-<h1>rbnet.base.CYKRBN<a class="headerlink" href="#rbnet-base-cykrbn" title="Link to this heading"></a></h1>
+  <section id="rbnet-base-sequentialrbn">
+<h1>rbnet.base.SequentialRBN<a class="headerlink" href="#rbnet-base-sequentialrbn" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">CYKRBN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">SequentialRBN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></p>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
@@ -111,28 +113,28 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.init_inside" title="rbnet.base.CYKRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.init_inside" title="rbnet.base.SequentialRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
 <td><p>Initialise for parsing a new input.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.inside_schedule" title="rbnet.base.CYKRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.root_location" title="rbnet.base.CYKRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.root_location" title="rbnet.base.SequentialRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
 <td><p>Return the location of the root variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.non_terminals" title="rbnet.base.CYKRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.non_terminals" title="rbnet.base.SequentialRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
 <td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.update_inside_chart" title="rbnet.base.CYKRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.update_inside_chart" title="rbnet.base.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
 <td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.get_inside_chart" title="rbnet.base.CYKRBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.get_inside_chart" title="rbnet.base.SequentialRBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
 <td><p>Return the chart with inside probabilities for all variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.get_terminal_chart" title="rbnet.base.CYKRBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.get_terminal_chart" title="rbnet.base.SequentialRBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
 <td><p>Return the chart with terminal variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN.prior" title="rbnet.base.CYKRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.prior" title="rbnet.base.SequentialRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
 <td><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p></td>
 </tr>
 </tbody>
@@ -173,7 +175,7 @@
 <p class="rubric">Private Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.CYKRBN._abc_impl" title="rbnet.base.CYKRBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN._abc_impl" title="rbnet.base.SequentialRBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -195,13 +197,13 @@
 </details></div>
 <hr class="docutils" />
 <dl class="py attribute">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.base.CYKRBN._abc_impl" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN._abc_impl">
+<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.base.SequentialRBN._abc_impl" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.get_inside_chart">
-<span class="sig-name descname"><span class="pre">get_inside_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.get_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.get_inside_chart" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.get_inside_chart">
+<span class="sig-name descname"><span class="pre">get_inside_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.get_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.get_inside_chart" title="Link to this definition"></a></dt>
 <dd><p>Return the chart with inside probabilities for all variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -211,8 +213,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.get_terminal_chart">
-<span class="sig-name descname"><span class="pre">get_terminal_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.get_terminal_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.get_terminal_chart" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.get_terminal_chart">
+<span class="sig-name descname"><span class="pre">get_terminal_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.get_terminal_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.get_terminal_chart" title="Link to this definition"></a></dt>
 <dd><p>Return the chart with terminal variables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -222,15 +224,15 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.init_inside">
-<span class="sig-name descname"><span class="pre">init_inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.init_inside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.init_inside" title="Link to this definition"></a></dt>
-<dd><p>Initialise for parsing a new input. This function is called by <a class="reference internal" href="#rbnet.base.CYKRBN.inside" title="rbnet.base.CYKRBN.inside"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside()</span></code></a> with all provided parameters.
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.init_inside">
+<span class="sig-name descname"><span class="pre">init_inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.init_inside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.init_inside" title="Link to this definition"></a></dt>
+<dd><p>Initialise for parsing a new input. This function is called by <a class="reference internal" href="#rbnet.base.SequentialRBN.inside" title="rbnet.base.SequentialRBN.inside"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside()</span></code></a> with all provided parameters.
 Derived classes may override it to implement tasks such as initialising charts for the non-terminal variables.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.inside">
-<span class="sig-name descname"><span class="pre">inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.base.CYKRBN.inside" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.inside">
+<span class="sig-name descname"><span class="pre">inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rbnet.base.SequentialRBN.inside" title="Link to this definition"></a></dt>
 <dd><p>Compute the inside probabilities and return the marginal data likelihood.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -240,8 +242,8 @@ Derived classes may override it to implement tasks such as initialising charts f
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.inside_schedule">
-<span class="sig-name descname"><span class="pre">inside_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.inside_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.inside_schedule" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.inside_schedule">
+<span class="sig-name descname"><span class="pre">inside_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.inside_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.inside_schedule" title="Link to this definition"></a></dt>
 <dd><p>Iterate through (batches of) non-terminal locations for computing inside probabilities. The iteration order
 has to respect dependencies, i.e., non-terminals <img class="math" src="../_images/math/f7ebe0e31f6b08f69c29657e27797d67d187962c.svg" alt="x'"/> that depend on another non-terminal <img class="math" src="../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.svg" alt="x"/> (in
 the generative direction, i.e. <img class="math" src="../_images/math/888f7c323ac0341871e867220ae2d76467d74d6e.svg" alt="x"/> generates <img class="math" src="../_images/math/f7ebe0e31f6b08f69c29657e27797d67d187962c.svg" alt="x'"/>: <img class="math" src="../_images/math/54ebf8b4f6d10a2a10702f9c943fbd54648ca6b8.svg" alt="x \rightarrow x'"/>) have to be iterated
@@ -254,8 +256,8 @@ BEFORE the non-terminals they depend on (<img class="math" src="../_images/math/
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.non_terminals">
-<span class="sig-name descname"><span class="pre">non_terminals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.non_terminals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.non_terminals" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.non_terminals">
+<span class="sig-name descname"><span class="pre">non_terminals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.non_terminals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.non_terminals" title="Link to this definition"></a></dt>
 <dd><p>Iterate through all non-terminal variables, yielding tuples of a variable’s values at the specified locations
 and its associated cell. If <cite>locations</cite> specifies a batch of locations, the tuple contains the corresponding
 batch of variables’ values, but still only the single associated cell.</p>
@@ -272,8 +274,8 @@ indicates that variables should be conditioned on these values.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.prior">
-<span class="sig-name descname"><span class="pre">prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.prior" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.prior">
+<span class="sig-name descname"><span class="pre">prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.prior" title="Link to this definition"></a></dt>
 <dd><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement
 <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p>
 <dl class="field-list simple">
@@ -284,10 +286,10 @@ indicates that variables should be conditioned on these values.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.root_location">
-<span class="sig-name descname"><span class="pre">root_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.root_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.root_location" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.root_location">
+<span class="sig-name descname"><span class="pre">root_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.root_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.root_location" title="Link to this definition"></a></dt>
 <dd><p>Return the location of the root variables. This is typically the value returned in the last iteration of
-<a class="reference internal" href="#rbnet.base.CYKRBN.inside_schedule" title="rbnet.base.CYKRBN.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a></p>
+<a class="reference internal" href="#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>location of the root variables</p>
@@ -296,8 +298,8 @@ indicates that variables should be conditioned on these values.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.CYKRBN.update_inside_chart">
-<span class="sig-name descname"><span class="pre">update_inside_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#CYKRBN.update_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.CYKRBN.update_inside_chart" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.update_inside_chart">
+<span class="sig-name descname"><span class="pre">update_inside_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.update_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.update_inside_chart" title="Link to this definition"></a></dt>
 <dd><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -318,8 +320,8 @@ indicates that variables should be conditioned on these values.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.base.main.html" class="btn btn-neutral float-left" title="rbnet.base.main" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rbnet.base.Cell.html" class="btn btn-neutral float-right" title="rbnet.base.Cell" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rbnet.base.RBN.html" class="btn btn-neutral float-left" title="rbnet.base.RBN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.base.Transition.html" class="btn btn-neutral float-right" title="rbnet.base.Transition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

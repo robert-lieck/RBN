@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.base &mdash; rbnet  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/autoclasstoc.css?v=08871587" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -311,12 +313,32 @@
 <div class="viewcode-block" id="NonTermVar">
 <a class="viewcode-back" href="../../_autosummary/rbnet.base.NonTermVar.html#rbnet.base.NonTermVar">[docs]</a>
 <span class="k">class</span> <span class="nc">NonTermVar</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for non-terminal variables&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for non-terminal variables. Instances of :class:`NonTermVar` represent a specific type of template</span>
+<span class="sd">    variable. A parse chart for that variable for specific input data can be requested via :meth:`get_chart`. Mixtures</span>
+<span class="sd">    over this variable type can be computed via :meth:`mixture`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NonTermVar.get_chart">
 <a class="viewcode-back" href="../../_autosummary/rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.get_chart">[docs]</a>
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">get_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a parse chart to store this variable type in. The specific arguments depend on the implementation but</span>
+<span class="sd">        typically include information about the input data for which the parse chart is requested (e.g. the length of</span>
+<span class="sd">        the sequence for sequential input data).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="NonTermVar.mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.mixture">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute a mixture over this variable type. The specific arguments depend on the implementation but typically</span>
+<span class="sd">        include iterables over the mixture components and possibly their weights.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
@@ -326,10 +348,9 @@
 <a class="viewcode-back" href="../../_autosummary/rbnet.base.Cell.html#rbnet.base.Cell">[docs]</a>
 <span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for RBN cells associated to a non-terminal template variable. Cells hold the parse chart for that</span>
-<span class="sd">    variable, accessible via :meth:`get_chart`, all transitions that are possible from that variable, accessible via</span>
-<span class="sd">    :meth:`transitions`, and implement computation of the mixture of inside probabilities over that variable in</span>
-<span class="sd">    :meth:`inside_mixture`.</span>
+<span class="sd">    Base class for RBN cells associated to a non-terminal template variable. Cells hold all transitions that are</span>
+<span class="sd">    possible from that variable, accessible via :meth:`transitions`, and implement computation of the mixture of</span>
+<span class="sd">    inside probabilities over that variable in :meth:`inside_mixture`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
@@ -377,9 +398,9 @@
 
 
 
-<div class="viewcode-block" id="CYKRBN">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN">[docs]</a>
-<span class="k">class</span> <span class="nc">CYKRBN</span><span class="p">(</span><span class="n">RBN</span><span class="p">):</span>
+<div class="viewcode-block" id="SequentialRBN">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN">[docs]</a>
+<span class="k">class</span> <span class="nc">SequentialRBN</span><span class="p">(</span><span class="n">RBN</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cells</span> <span class="o">=</span> <span class="n">cells</span>
@@ -388,55 +409,55 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="CYKRBN.init_inside">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.init_inside">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.init_inside">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.init_inside">[docs]</a>
     <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="n">sequence</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_chart</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.inside_schedule">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.inside_schedule">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.inside_schedule">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule">[docs]</a>
     <span class="k">def</span> <span class="nf">inside_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="n">span</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">span</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.root_location">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.root_location">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.root_location">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.root_location">[docs]</a>
     <span class="k">def</span> <span class="nf">root_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.non_terminals">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.non_terminals">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.non_terminals">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.non_terminals">[docs]</a>
     <span class="k">def</span> <span class="nf">non_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
             <span class="k">yield</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.update_inside_chart">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.update_inside_chart">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.update_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart">[docs]</a>
     <span class="k">def</span> <span class="nf">update_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="n">var_idx</span><span class="p">][</span><span class="n">locations</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.get_inside_chart">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_inside_chart">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.get_inside_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.get_inside_chart">[docs]</a>
     <span class="k">def</span> <span class="nf">get_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.get_terminal_chart">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.get_terminal_chart">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.get_terminal_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.get_terminal_chart">[docs]</a>
     <span class="k">def</span> <span class="nf">get_terminal_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span></div>
 
 
-<div class="viewcode-block" id="CYKRBN.prior">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.CYKRBN.html#rbnet.base.CYKRBN.prior">[docs]</a>
+<div class="viewcode-block" id="SequentialRBN.prior">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.prior">[docs]</a>
     <span class="k">def</span> <span class="nf">prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span></div>
 </div>
