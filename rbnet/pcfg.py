@@ -42,10 +42,10 @@ class AbstractedPCFG(PCFG):
 
         :param non_terminals: list or array of non-terminal symbols
         :param terminals: list or array of terminal symbols
-        :param rules: iterable of rules-weight tuples with rules provided either as strings of the form ("X --> Y Z", w)
-         or ("X --> Y", w) for non-terminal and terminal rules, respectively (symbols have to be strings without
-         whitespace for this), or of the form ((X, (Y, Z)), w) or ((X, (Y,)), w) for arbitrary symbols, where w is the
-         rule weight.
+        :param rules: iterable of rules-weight tuples with rules provided either as strings of the form
+         ``("X --> Y Z", w)`` or ``("X --> Y", w)`` for non-terminal and terminal rules, respectively (symbols have to
+          be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for
+          arbitrary symbols, where w is the rule weight.
         :param start: the start symbol
         """
         self.terminals = terminals
