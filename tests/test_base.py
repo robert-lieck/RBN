@@ -10,6 +10,36 @@ from rbnet.pcfg import DiscretePrior, DiscreteBinaryNonTerminalTransition, Discr
 
 class TestStaticCell(TestCase):
 
+    def test_rbn_abstract_base_class(self):
+        # patch abstract base class
+        class concreteRBN(RBN):
+            pass
+        # remember abstract methods
+        abstractmethods = set(concreteRBN.__abstractmethods__)
+        # make sure the class can be instantiated
+        concreteRBN.__abstractmethods__ = frozenset()
+        rbn = concreteRBN
+        # test all abstract methods
+        for meth, args, kwargs in [
+            ("get_inside_chart", [rbn], {}),
+            ("get_terminal_chart", [rbn], {}),
+            ("inside_schedule", [rbn], {}),
+            ("non_terminals", [rbn], {"locations": None}),
+            ("prior", [rbn], {}),
+            ("root_location", [rbn], {}),
+            ("update_inside_chart", [rbn], {'var_idx': None, 'locations': None, 'values': None}),
+        ]:
+            self.assertRaises(NotImplementedError, getattr(rbn, meth), *args, **kwargs)
+            abstractmethods.remove(meth)
+        # make sure none were omitted
+        self.assertFalse(abstractmethods)
+
+        # test non-abstract but empty methods
+        for meth, args, kwargs, ret in [
+            ("init_inside", [rbn], {}, None),
+        ]:
+            self.assertEqual(getattr(rbn, meth)(*args, **kwargs), ret)
+
     def test_minimal_grammar(self):
         # a discrete grammar with one variable of cardinality two (two symbols) and uniform transition distributions
         rbn = SequentialRBN(cells=[StaticCell(variable=DiscreteNonTermVar(2),
