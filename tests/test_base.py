@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
-from rbnet.base import CYKRBN
+from rbnet.base import RBN, SequentialRBN
 from rbnet.pcfg import DiscretePrior, DiscreteBinaryNonTerminalTransition, DiscreteTerminalTransition, StaticCell, \
     DiscreteNonTermVar, AbstractedPCFG
 
@@ -12,13 +12,13 @@ class TestStaticCell(TestCase):
 
     def test_minimal_grammar(self):
         # a discrete grammar with one variable of cardinality two (two symbols) and uniform transition distributions
-        rbn = CYKRBN(cells=[StaticCell(variable=DiscreteNonTermVar(2),
-                                       weights=np.ones(2),
-                                       transitions=[
+        rbn = SequentialRBN(cells=[StaticCell(variable=DiscreteNonTermVar(2),
+                                              weights=np.ones(2),
+                                              transitions=[
                                            DiscreteTerminalTransition(weights=np.ones((2, 2))),
                                            DiscreteBinaryNonTerminalTransition(weights=np.ones((2, 2, 2)))
                                        ])],
-                     prior=DiscretePrior(struc_weights=np.ones(1), prior_weights=[np.ones(2)]))
+                            prior=DiscretePrior(struc_weights=np.ones(1), prior_weights=[np.ones(2)]))
         # parse a random sequence of length N
         N = 5
         marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 2, N))
@@ -46,16 +46,16 @@ class TestStaticCell(TestCase):
         # a discrete grammar with two non-terminal variables of cardinality three and four, a terminal variable of
         # cardinality five and uniform transition distributions that which between the two non-terminal variables
         # with equal probability
-        rbn = CYKRBN(cells=[StaticCell(variable=DiscreteNonTermVar(3),
-                                       weights=np.ones(3),
-                                       transitions=[
+        rbn = SequentialRBN(cells=[StaticCell(variable=DiscreteNonTermVar(3),
+                                              weights=np.ones(3),
+                                              transitions=[
                                            DiscreteTerminalTransition(weights=np.ones((5, 3))),
                                            DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 3)),
                                                                                left_idx=0, right_idx=0),
                                            DiscreteBinaryNonTerminalTransition(weights=np.ones((4, 4, 3)),
                                                                                left_idx=1, right_idx=1)
                                        ]),
-                            StaticCell(variable=DiscreteNonTermVar(4),
+                                   StaticCell(variable=DiscreteNonTermVar(4),
                                        weights=np.ones(3),
                                        transitions=[
                                            DiscreteTerminalTransition(weights=np.ones((5, 4))),
@@ -64,8 +64,8 @@ class TestStaticCell(TestCase):
                                            DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 4)),
                                                                                left_idx=0, right_idx=0)
                                        ])
-                            ],
-                     prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
+                                   ],
+                            prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
         # parse a random sequence of length N
         N = 5
         marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, N))
@@ -130,7 +130,7 @@ class TestStaticCell(TestCase):
                           transitions=[terminal_transition, non_terminal_transition])
         term_prob, non_term_prob = cell.transition_probabilities
 
-        rbn = CYKRBN(cells=[cell], prior=prior)
+        rbn = SequentialRBN(cells=[cell], prior=prior)
 
         # parse sequence of length N
         terminals = [0, 1, 2, 3]

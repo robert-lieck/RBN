@@ -5,10 +5,10 @@ import numpy as np
 from triangularmap import TMap
 
 from rbnet.util import normalize_non_zero
-from rbnet.base import Cell, Transition, Prior, NonTermVar, CYKRBN
+from rbnet.base import Cell, Transition, Prior, NonTermVar, SequentialRBN
 
 
-class PCFG(CYKRBN):
+class PCFG(SequentialRBN):
 
     def __init__(self, cells, prior, terminal_indices, non_terminals):
         self.terminal_indices = terminal_indices

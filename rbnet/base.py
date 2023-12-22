@@ -258,7 +258,7 @@ class Cell(ABC):
         raise NotImplementedError
 
 
-class CYKRBN(RBN):
+class SequentialRBN(RBN):
 
     def __init__(self, cells, prior):
         self.cells = cells
