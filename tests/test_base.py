@@ -51,7 +51,7 @@ class TestStaticCell(TestCase):
                             prior=DiscretePrior(struc_weights=np.ones(1), prior_weights=[np.ones(2)]))
         # parse a random sequence of length N
         N = 5
-        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 2, N))
+        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 2, (N, 1)))
         self.assertNotEqual(marginal_likelihood, 0)
 
         # check inside probs
@@ -98,7 +98,7 @@ class TestStaticCell(TestCase):
                             prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
         # parse a random sequence of length N
         N = 5
-        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, N))
+        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, (N, 1)))
         self.assertNotEqual(marginal_likelihood, 0)
 
         # check inside probs
@@ -163,7 +163,7 @@ class TestStaticCell(TestCase):
         rbn = SequentialRBN(cells=[cell], prior=prior)
 
         # parse sequence of length N
-        terminals = [0, 1, 2, 3]
+        terminals = [[0], [1], [2], [3]]
         N = len(terminals)
         marginal_likelihood = rbn.inside(sequence=terminals)
         self.assertNotEqual(marginal_likelihood, 0)

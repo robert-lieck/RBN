@@ -16,7 +16,7 @@ class PCFG(SequentialRBN):
         super().__init__(cells=cells, prior=prior)
 
     def init_inside(self, sequence):
-        sequence = [self.terminal_indices[s] for s in sequence]
+        sequence = [[self.terminal_indices[s]] for s in sequence]
         super().init_inside(sequence=sequence)
 
     def map_inside_chart(self, precision=None):
@@ -335,7 +335,12 @@ class DiscreteTerminalTransition(Transition):
                 # no terminal transition possible
                 return []
             else:
-                return self.transition_probabilities[terminal_chart[start], :][None, :]
+                var_val = terminal_chart[start][self.term_idx]
+                if var_val is None:
+                    # no terminal transition to THIS terminal variable possible
+                    return []
+                else:
+                    return self.transition_probabilities[var_val, :][None, :]
         else:
             raise ValueError(f"Expected locations to be (start, end) index, but got: {location}")
 
