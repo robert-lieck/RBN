@@ -211,11 +211,11 @@ class DiscreteNonTermVar(NonTermVar):
          compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)
         :return: distribution corresponding to the mixture
         """
-        components = np.asfarray(components)
+        components = np.asfarray(components).copy()
         if not isinstance(axis, tuple):
             axis = (axis,)
         if weights is not None:
-            weights = np.asfarray(weights)
+            weights = np.asfarray(weights).copy()
             if len(weights.shape) != len(axis):
                 raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'axis' has {len(axis)} entries "
                                  f"but they must be the same")
@@ -240,12 +240,13 @@ class DiscretePrior(Prior):
         :param prior_weights: iterable over n Numpy arrays if shapes (K1,), ..., (Kn,) with weights for the prior
          distribution of the n non-terminal variables.
         """
-        if isinstance(struc_weights, np.ndarray) and len(struc_weights.shape) == 1:
+        struc_weights = np.asfarray(struc_weights).copy()
+        if len(struc_weights.shape) == 1:
             if np.any(struc_weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.structural_distributions = struc_weights / np.sum(struc_weights)
         else:
-            raise ValueError(f"Expected one-dimensional numpy array with weights, but got: {struc_weights}")
+            raise ValueError("'struc_weights` must be one-dimensional")
         if len(prior_weights) != len(struc_weights):
             raise ValueError(f"Expected as many distributions as weights, but got: "
                              f"{len(prior_weights)} and {len(struc_weights)}")
@@ -274,12 +275,13 @@ class DiscreteBinaryNonTerminalTransition(Transition):
         :param left_idx: index of the left child variable
         :param right_idx: index of the right child variable
         """
-        if isinstance(weights, np.ndarray) and len(weights.shape) == 3:
+        weights = np.asfarray(weights).copy()
+        if len(weights.shape) == 3:
             if np.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = normalize_non_zero(weights, axis=(0, 1))
         else:
-            raise ValueError(f"Expected three-dimensional numpy array with weights, but got: {weights}")
+            raise ValueError("'weights' has to be three-dimensional")
         self.left_idx = left_idx
         self.right_idx = right_idx
 
@@ -318,12 +320,13 @@ class DiscreteTerminalTransition(Transition):
          cardinalities of the variables a, b, respectively.
         :param term_idx: index of the terminal variable
         """
-        if isinstance(weights, np.ndarray) and len(weights.shape) == 2:
+        weights = np.asfarray(weights).copy()
+        if len(weights.shape) == 2:
             if np.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = normalize_non_zero(weights, axis=0)
         else:
-            raise ValueError(f"Expected two-dimensional numpy array with weights, but got: {weights}")
+            raise ValueError("'weights' has to be two-dimensional")
         self.term_idx = term_idx
 
     def inside_marginals(self, location, inside_chart, terminal_chart, value=None, **kwargs):
@@ -350,12 +353,13 @@ class StaticCell(Cell):
 
     def __init__(self, variable, weights, transitions):
         super().__init__(variable=variable)
-        if isinstance(weights, np.ndarray) and len(weights.shape) == 1:
+        weights = np.asfarray(weights).copy()
+        if len(weights.shape) == 1:
             if np.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = weights / weights.sum()
         else:
-            raise ValueError(f"Expected one-dimensional numpy array with weights, but got: {weights}")
+            raise ValueError("'weights' must be one-dimensional")
         if len(transitions) != weights.shape[0]:
             raise ValueError(f"Number of transitions and number of weights must be the same, but got: "
                              f"{len(transitions)} and {weights.shape[0]}")
