@@ -108,13 +108,13 @@ print(pcfg.inside_chart[0].pretty())
 # discrete variable (i.e. it cannot actually change value) and all the dynamics instead happens on the structural level.
 zero_var = DiscreteNonTermVar(cardinality=1)
 one_var = DiscreteNonTermVar(cardinality=1)
-prior = DiscretePrior(struc_weights=[0.5, 0.5], prior_weights=[[1], [1]])
+prior = DiscretePrior(struc_weights=[0.5, 0.5], prior_weights=[[1.], [1.]])
 
-zero_non_term_transition = DiscreteBinaryNonTerminalTransition(weights=[[[1]]], left_idx=1, right_idx=0)
-one_non_term_transition = DiscreteBinaryNonTerminalTransition(weights=[[[1]]], left_idx=0, right_idx=1)
+zero_non_term_transition = DiscreteBinaryNonTerminalTransition(weights=[[[1.]]], left_idx=1, right_idx=0)
+one_non_term_transition = DiscreteBinaryNonTerminalTransition(weights=[[[1.]]], left_idx=0, right_idx=1)
 
-zero_term_transition = DiscreteTerminalTransition(weights=[[1]], term_idx=0)
-one_term_transition = DiscreteTerminalTransition(weights=[[1]], term_idx=1)
+zero_term_transition = DiscreteTerminalTransition(weights=[[1.]], term_idx=0)
+one_term_transition = DiscreteTerminalTransition(weights=[[1.]], term_idx=1)
 
 zero_cell = StaticCell(variable=zero_var,
                        weights=[0.5, 0.5],

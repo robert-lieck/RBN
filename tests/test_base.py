@@ -98,7 +98,7 @@ class TestStaticCell(TestCase):
                             prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
         # parse a random sequence of length N
         N = 5
-        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, (N, 1)))
+        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, (N, 1))).numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # check inside probs
@@ -165,7 +165,7 @@ class TestStaticCell(TestCase):
         # parse sequence of length N
         terminals = [[0], [1], [2], [3]]
         N = len(terminals)
-        marginal_likelihood = rbn.inside(sequence=terminals)
+        marginal_likelihood = rbn.inside(sequence=terminals).numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # compute non-zero entries of inside prob, assuming there is only one way to generate the given sequence in a
@@ -184,7 +184,7 @@ class TestStaticCell(TestCase):
         for idx in range(N):
             for start in range(0, N - idx):
                 end = start + idx + 1
-                insides = rbn.inside_chart[0][start, end]
+                insides = rbn.inside_chart[0][start, end].numpy()
                 try:
                     self.assertTrue(np.all(np.logical_or(insides == level_insides[idx], insides == 0)))
                 except AssertionError:
@@ -209,7 +209,7 @@ class TestStaticCell(TestCase):
         terminals = "ABCDE"
         N = len(terminals)
         term_prob, non_term_prob = pcfg.cells[0].transition_probabilities
-        marginal_likelihood = pcfg.inside(sequence=terminals)
+        marginal_likelihood = pcfg.inside(sequence=terminals).numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # compute non-zero entries of inside prob, assuming there is only one way to generate the given sequence in a
@@ -228,9 +228,9 @@ class TestStaticCell(TestCase):
         for idx in range(N):
             for start in range(0, N - idx):
                 end = start + idx + 1
-                insides = pcfg.inside_chart[0][start, end]
+                insides = pcfg.inside_chart[0][start, end].numpy()
                 try:
-                    self.assertTrue(np.all(np.logical_or(insides == level_insides[idx], insides == 0)))
+                    self.assertTrue(np.all(np.logical_or(np.isclose(insides, level_insides[idx]), insides == 0)))
                 except AssertionError:
                     print(f"(start, end): {(start, end)}")
                     print(f"insides: {insides}")

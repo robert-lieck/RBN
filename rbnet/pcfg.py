@@ -1,6 +1,7 @@
 from typing import Iterable
 
 import numpy as np
+import torch
 
 from triangularmap import TMap
 
@@ -89,7 +90,7 @@ class AbstractedPCFG(PCFG):
         non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights)
         terminal_transition = DiscreteTerminalTransition(weights=terminal_weights)
         cell = StaticCell(variable=DiscreteNonTermVar(non_term_size),
-                          weights=np.array([terminal_weights.sum(), non_terminal_weights.sum()]),
+                          weights=[terminal_weights.sum(), non_terminal_weights.sum()],
                           transitions=[terminal_transition, non_terminal_transition])
         super().__init__(cells=[cell], prior=prior, non_terminals=non_terminals, terminal_indices=terminal_indices)
 
@@ -154,7 +155,7 @@ class ExpandedPCFG(PCFG):
         non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights)
         terminal_transition = DiscreteTerminalTransition(weights=terminal_weights)
         cell = StaticCell(variable=DiscreteNonTermVar(non_term_size),
-                          weights=np.array([terminal_weights.sum(), non_terminal_weights.sum()]),
+                          weights=[terminal_weights.sum(), non_terminal_weights.sum()],
                           transitions=[terminal_transition, non_terminal_transition])
 
 
@@ -197,32 +198,35 @@ class DiscreteNonTermVar(NonTermVar):
         if self.chart_type == "dict":
             return {}
         elif self.chart_type == "TMap":
-            return TMap(np.zeros((TMap.size_from_n(n), self.cardinality)))
+            return TMap(torch.zeros((TMap.size_from_n(n), self.cardinality)))
         else:
             raise ValueError(f"Unknown chart type '{self.chart_type}'")
 
-    def mixture(self, components, weights=None, axis=0):
+    def mixture(self, components, weights=None, dim=0):
         """
         Compute a mixture distribution over a discrete variable.
 
-        :param components: array-like with mixture components along ``axis``
-        :param weights: weights of the mixture components in an array-like of shape ``axis``
-        :param axis: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to
+        :param components: array-like with mixture components along ``dim``
+        :param weights: weights of the mixture components in an array-like of shape ``dim``
+        :param dim: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to
          compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)
         :return: distribution corresponding to the mixture
         """
-        components = np.asfarray(components).copy()
-        if not isinstance(axis, tuple):
-            axis = (axis,)
+        if len(components) == 0:
+            return torch.zeros(self.cardinality)
+        if not torch.is_tensor(components):
+            components = torch.stack(components)
+        if not isinstance(dim, tuple):
+            dim = (dim,)
         if weights is not None:
-            weights = np.asfarray(weights).copy()
-            if len(weights.shape) != len(axis):
-                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'axis' has {len(axis)} entries "
+            weights = torch.tensor(weights)
+            if len(weights.shape) != len(dim):
+                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'axis' has {len(dim)} entries "
                                  f"but they must be the same")
             # bring 'weights' into broadcastable shape, keeping dimension at right location according to 'axis'
-            idx = tuple(slice(None) if i in axis else None for i in range(len(components.shape)))
+            idx = tuple(slice(None) if i in dim else None for i in range(len(components.shape)))
             components = weights[idx] * components
-        return components.sum(axis=axis)
+        return components.sum(dim=dim)
 
 
 class DiscretePrior(Prior):
@@ -240,21 +244,23 @@ class DiscretePrior(Prior):
         :param prior_weights: iterable over n Numpy arrays if shapes (K1,), ..., (Kn,) with weights for the prior
          distribution of the n non-terminal variables.
         """
-        struc_weights = np.asfarray(struc_weights).copy()
+        struc_weights = torch.tensor(struc_weights)
+        prior_weights = [torch.tensor(w) for w in prior_weights]
         if len(struc_weights.shape) == 1:
-            if np.any(struc_weights < 0):
+            if torch.any(struc_weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.structural_distributions = struc_weights / np.sum(struc_weights)
+            self.structural_distributions = struc_weights / struc_weights.sum()
         else:
             raise ValueError("'struc_weights` must be one-dimensional")
         if len(prior_weights) != len(struc_weights):
             raise ValueError(f"Expected as many distributions as weights, but got: "
                              f"{len(prior_weights)} and {len(struc_weights)}")
-        self.prior_distributions = [d / np.sum(d) for d in prior_weights]
+        self.prior_distributions = [d / d.sum() for d in prior_weights]
 
     def marginal_likelihood(self, root_location, inside_chart, **kwargs):
-        return np.sum(self.structural_distributions *
-                      np.array([np.sum(d * c[root_location]) for d, c in zip(self.prior_distributions, inside_chart)]))
+        return (self.structural_distributions * torch.tensor(
+            [(d * c[root_location]).sum() for d, c in zip(self.prior_distributions, inside_chart)]
+        )).sum()
 
 
 class DiscreteBinaryNonTerminalTransition(Transition):
@@ -275,9 +281,9 @@ class DiscreteBinaryNonTerminalTransition(Transition):
         :param left_idx: index of the left child variable
         :param right_idx: index of the right child variable
         """
-        weights = np.asfarray(weights).copy()
+        weights = torch.tensor(weights)
         if len(weights.shape) == 3:
-            if np.any(weights < 0):
+            if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = normalize_non_zero(weights, axis=(0, 1))
         else:
@@ -299,8 +305,7 @@ class DiscreteBinaryNonTerminalTransition(Transition):
                     left_inside = inside_chart[self.left_idx][start, split]
                     right_inside = inside_chart[self.right_idx][split, end]
                     inside_marginals.append(
-                        np.sum(self.transition_probabilities * left_inside[:, None, None] * right_inside[None, :, None],
-                               axis=(0, 1))
+                        (self.transition_probabilities * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
                     )
                 return inside_marginals
         else:
@@ -320,9 +325,9 @@ class DiscreteTerminalTransition(Transition):
          cardinalities of the variables a, b, respectively.
         :param term_idx: index of the terminal variable
         """
-        weights = np.asfarray(weights).copy()
+        weights = torch.tensor(weights)
         if len(weights.shape) == 2:
-            if np.any(weights < 0):
+            if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = normalize_non_zero(weights, axis=0)
         else:
@@ -353,9 +358,9 @@ class StaticCell(Cell):
 
     def __init__(self, variable, weights, transitions):
         super().__init__(variable=variable)
-        weights = np.asfarray(weights).copy()
+        weights = torch.tensor(weights)
         if len(weights.shape) == 1:
-            if np.any(weights < 0):
+            if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
             self.transition_probabilities = weights / weights.sum()
         else:
