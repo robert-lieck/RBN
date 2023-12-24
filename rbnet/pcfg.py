@@ -5,20 +5,20 @@ import torch
 
 from triangularmap import TMap
 
-from rbnet.util import normalize_non_zero
+from rbnet.util import normalize_non_zero, as_detached_tensor
 from rbnet.base import Cell, Transition, Prior, NonTermVar, SequentialRBN
 
 
 class PCFG(SequentialRBN):
 
-    def __init__(self, cells, prior, terminal_indices, non_terminals, auto_tokenise=True):
+    def __init__(self, cells, prior, terminal_indices, non_terminals, auto_tokenise=True, *args, **kwargs):
+        super().__init__(cells=cells, prior=prior, *args, **kwargs)
         self.terminal_indices = terminal_indices
         self._non_terminals = non_terminals
         self.auto_tokenise = auto_tokenise
 
     def tokenise(self, sequence):
         return [[self.terminal_indices[s]] for s in sequence]
-        super().__init__(cells=cells, prior=prior)
 
     def init_inside(self, sequence):
         if self.auto_tokenise:
@@ -39,9 +39,9 @@ class PCFG(SequentialRBN):
         return TMap(new_arr)
 
 
-class AbstractedPCFG(PCFG):
+class AbstractedPCFG(PCFG, pl.LightningModule):
 
-    def __init__(self, non_terminals, terminals, rules, start):
+    def __init__(self, non_terminals, terminals, rules, start, *args, **kwargs):
         """
         An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable
         with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.
@@ -97,7 +97,7 @@ class AbstractedPCFG(PCFG):
         cell = StaticCell(variable=DiscreteNonTermVar(non_term_size),
                           weights=[terminal_weights.sum(), non_terminal_weights.sum()],
                           transitions=[terminal_transition, non_terminal_transition])
-        super().__init__(cells=[cell], prior=prior, non_terminals=non_terminals, terminal_indices=terminal_indices)
+        super().__init__(cells=[cell], prior=prior, non_terminals=non_terminals, terminal_indices=terminal_indices, *args, **kwargs)
 
 
 class ExpandedPCFG(PCFG):
@@ -224,9 +224,9 @@ class DiscreteNonTermVar(NonTermVar):
         if not isinstance(dim, tuple):
             dim = (dim,)
         if weights is not None:
-            weights = torch.tensor(weights)
+            weights = torch.as_tensor(weights)
             if len(weights.shape) != len(dim):
-                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'axis' has {len(dim)} entries "
+                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'dim' has {len(dim)} entries "
                                  f"but they must be the same")
             # bring 'weights' into broadcastable shape, keeping dimension at right location according to 'axis'
             idx = tuple(slice(None) if i in dim else None for i in range(len(components.shape)))
@@ -240,27 +240,29 @@ class DiscretePrior(Prior):
     A prior distribution over discrete non-terminal variables.
     """
 
-    def __init__(self, struc_weights, prior_weights):
+    def __init__(self, struc_weights, prior_weights, *args, **kwargs):
         """
-        Initialise prior with structural distribution p(z) and individual prior distributions p(a1), ..., p(an) for
-        n non-terminal variables a1, ..., an. The cardinality of z is n.
+        Initialise prior with structural distribution ``p(z)`` and individual prior distributions ``p(a1), ..., p(an)``
+         for ``n`` non-terminal variables ``a1, ..., an``. The cardinality of ``z`` is ``n``.
 
-        :param struc_weights: Numpy array of shape (n,) with weights for the structural distribution
-        :param prior_weights: iterable over n Numpy arrays if shapes (K1,), ..., (Kn,) with weights for the prior
-         distribution of the n non-terminal variables.
+        :param struc_weights: array of shape ``(n,)`` with weights for the structural distribution
+        :param prior_weights: iterable over ``n`` arrays if shapes ``(K1,), ..., (Kn,)`` with weights for the prior
+         distribution of the ``n`` non-terminal variables.
         """
-        struc_weights = torch.tensor(struc_weights)
-        prior_weights = [torch.tensor(w) for w in prior_weights]
+        super().__init__(*args, **kwargs)
+        struc_weights = as_detached_tensor(struc_weights)
+        prior_weights = [as_detached_tensor(w) for w in prior_weights]
         if len(struc_weights.shape) == 1:
             if torch.any(struc_weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.structural_distributions = struc_weights / struc_weights.sum()
+
+            self.structural_distributions = torch.nn.Parameter(struc_weights / struc_weights.sum())
         else:
             raise ValueError("'struc_weights` must be one-dimensional")
         if len(prior_weights) != len(struc_weights):
             raise ValueError(f"Expected as many distributions as weights, but got: "
                              f"{len(prior_weights)} and {len(struc_weights)}")
-        self.prior_distributions = [d / d.sum() for d in prior_weights]
+        self.prior_distributions = torch.nn.ParameterList([p / p.sum() for p in prior_weights])
 
     def marginal_likelihood(self, root_location, inside_chart, **kwargs):
         return (self.structural_distributions * torch.tensor(
@@ -274,7 +276,7 @@ class DiscreteBinaryNonTerminalTransition(Transition):
     A binary non-terminal transition for discrete non-terminal variables.
     """
 
-    def __init__(self, weights, left_idx=0, right_idx=0):
+    def __init__(self, weights, left_idx=0, right_idx=0, *args, **kwargs):
         """
         Initialise a non-terminal transition p(a, b | c) for random variables `a`, `b`, `c`. The child variables `b` and
         `c` may be different variables than `a` (if the RBN has multiple non-terminal variables), which is determined by
@@ -286,11 +288,12 @@ class DiscreteBinaryNonTerminalTransition(Transition):
         :param left_idx: index of the left child variable
         :param right_idx: index of the right child variable
         """
-        weights = torch.tensor(weights)
+        super().__init__(*args, **kwargs)
+        weights = as_detached_tensor(weights)
         if len(weights.shape) == 3:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = normalize_non_zero(weights, axis=(0, 1))
+            self.transition_probabilities = torch.nn.Parameter(normalize_non_zero(weights, axis=(0, 1)))
         else:
             raise ValueError("'weights' has to be three-dimensional")
         self.left_idx = left_idx
@@ -322,7 +325,7 @@ class DiscreteTerminalTransition(Transition):
     A binary terminal transition for discrete non-terminal and terminal variables.
     """
 
-    def __init__(self, weights, term_idx=0):
+    def __init__(self, weights, term_idx=0, *args, **kwargs):
         """
         Initialise a terminal transition p(a | b) for non-terminal variable `b` and terminal variable `a`.
 
@@ -330,11 +333,12 @@ class DiscreteTerminalTransition(Transition):
          cardinalities of the variables a, b, respectively.
         :param term_idx: index of the terminal variable
         """
-        weights = torch.tensor(weights)
+        super().__init__(*args, **kwargs)
+        weights = as_detached_tensor(weights)
         if len(weights.shape) == 2:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = normalize_non_zero(weights, axis=0)
+            self.transition_probabilities = torch.nn.Parameter(normalize_non_zero(weights, axis=0))
         else:
             raise ValueError("'weights' has to be two-dimensional")
         self.term_idx = term_idx
@@ -361,19 +365,19 @@ class DiscreteTerminalTransition(Transition):
 class StaticCell(Cell):
     """A cell with a static structural distribution, i.e., the probabilities over the different transitions"""
 
-    def __init__(self, variable, weights, transitions):
-        super().__init__(variable=variable)
-        weights = torch.tensor(weights)
+    def __init__(self, variable, weights, transitions, *args, **kwargs):
+        super().__init__(variable=variable, *args, **kwargs)
+        weights = as_detached_tensor(weights)
         if len(weights.shape) == 1:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = weights / weights.sum()
+            self.transition_probabilities = torch.nn.Parameter(weights / weights.sum())
         else:
             raise ValueError("'weights' must be one-dimensional")
         if len(transitions) != weights.shape[0]:
             raise ValueError(f"Number of transitions and number of weights must be the same, but got: "
                              f"{len(transitions)} and {weights.shape[0]}")
-        self._transitions = transitions
+        self._transitions = torch.nn.ModuleList(transitions)
 
     def transitions(self) -> Iterable[Transition]:
         yield from self._transitions

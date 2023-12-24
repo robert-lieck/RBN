@@ -66,7 +66,7 @@ class TestStaticCell(TestCase):
             for start in range(0, N - idx):
                 end = start + idx + 1
                 # print(f"{(start, end)}: {rbnet.inside_chart[0][start, end]}")
-                assert_array_equal(rbn.inside_chart[0][start, end], np.ones(2) * level_insides[idx])
+                assert_array_equal(rbn.inside_chart[0][start, end].detach(), np.ones(2) * level_insides[idx])
 
         # check marginal (same as inside of root: we have to sum over two symbols,
         # but prior distribution is 0.5 for both)
@@ -98,7 +98,7 @@ class TestStaticCell(TestCase):
                             prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
         # parse a random sequence of length N
         N = 5
-        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, (N, 1))).numpy()
+        marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 5, (N, 1))).detach().numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # check inside probs
@@ -114,7 +114,7 @@ class TestStaticCell(TestCase):
                 end = start + level_idx + 1
                 # print(f"{(start, end)}")
                 for var_idx, card in enumerate([3, 4]):
-                    assert_array_almost_equal(rbn.inside_chart[var_idx][start, end],
+                    assert_array_almost_equal(rbn.inside_chart[var_idx][start, end].detach(),
                                               np.ones(card) * level_insides[level_idx, var_idx])
 
         # check marginal (sum over inside of root, weighted by prior)
@@ -129,9 +129,9 @@ class TestStaticCell(TestCase):
         prior_weights = np.zeros(K)
         prior_weights[0] = 1
         prior = DiscretePrior(struc_weights=np.ones(1), prior_weights=[prior_weights])
-        assert_array_equal(prior.structural_distributions, [1])
+        assert_array_equal(prior.structural_distributions.detach(), [1])
         self.assertEqual(len(prior.prior_distributions), 1)
-        assert_array_equal(prior.prior_distributions[0], [1] + [0] * (K - 1))
+        assert_array_equal(prior.prior_distributions[0].detach(), [1] + [0] * (K - 1))
 
         # non-terminal transitions copy parent value to left child and count right child up or down
         non_terminal_weights = np.zeros((K, K, K))
@@ -143,11 +143,11 @@ class TestStaticCell(TestCase):
                              np.arange(K)] = 1
         non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights)
         # check off-diagonals and corners
-        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[:-1], K_range[1:], K_range[:-1]],
+        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[:-1], K_range[1:], K_range[:-1]].detach(),
                            [0.5] * (K - 1))
-        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[1:], K_range[:-1], K_range[1:]],
+        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[1:], K_range[:-1], K_range[1:]].detach(),
                            [0.5] * (K - 1))
-        assert_array_equal(non_terminal_transition.transition_probabilities[[0, K - 1], [0, K - 1], [0, K - 1]],
+        assert_array_equal(non_terminal_transition.transition_probabilities[[0, K - 1], [0, K - 1], [0, K - 1]].detach(),
                            [0.5, 0.5])
 
         # terminal transition copies last non-terminal
@@ -165,7 +165,7 @@ class TestStaticCell(TestCase):
         # parse sequence of length N
         terminals = [[0], [1], [2], [3]]
         N = len(terminals)
-        marginal_likelihood = rbn.inside(sequence=terminals).numpy()
+        marginal_likelihood = rbn.inside(sequence=terminals).detach().numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # compute non-zero entries of inside prob, assuming there is only one way to generate the given sequence in a
@@ -184,7 +184,7 @@ class TestStaticCell(TestCase):
         for idx in range(N):
             for start in range(0, N - idx):
                 end = start + idx + 1
-                insides = rbn.inside_chart[0][start, end].numpy()
+                insides = rbn.inside_chart[0][start, end].detach().numpy()
                 try:
                     self.assertTrue(np.all(np.logical_or(insides == level_insides[idx], insides == 0)))
                 except AssertionError:
@@ -209,7 +209,7 @@ class TestStaticCell(TestCase):
         terminals = "ABCDE"
         N = len(terminals)
         term_prob, non_term_prob = pcfg.cells[0].transition_probabilities
-        marginal_likelihood = pcfg.inside(sequence=terminals).numpy()
+        marginal_likelihood = pcfg.inside(sequence=terminals).detach().numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
         # compute non-zero entries of inside prob, assuming there is only one way to generate the given sequence in a
@@ -228,7 +228,7 @@ class TestStaticCell(TestCase):
         for idx in range(N):
             for start in range(0, N - idx):
                 end = start + idx + 1
-                insides = pcfg.inside_chart[0][start, end].numpy()
+                insides = pcfg.inside_chart[0][start, end].detach().numpy()
                 try:
                     self.assertTrue(np.all(np.logical_or(np.isclose(insides, level_insides[idx]), insides == 0)))
                 except AssertionError:

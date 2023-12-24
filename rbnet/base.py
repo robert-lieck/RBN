@@ -1,6 +1,8 @@
 from typing import Iterable
 from abc import ABC, abstractmethod
 
+import torch
+
 
 class RBN(ABC):
     """Base class for RBNs."""
@@ -119,10 +121,13 @@ class RBN(ABC):
                                                 inside_chart=self.get_inside_chart())
 
 
-class Transition(ABC):
+class Transition(ABC, torch.nn.Module):
     """
     Base class for RBN transitions, which have to implement :meth:`~Transition.inside_marginals`.
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @abstractmethod
     def inside_marginals(self, location, inside_chart, terminal_chart, value=None, **kwargs):
@@ -159,17 +164,19 @@ class Transition(ABC):
          provided this means that *conditional* inside probabilities should be computed (for the given value);
          otherwise general inside marginals (as a function of the variable) should be computed; also see
          :meth:`RBN.non_terminals`
-        :return: array-like or iterable with inside probabilities; if the transition is not possible, this should be
-         of length zero or contain only inside probabilities representing zero
+        :return: array-like or iterable with inside probabilities
         """
         raise NotImplementedError
 
 
-class Prior(ABC):
+class Prior(ABC, torch.nn.Module):
     """
     Base class for prior transitions. Prior transitions are similar to normal Transition's, but cannot directly generate
     terminal variables and have no parent variables.
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     @abstractmethod
     def marginal_likelihood(self, root_location, inside_chart, **kwargs):
@@ -213,19 +220,20 @@ class NonTermVar(ABC):
         raise NotImplementedError
 
 
-class Cell(ABC):
+class Cell(ABC, torch.nn.Module):
     """
     Base class for RBN cells associated to a non-terminal template variable. Cells hold all transitions that are
     possible from that variable, accessible via :meth:`transitions`, and implement computation of the mixture of
     inside probabilities over that variable in :meth:`inside_mixture`.
     """
 
-    def __init__(self, variable):
+    def __init__(self, variable, *args, **kwargs):
         """
         A cell for a given non-terminal variable
 
         :param variable: non-terminal variable
         """
+        super().__init__(*args, **kwargs)
         self.variable = variable
 
     @abstractmethod
@@ -258,10 +266,11 @@ class Cell(ABC):
         raise NotImplementedError
 
 
-class SequentialRBN(RBN):
+class SequentialRBN(RBN, torch.nn.Module):
 
-    def __init__(self, cells, prior):
-        self.cells = cells
+    def __init__(self, cells, prior, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.cells = torch.nn.ModuleList(cells)
         self._prior = prior
         self.n = None
         self.terminals = None
