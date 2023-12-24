@@ -1,5 +1,38 @@
 import numpy as np
 import torch
+from torch.utils.data import DataLoader
+from torch.utils.data.dataset import random_split
+import pytorch_lightning as pl
+
+
+class SequenceDataModule(pl.LightningDataModule):
+    def __init__(self, sequences, val_split=0.2, test_split=0.1):
+        super().__init__()
+        self.sequences = [as_detached_tensor(s) for s in sequences]
+        self.val_split = val_split
+        self.test_split = test_split
+
+    def setup(self, stage=None):
+        total_samples = len(self.sequences)
+        val_size = int(total_samples * self.val_split)
+        test_size = int(total_samples * self.test_split)
+        train_size = total_samples - val_size - test_size
+
+        train_data, val_data, test_data = random_split(
+            self.sequences, [train_size, val_size, test_size]
+        )
+        self.train_dataset = train_data
+        self.val_dataset = val_data
+        self.test_dataset = test_data
+
+    def train_dataloader(self):
+        return DataLoader(self.train_dataset, batch_size=1, shuffle=True)
+
+    def val_dataloader(self):
+        return DataLoader(self.val_dataset, batch_size=1)
+
+    def test_dataloader(self):
+        return DataLoader(self.test_dataset, batch_size=1)
 
 
 # from https://github.com/robert-lieck/pyulib
@@ -48,3 +81,10 @@ def normalize_non_zero(a, axis=None, skip_type_check=False):
     a[non_zero_arr] = a[non_zero_arr] / s[non_zero_arr]
     # return array
     return a
+
+
+def as_detached_tensor(t):
+    if torch.is_tensor(t):
+        return t.clone().detach()
+    else:
+        return torch.tensor(t)

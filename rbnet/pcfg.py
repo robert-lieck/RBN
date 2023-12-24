@@ -11,13 +11,18 @@ from rbnet.base import Cell, Transition, Prior, NonTermVar, SequentialRBN
 
 class PCFG(SequentialRBN):
 
-    def __init__(self, cells, prior, terminal_indices, non_terminals):
+    def __init__(self, cells, prior, terminal_indices, non_terminals, auto_tokenise=True):
         self.terminal_indices = terminal_indices
         self._non_terminals = non_terminals
+        self.auto_tokenise = auto_tokenise
+
+    def tokenise(self, sequence):
+        return [[self.terminal_indices[s]] for s in sequence]
         super().__init__(cells=cells, prior=prior)
 
     def init_inside(self, sequence):
-        sequence = [[self.terminal_indices[s]] for s in sequence]
+        if self.auto_tokenise:
+            sequence = self.tokenise(sequence)
         super().init_inside(sequence=sequence)
 
     def map_inside_chart(self, precision=None):
