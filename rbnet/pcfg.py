@@ -265,7 +265,7 @@ class DiscretePrior(Prior):
         self.prior_distributions = torch.nn.ParameterList([p / p.sum() for p in prior_weights])
 
     def marginal_likelihood(self, root_location, inside_chart, **kwargs):
-        return (self.structural_distributions * torch.tensor(
+        return (self.structural_distributions * torch.stack(
             [(d * c[root_location]).sum() for d, c in zip(self.prior_distributions, inside_chart)]
         )).sum()
 
@@ -310,8 +310,9 @@ class DiscreteBinaryNonTerminalTransition(Transition):
             else:
                 inside_marginals = []
                 for split in range(start + 1, end):
-                    left_inside = inside_chart[self.left_idx][start, split]
-                    right_inside = inside_chart[self.right_idx][split, end]
+                    # get inside probabilities (clone to avoid problems with inplace operations below – not sure why)
+                    left_inside = inside_chart[self.left_idx][start, split].clone()
+                    right_inside = inside_chart[self.right_idx][split, end].clone()
                     inside_marginals.append(
                         (self.transition_probabilities * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
                     )
