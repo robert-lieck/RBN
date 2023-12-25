@@ -7,6 +7,9 @@ import torch
 class RBN(ABC):
     """Base class for RBNs."""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     @abstractmethod
     def inside_schedule(self, *args, **kwargs):
         r"""
@@ -19,6 +22,7 @@ class RBN(ABC):
         """
         raise NotImplementedError
 
+    @property
     @abstractmethod
     def root_location(self):
         """
@@ -62,8 +66,9 @@ class RBN(ABC):
         """
         raise NotImplementedError
 
+    @property
     @abstractmethod
-    def get_inside_chart(self):
+    def inside_chart(self):
         """
         Return the chart with inside probabilities for all variables.
 
@@ -71,8 +76,9 @@ class RBN(ABC):
         """
         raise NotImplementedError
 
+    @property
     @abstractmethod
-    def get_terminal_chart(self):
+    def terminal_chart(self):
         """
         Return the chart with terminal variables.
 
@@ -80,6 +86,7 @@ class RBN(ABC):
         """
         raise NotImplementedError
 
+    @property
     @abstractmethod
     def prior(self):
         """
@@ -108,8 +115,8 @@ class RBN(ABC):
                 for transition in cell.transitions():
                     inside_marginals.append(
                         transition.inside_marginals(location=non_term_loc,
-                                                    inside_chart=self.get_inside_chart(),
-                                                    terminal_chart=self.get_terminal_chart(),
+                                                    inside_chart=self.inside_chart,
+                                                    terminal_chart=self.terminal_chart,
                                                     value=non_term_value)
                     )
                 # compute the mixture over inside marginals and update chart for variable(s)
@@ -117,8 +124,8 @@ class RBN(ABC):
                                          locations=non_term_loc,
                                          values=cell.inside_mixture(inside_marginals))
         # add the prior likelihood for the root location
-        return self.prior().marginal_likelihood(root_location=self.root_location(),
-                                                inside_chart=self.get_inside_chart())
+        return self.prior.marginal_likelihood(root_location=self.root_location,
+                                                inside_chart=self.inside_chart)
 
 
 class Transition(ABC, torch.nn.Module):
@@ -202,6 +209,9 @@ class NonTermVar(ABC):
     over this variable type can be computed via :meth:`mixture`.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     @abstractmethod
     def get_chart(self, *args, **kwargs):
         """
@@ -273,19 +283,20 @@ class SequentialRBN(RBN, torch.nn.Module):
         self.cells = torch.nn.ModuleList(cells)
         self._prior = prior
         self.n = None
-        self.terminals = None
-        self.inside_chart = None
+        self._terminal_chart = None
+        self._inside_chart = None
 
     def init_inside(self, sequence):
         self.n = len(sequence)
-        self.terminals = sequence
-        self.inside_chart = [c.variable.get_chart(len(sequence)) for c in self.cells]
+        self._terminal_chart = sequence
+        self._inside_chart = [c.variable.get_chart(len(sequence)) for c in self.cells]
 
     def inside_schedule(self, *args, **kwargs):
         for span in range(1, self.n + 1):
             for start in range(self.n - span + 1):
                 yield start, start + span
 
+    @RBN.root_location.getter
     def root_location(self):
         return 0, self.n
 
@@ -294,14 +305,17 @@ class SequentialRBN(RBN, torch.nn.Module):
             yield None, c
 
     def update_inside_chart(self, var_idx, locations, values):
-        self.inside_chart[var_idx][locations] = values
+        self._inside_chart[var_idx][locations] = values
 
-    def get_inside_chart(self):
-        return self.inside_chart
+    @RBN.inside_chart.getter
+    def inside_chart(self):
+        return self._inside_chart
 
-    def get_terminal_chart(self):
-        return self.terminals
+    @RBN.terminal_chart.getter
+    def terminal_chart(self):
+        return self._terminal_chart
 
+    @RBN.prior.getter
     def prior(self):
         return self._prior
 

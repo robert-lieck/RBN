@@ -3,42 +3,45 @@ from unittest import TestCase
 import numpy as np
 from numpy.testing import assert_array_equal, assert_array_almost_equal
 
-from rbnet.base import RBN, SequentialRBN
+from rbnet.base import RBN, SequentialRBN, Transition, Prior, NonTermVar, Cell
 from rbnet.pcfg import DiscretePrior, DiscreteBinaryNonTerminalTransition, DiscreteTerminalTransition, StaticCell, \
     DiscreteNonTermVar, AbstractedPCFG
 
 
 class TestStaticCell(TestCase):
 
-    def test_rbn_abstract_base_class(self):
-        # patch abstract base class
-        class concreteRBN(RBN):
+    @staticmethod
+    def _get_concrete_class(cls, *args, **kwargs):
+        class ConcreteCls(cls):
             pass
-        # remember abstract methods
-        abstractmethods = set(concreteRBN.__abstractmethods__)
-        # make sure the class can be instantiated
-        concreteRBN.__abstractmethods__ = frozenset()
-        rbn = concreteRBN
-        # test all abstract methods
-        for meth, args, kwargs in [
-            ("get_inside_chart", [rbn], {}),
-            ("get_terminal_chart", [rbn], {}),
-            ("inside_schedule", [rbn], {}),
-            ("non_terminals", [rbn], {"locations": None}),
-            ("prior", [rbn], {}),
-            ("root_location", [rbn], {}),
-            ("update_inside_chart", [rbn], {'var_idx': None, 'locations': None, 'values': None}),
-        ]:
-            self.assertRaises(NotImplementedError, getattr(rbn, meth), *args, **kwargs)
-            abstractmethods.remove(meth)
-        # make sure none were omitted
-        self.assertFalse(abstractmethods)
+        ConcreteCls.__abstractmethods__ = frozenset()
+        return ConcreteCls(*args, **kwargs)
 
-        # test non-abstract but empty methods
-        for meth, args, kwargs, ret in [
-            ("init_inside", [rbn], {}, None),
-        ]:
-            self.assertEqual(getattr(rbn, meth)(*args, **kwargs), ret)
+    def test_abstract_base_classes(self):
+        # RBN
+        x = self._get_concrete_class(RBN)
+        self.assertRaises(NotImplementedError, lambda: x.inside_chart)
+        self.assertRaises(NotImplementedError, lambda: x.terminal_chart)
+        self.assertRaises(NotImplementedError, x.inside_schedule)
+        self.assertRaises(NotImplementedError, x.non_terminals, None)
+        self.assertRaises(NotImplementedError, lambda: x.prior)
+        self.assertRaises(NotImplementedError, lambda: x.root_location)
+        self.assertRaises(NotImplementedError, x.update_inside_chart, None, None, None)
+        self.assertIs(x.init_inside(), None)
+        # Transition
+        x = self._get_concrete_class(Transition)
+        self.assertRaises(NotImplementedError, x.inside_marginals, None, None, None)
+        # Prior
+        x = self._get_concrete_class(Prior)
+        self.assertRaises(NotImplementedError, x.marginal_likelihood, None, None)
+        # NonTermVar
+        x = self._get_concrete_class(NonTermVar)
+        self.assertRaises(NotImplementedError, x.get_chart)
+        self.assertRaises(NotImplementedError, x.mixture)
+        # Cell
+        x = self._get_concrete_class(Cell, None)
+        self.assertRaises(NotImplementedError, x.transitions)
+        self.assertRaises(NotImplementedError, x.inside_mixture, None)
 
     def test_minimal_grammar(self):
         # a discrete grammar with one variable of cardinality two (two symbols) and uniform transition distributions
