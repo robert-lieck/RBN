@@ -11,6 +11,60 @@ import matplotlib.pyplot as plt
 _no_value = object()
 
 
+class ConstrainedModuleMixin:
+    """
+    A mixin class for modules with constraints to work cooperatively. Calling :meth:`~enforce_constraints` will
+    recursively try to call this method on child modules.
+
+    Typical usage would be to call :meth:`~enforce_constraints` on the top-level parent module before the forward pass
+    and/or after an optimisation step.
+
+    See :class:`~Prob` for an example.
+    """
+
+    def enforce_constraints(self, recurse=True):
+        """
+        Enforce constraints for module parameters and child modules.
+
+        If modules have constrained parameters, they should override this method to enforce these constraints. If
+        they also have child modules and ``recurse=True``, they should additionally call
+        ``super().enforce_constraints()`` to recursively propagate the call.
+        """
+        if recurse:
+            for module in self.children():
+                try:
+                    module.enforce_constraints()
+                except AttributeError:
+                    pass
+
+    def remap(self, param, _top_level=True, prefix=None):
+        for module in self.children():
+            try:
+                # try to use child for remapping
+                rm = module.remap(param, _top_level=False)
+            except (AttributeError, KeyError):
+                # either has no remap function or could not find param
+                pass
+            else:
+                if prefix is not None:
+                    return f"{prefix}{rm}"
+                else:
+                    return rm
+        if _top_level:
+            # top-level call should return non-remapped param as fallback
+            if prefix is not None:
+                return str(param)
+            else:
+                return param
+        else:
+            # nested calls should signal they could not find param
+            raise KeyError
+
+
+class ConstrainedModuleList(torch.nn.ModuleList, ConstrainedModuleMixin):
+    pass
+
+
 class SequenceDataModule(pl.LightningDataModule):
     def __init__(self, sequences, val_split=0.2, test_split=0.1):
         super().__init__()
