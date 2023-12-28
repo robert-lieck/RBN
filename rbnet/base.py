@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 
 import torch
 
+from rbnet.util import ConstrainedModuleList
+
 
 class RBN(ABC):
     """Base class for RBNs."""
@@ -280,7 +282,7 @@ class SequentialRBN(RBN, torch.nn.Module):
 
     def __init__(self, cells, prior, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cells = torch.nn.ModuleList(cells)
+        self.cells = ConstrainedModuleList(cells)
         self._prior = prior
         self.n = None
         self._terminal_chart = None

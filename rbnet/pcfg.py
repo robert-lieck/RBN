@@ -2,10 +2,11 @@ from typing import Iterable
 
 import numpy as np
 import torch
+import pytorch_lightning as pl
 
 from triangularmap import TMap
 
-from rbnet.util import normalize_non_zero, as_detached_tensor
+from rbnet.util import normalize_non_zero, as_detached_tensor, ConstrainedModuleMixin, ConstrainedModuleList, LogProb
 from rbnet.base import Cell, Transition, Prior, NonTermVar, SequentialRBN
 
 
@@ -39,9 +40,9 @@ class PCFG(SequentialRBN):
         return TMap(new_arr)
 
 
-class AbstractedPCFG(PCFG, pl.LightningModule):
+class AbstractedPCFG(PCFG, pl.LightningModule, ConstrainedModuleMixin):
 
-    def __init__(self, non_terminals, terminals, rules, start, *args, **kwargs):
+    def __init__(self, non_terminals, terminals, rules, start, prob_rep=LogProb, *args, **kwargs):
         """
         An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable
         with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.
@@ -63,7 +64,7 @@ class AbstractedPCFG(PCFG, pl.LightningModule):
         # deterministic prior
         prior_weights = np.zeros(non_term_size)
         prior_weights[self.non_terminal_indices[start]] = 1
-        prior = DiscretePrior(struc_weights=np.ones(1), prior_weights=[prior_weights])
+        prior = DiscretePrior(struc_weights=np.ones(1), prior_weights=[prior_weights], prob_rep=prob_rep)
 
         # transition probabilities
         non_terminal_weights = np.zeros((non_term_size, non_term_size, non_term_size))
@@ -184,13 +185,14 @@ class ExpandedPCFG(PCFG):
 
 class DiscreteNonTermVar(NonTermVar):
 
-    def __init__(self, cardinality, chart_type="TMap"):
+    def __init__(self, cardinality, chart_type="TMap", *args, **kwargs):
         """
         A discrete non-terminal variable with cardinality ``n``.
 
         :param cardinality: cardinality
         :param chart_type: type of chart to use ("dict" or "TMap")
         """
+        super().__init__(*args, **kwargs)
         self.cardinality = cardinality
         self.chart_type = chart_type
 
@@ -212,9 +214,10 @@ class DiscreteNonTermVar(NonTermVar):
         Compute a mixture distribution over a discrete variable.
 
         :param components: array-like with mixture components along ``dim``
-        :param weights: weights of the mixture components in an array-like of shape ``dim``
-        :param dim: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to
-         compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)
+        :param weights: [optional] weights of the mixture components; must be compatible (broadcastable) to
+         ``components``
+        :param dim: integer or tuple of integers indicating the dimensions of ``components`` along which to sum to
+         compute the mixture
         :return: distribution corresponding to the mixture
         """
         if len(components) == 0:
@@ -224,23 +227,17 @@ class DiscreteNonTermVar(NonTermVar):
         if not isinstance(dim, tuple):
             dim = (dim,)
         if weights is not None:
-            weights = torch.as_tensor(weights)
-            if len(weights.shape) != len(dim):
-                raise ValueError(f"'weights' has {len(weights.shape)} dimensions and 'dim' has {len(dim)} entries "
-                                 f"but they must be the same")
-            # bring 'weights' into broadcastable shape, keeping dimension at right location according to 'axis'
-            idx = tuple(slice(None) if i in dim else None for i in range(len(components.shape)))
-            components = weights[idx] * components
+            components = torch.as_tensor(weights) * components
         return components.sum(dim=dim)
 
 
-class DiscretePrior(Prior):
+class DiscretePrior(Prior, ConstrainedModuleMixin):
 
     """
     A prior distribution over discrete non-terminal variables.
     """
 
-    def __init__(self, struc_weights, prior_weights, *args, **kwargs):
+    def __init__(self, struc_weights, prior_weights, prob_rep=LogProb, *args, **kwargs):
         """
         Initialise prior with structural distribution ``p(z)`` and individual prior distributions ``p(a1), ..., p(an)``
          for ``n`` non-terminal variables ``a1, ..., an``. The cardinality of ``z`` is ``n``.
@@ -255,28 +252,27 @@ class DiscretePrior(Prior):
         if len(struc_weights.shape) == 1:
             if torch.any(struc_weights < 0):
                 raise ValueError("All weights have to be non-negative")
-
-            self.structural_distributions = torch.nn.Parameter(struc_weights / struc_weights.sum())
+            self.structural_distribution = prob_rep(p=struc_weights)
         else:
             raise ValueError("'struc_weights` must be one-dimensional")
         if len(prior_weights) != len(struc_weights):
             raise ValueError(f"Expected as many distributions as weights, but got: "
                              f"{len(prior_weights)} and {len(struc_weights)}")
-        self.prior_distributions = torch.nn.ParameterList([p / p.sum() for p in prior_weights])
+        self.prior_distributions = ConstrainedModuleList([prob_rep(p=p) for p in prior_weights])
 
     def marginal_likelihood(self, root_location, inside_chart, **kwargs):
-        return (self.structural_distributions * torch.stack(
-            [(d * c[root_location]).sum() for d, c in zip(self.prior_distributions, inside_chart)]
+        return (self.structural_distribution.p * torch.stack(
+            [(p.p * c[root_location]).sum() for p, c in zip(self.prior_distributions, inside_chart)]
         )).sum()
 
 
-class DiscreteBinaryNonTerminalTransition(Transition):
+class DiscreteBinaryNonTerminalTransition(Transition, ConstrainedModuleMixin):
 
     """
     A binary non-terminal transition for discrete non-terminal variables.
     """
 
-    def __init__(self, weights, left_idx=0, right_idx=0, *args, **kwargs):
+    def __init__(self, weights, left_idx=0, right_idx=0, prob_rep=LogProb, *args, **kwargs):
         """
         Initialise a non-terminal transition p(a, b | c) for random variables `a`, `b`, `c`. The child variables `b` and
         `c` may be different variables than `a` (if the RBN has multiple non-terminal variables), which is determined by
@@ -293,7 +289,7 @@ class DiscreteBinaryNonTerminalTransition(Transition):
         if len(weights.shape) == 3:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = torch.nn.Parameter(normalize_non_zero(weights, axis=(0, 1)))
+            self.transition_probabilities = prob_rep(p=weights, dim=(0, 1))
         else:
             raise ValueError("'weights' has to be three-dimensional")
         self.left_idx = left_idx
@@ -314,19 +310,19 @@ class DiscreteBinaryNonTerminalTransition(Transition):
                     left_inside = inside_chart[self.left_idx][start, split].clone()
                     right_inside = inside_chart[self.right_idx][split, end].clone()
                     inside_marginals.append(
-                        (self.transition_probabilities * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
+                        (self.transition_probabilities.p * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
                     )
                 return inside_marginals
         else:
             raise ValueError(f"Expected locations to be (start, end) index, but got: {location}")
 
 
-class DiscreteTerminalTransition(Transition):
+class DiscreteTerminalTransition(Transition, ConstrainedModuleMixin):
     """
     A binary terminal transition for discrete non-terminal and terminal variables.
     """
 
-    def __init__(self, weights, term_idx=0, *args, **kwargs):
+    def __init__(self, weights, term_idx=0, prob_rep=LogProb, *args, **kwargs):
         """
         Initialise a terminal transition p(a | b) for non-terminal variable `b` and terminal variable `a`.
 
@@ -339,7 +335,10 @@ class DiscreteTerminalTransition(Transition):
         if len(weights.shape) == 2:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = torch.nn.Parameter(normalize_non_zero(weights, axis=0))
+            s = weights.sum(axis=0) == 0
+            if torch.any(s):
+                raise ValueError(f"All transition weights for the following indices are zero: {', '.join([str(int(i)) for i in s.nonzero()])}")
+            self.transition_probabilities = prob_rep(p=weights, dim=0)
         else:
             raise ValueError("'weights' has to be two-dimensional")
         self.term_idx = term_idx
@@ -358,27 +357,38 @@ class DiscreteTerminalTransition(Transition):
                     # no terminal transition to THIS terminal variable possible
                     return []
                 else:
-                    return self.transition_probabilities[var_val, :][None, :]
+                    return self.transition_probabilities.p[var_val, :][None, :]
         else:
             raise ValueError(f"Expected locations to be (start, end) index, but got: {location}")
 
 
-class StaticCell(Cell):
-    """A cell with a static structural distribution, i.e., the probabilities over the different transitions"""
+class DiscreteCell(Cell, ConstrainedModuleMixin):
+    """A cell for a discrete variable, where the structural distribution may depend on the variable's value"""
 
-    def __init__(self, variable, weights, transitions, *args, **kwargs):
+    def __init__(self, variable, weights, transitions, prob_rep=LogProb, *args, **kwargs):
+        """
+        :param variable: the discrete non-terminal variable for this cell
+        :param weights: 2D weights with shape ``(|z|, |x|)`` for the structural transition :math:`p(z | x)`,
+         where ``|z|`` and ``|x|`` are the number of transitions and the cardinality of the variable, respectively.
+        :param transitions: iterable over transitions in this cell
+        :param args: passed on to super().__init__
+        :param kwargs: passed on to super().__init__
+        """
         super().__init__(variable=variable, *args, **kwargs)
         weights = as_detached_tensor(weights)
-        if len(weights.shape) == 1:
+        if len(weights.shape) == 2:
             if torch.any(weights < 0):
                 raise ValueError("All weights have to be non-negative")
-            self.transition_probabilities = torch.nn.Parameter(weights / weights.sum())
+            self.transition_probabilities = prob_rep(p=weights, dim=0)
         else:
-            raise ValueError("'weights' must be one-dimensional")
+            raise ValueError("'weights' must be two-dimensional")
         if len(transitions) != weights.shape[0]:
-            raise ValueError(f"Number of transitions and number of weights must be the same, but got: "
+            raise ValueError(f"Number of transitions and size of first weight dimension must be the same, but got: "
                              f"{len(transitions)} and {weights.shape[0]}")
-        self._transitions = torch.nn.ModuleList(transitions)
+        self._transitions = ConstrainedModuleList(transitions)
+        if variable.cardinality != weights.shape[1]:
+            raise ValueError(f"Cardinality of variable and size of second weight dimension must be the same, but got: "
+                             f"{len(transitions)} and {weights.shape[1]}")
 
     def transitions(self) -> Iterable[Transition]:
         yield from self._transitions
@@ -386,7 +396,7 @@ class StaticCell(Cell):
     def inside_mixture(self, inside_marginals):
         # iterate over possible transitions
         s = []
-        valid_transitions = np.zeros(shape=self.transition_probabilities.shape, dtype=bool)
+        valid_transitions = np.zeros(shape=self.transition_probabilities.p.shape[0], dtype=bool)
         for idx, i in enumerate(inside_marginals):
             # if there are possible transitions
             if len(i) > 0:
@@ -394,4 +404,16 @@ class StaticCell(Cell):
                 s.append(self.variable.mixture(components=i))
                 valid_transitions[idx] = True
         # computed weighted mixture over transitions and return
-        return self.variable.mixture(components=s, weights=self.transition_probabilities[valid_transitions])
+        return self.variable.mixture(components=s, weights=self.transition_probabilities.p[valid_transitions, :])
+
+
+class StaticCell(DiscreteCell):
+    """A cell with a static structural distribution, i.e., the probabilities over the different transitions"""
+
+    def __init__(self, variable, weights, transitions, prob_rep=LogProb, *args, **kwargs):
+        weights = as_detached_tensor(weights).unsqueeze(1).expand(-1, variable.cardinality)
+        super().__init__(variable=variable,
+                         weights=weights,
+                         transitions=transitions,
+                         prob_rep=prob_rep,
+                         *args, **kwargs)
