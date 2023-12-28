@@ -6,14 +6,15 @@ from numpy.testing import assert_array_equal
 from rbnet.base import SequentialRBN
 from rbnet.pcfg import (AbstractedPCFG, DiscreteNonTermVar, DiscretePrior, DiscreteBinaryNonTerminalTransition,
                         DiscreteTerminalTransition, StaticCell)
+from rbnet.util import Prob
 
 
 class TestPCFG(TestCase):
 
     binary_grammar_chart = np.array([
-        [1 / 2 ** 8, 0, 1 / 2 ** 7],
-        [0, 0, 0], [1 / 2 ** 6, 0, 1 / 2 ** 5],
-        [0, 0, 0], [0, 0, 0], [1 / 2 ** 4, 0, 1 / 2 ** 3],
+        [1 / 2 ** 7, 0, 1 / 2 ** 7],
+        [0, 0, 0], [1 / 2 ** 5, 0, 1 / 2 ** 5],
+        [0, 0, 0], [0, 0, 0], [1 / 2 ** 3, 0, 1 / 2 ** 3],
         [0, 1 / 2, 0], [0, 1 / 2, 0], [0, 1 / 2, 0], [0, 0, 1 / 2],
     ])
 
@@ -21,12 +22,15 @@ class TestPCFG(TestCase):
         pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
             ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
             ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
-            ("A --> a", 2), ("B --> b", 2)  # terminal transition
-        ])
+            ("A --> a", 1), ("B --> b", 1),      # terminal transition
+        ],
+                              prob_rep=Prob)
+        for n, p in pcfg.named_parameters():
+            print(n, p)
         self.assertEqual(pcfg.inside(sequence="aaaa"), 0)
         self.assertEqual(pcfg.inside(sequence="bbbb"), 0)
-        self.assertEqual(pcfg.inside(sequence="bbba"), 1 / 2 ** 8)
-        self.assertEqual(pcfg.inside(sequence="aaab"), 1 / 2 ** 8)
+        self.assertEqual(pcfg.inside(sequence="bbba"), 1 / 2 ** 7)
+        self.assertEqual(pcfg.inside(sequence="aaab"), 1 / 2 ** 7)
         # print(pcfg.inside_chart[0].pretty())
         assert_array_equal(pcfg.inside_chart[0].arr.detach(), self.binary_grammar_chart)
 

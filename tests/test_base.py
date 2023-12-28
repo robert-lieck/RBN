@@ -6,6 +6,7 @@ from numpy.testing import assert_array_equal, assert_array_almost_equal
 from rbnet.base import RBN, SequentialRBN, Transition, Prior, NonTermVar, Cell
 from rbnet.pcfg import DiscretePrior, DiscreteBinaryNonTerminalTransition, DiscreteTerminalTransition, StaticCell, \
     DiscreteNonTermVar, AbstractedPCFG
+from rbnet.util import Prob
 
 
 class TestStaticCell(TestCase):
@@ -48,10 +49,10 @@ class TestStaticCell(TestCase):
         rbn = SequentialRBN(cells=[StaticCell(variable=DiscreteNonTermVar(2),
                                               weights=np.ones(2),
                                               transitions=[
-                                           DiscreteTerminalTransition(weights=np.ones((2, 2))),
-                                           DiscreteBinaryNonTerminalTransition(weights=np.ones((2, 2, 2)))
-                                       ])],
-                            prior=DiscretePrior(struc_weights=np.ones(1), prior_weights=[np.ones(2)]))
+                                                  DiscreteTerminalTransition(weights=np.ones((2, 2)), prob_rep=Prob),
+                                                  DiscreteBinaryNonTerminalTransition(weights=np.ones((2, 2, 2)), prob_rep=Prob)
+                                              ], prob_rep=Prob)],
+                            prior=DiscretePrior(struc_weights=np.ones(1), prior_weights=[np.ones(2)], prob_rep=Prob))
         # parse a random sequence of length N
         N = 5
         marginal_likelihood = rbn.inside(sequence=np.random.randint(0, 2, (N, 1)))
@@ -82,21 +83,21 @@ class TestStaticCell(TestCase):
         rbn = SequentialRBN(cells=[StaticCell(variable=DiscreteNonTermVar(3),
                                               weights=np.ones(3),
                                               transitions=[
-                                           DiscreteTerminalTransition(weights=np.ones((5, 3))),
-                                           DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 3)),
-                                                                               left_idx=0, right_idx=0),
-                                           DiscreteBinaryNonTerminalTransition(weights=np.ones((4, 4, 3)),
-                                                                               left_idx=1, right_idx=1)
-                                       ]),
+                                                  DiscreteTerminalTransition(weights=np.ones((5, 3))),
+                                                  DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 3)),
+                                                                                      left_idx=0, right_idx=0),
+                                                  DiscreteBinaryNonTerminalTransition(weights=np.ones((4, 4, 3)),
+                                                                                      left_idx=1, right_idx=1)
+                                              ]),
                                    StaticCell(variable=DiscreteNonTermVar(4),
-                                       weights=np.ones(3),
-                                       transitions=[
-                                           DiscreteTerminalTransition(weights=np.ones((5, 4))),
-                                           DiscreteBinaryNonTerminalTransition(weights=np.ones((4, 4, 4)),
-                                                                               left_idx=1, right_idx=1),
-                                           DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 4)),
-                                                                               left_idx=0, right_idx=0)
-                                       ])
+                                              weights=np.ones(3),
+                                              transitions=[
+                                                  DiscreteTerminalTransition(weights=np.ones((5, 4))),
+                                                  DiscreteBinaryNonTerminalTransition(weights=np.ones((4, 4, 4)),
+                                                                                      left_idx=1, right_idx=1),
+                                                  DiscreteBinaryNonTerminalTransition(weights=np.ones((3, 3, 4)),
+                                                                                      left_idx=0, right_idx=0)
+                                              ])
                                    ],
                             prior=DiscretePrior(struc_weights=np.ones(2), prior_weights=[np.ones(3), np.ones(4)]))
         # parse a random sequence of length N
@@ -131,10 +132,10 @@ class TestStaticCell(TestCase):
         # prior deterministically generates 0
         prior_weights = np.zeros(K)
         prior_weights[0] = 1
-        prior = DiscretePrior(struc_weights=np.ones(1), prior_weights=[prior_weights])
-        assert_array_equal(prior.structural_distributions.detach(), [1])
+        prior = DiscretePrior(struc_weights=np.ones(1), prior_weights=[prior_weights], prob_rep=Prob)
+        assert_array_equal(prior.structural_distribution.p.detach(), [1])
         self.assertEqual(len(prior.prior_distributions), 1)
-        assert_array_equal(prior.prior_distributions[0].detach(), [1] + [0] * (K - 1))
+        assert_array_equal(prior.prior_distributions[0].p.detach(), [1] + [0] * (K - 1))
 
         # non-terminal transitions copy parent value to left child and count right child up or down
         non_terminal_weights = np.zeros((K, K, K))
@@ -144,24 +145,25 @@ class TestStaticCell(TestCase):
         non_terminal_weights[np.arange(K),
                              np.clip(np.arange(K) - 1, 0, K - 1),  # clip: don't undershoot
                              np.arange(K)] = 1
-        non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights)
+        non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights, prob_rep=Prob)
         # check off-diagonals and corners
-        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[:-1], K_range[1:], K_range[:-1]].detach(),
+        assert_array_equal(non_terminal_transition.transition_probabilities.p[K_range[:-1], K_range[1:], K_range[:-1]].detach(),
                            [0.5] * (K - 1))
-        assert_array_equal(non_terminal_transition.transition_probabilities[K_range[1:], K_range[:-1], K_range[1:]].detach(),
+        assert_array_equal(non_terminal_transition.transition_probabilities.p[K_range[1:], K_range[:-1], K_range[1:]].detach(),
                            [0.5] * (K - 1))
-        assert_array_equal(non_terminal_transition.transition_probabilities[[0, K - 1], [0, K - 1], [0, K - 1]].detach(),
+        assert_array_equal(non_terminal_transition.transition_probabilities.p[[0, K - 1], [0, K - 1], [0, K - 1]].detach(),
                            [0.5, 0.5])
 
         # terminal transition copies last non-terminal
         terminal_weights = np.eye(K)
-        terminal_transition = DiscreteTerminalTransition(weights=terminal_weights)
+        terminal_transition = DiscreteTerminalTransition(weights=terminal_weights, prob_rep=Prob)
         # print(terminal_transition.transition_probabilities.T)
 
         cell = StaticCell(variable=DiscreteNonTermVar(K),
                           weights=np.array([0.4, 0.6]),
-                          transitions=[terminal_transition, non_terminal_transition])
-        term_prob, non_term_prob = cell.transition_probabilities
+                          transitions=[terminal_transition, non_terminal_transition],
+                          prob_rep=Prob)
+        term_prob, non_term_prob = cell.transition_probabilities.p[:, 0]
 
         rbn = SequentialRBN(cells=[cell], prior=prior)
 
@@ -208,10 +210,11 @@ class TestStaticCell(TestCase):
                                     [((lhs, (l_child, r_child)), 1) for lhs, l_child, r_child in
                                      ["AAA", "BBA", "CCB", "DDC", "EED"]] +
                                     [(f"{x} --> {x}", 1) for x in "ABCDE"],
-                              start="A")
+                              start="A",
+                              prob_rep=Prob)
         terminals = "ABCDE"
         N = len(terminals)
-        term_prob, non_term_prob = pcfg.cells[0].transition_probabilities
+        term_prob, non_term_prob = pcfg.cells[0].transition_probabilities.p[:, 0]
         marginal_likelihood = pcfg.inside(sequence=terminals).detach().numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 
@@ -264,7 +267,8 @@ class TestStaticCell(TestCase):
                                                                                [subjects, verbs, adverb_gradable,
                                                                                 adverb_non_gradable, verb_qualifier,
                                                                                 grade]) for t in ts],
-                              start="start")
+                              start="start",
+                              prob_rep=Prob)
         # grammatical sentences
         for terminals in [
             "I run",
@@ -285,6 +289,6 @@ class TestStaticCell(TestCase):
             "run fast"
         ]:
             marginal_likelihood = pcfg.inside(sequence=terminals.split())
-            self.assertEqual(marginal_likelihood, 0)
+            self.assertEqual(marginal_likelihood.detach().numpy(), 0)
             if verbose:
                 print(marginal_likelihood, terminals)
