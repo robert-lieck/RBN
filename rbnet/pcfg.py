@@ -92,12 +92,17 @@ class AbstractedPCFG(PCFG, pl.LightningModule, ConstrainedModuleMixin):
             else:
                 raise ValueError(f"Right-hand side of rules must consist of one (terminal) or two (non-terminal) "
                                  f"symbols; this one has {len(rhs)} symbols: rhs={rhs}, lhs={lhs}, w={w}")
-
-        non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights)
-        terminal_transition = DiscreteTerminalTransition(weights=terminal_weights)
-        cell = StaticCell(variable=DiscreteNonTermVar(non_term_size),
-                          weights=[terminal_weights.sum(), non_terminal_weights.sum()],
-                          transitions=[terminal_transition, non_terminal_transition])
+        struc_weights = [terminal_weights.sum(axis=0), non_terminal_weights.sum(axis=(0, 1))]
+        # fix weights for symbols that have ONLY terminal/non-terminal transitions
+        terminal_weights = normalize_non_zero(terminal_weights, axis=0, make_zeros_uniform=True)
+        non_terminal_weights = normalize_non_zero(non_terminal_weights, axis=(0, 1), make_zeros_uniform=True)
+        # create transitions and cell
+        non_terminal_transition = DiscreteBinaryNonTerminalTransition(weights=non_terminal_weights, prob_rep=prob_rep)
+        terminal_transition = DiscreteTerminalTransition(weights=terminal_weights, prob_rep=prob_rep)
+        cell = DiscreteCell(variable=DiscreteNonTermVar(non_term_size),
+                            weights=struc_weights,
+                            transitions=[terminal_transition, non_terminal_transition],
+                            prob_rep=prob_rep)
         super().__init__(cells=[cell], prior=prior, non_terminals=non_terminals, terminal_indices=terminal_indices, *args, **kwargs)
 
 
