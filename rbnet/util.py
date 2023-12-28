@@ -3,6 +3,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import random_split
 import pytorch_lightning as pl
+import matplotlib.pyplot as plt
 
 
 class SequenceDataModule(pl.LightningDataModule):
@@ -88,3 +89,19 @@ def as_detached_tensor(t):
         return t.clone().detach()
     else:
         return torch.tensor(t)
+
+def plot_vec(func, x_min=0, y_min=0, x_max=1, y_max=1, nx=10, ny=10):
+    x, y = np.meshgrid(np.linspace(x_min, x_max, nx), np.linspace(y_min, y_max, ny))
+    x_vec, y_vec = func(x, y)
+    plt.quiver(x, y, x_vec, y_vec)
+    plt.show()
+
+
+def plot_grad(func, x_min=0, y_min=0, x_max=1, y_max=1, nx=10, ny=10):
+    x, y = np.meshgrid(np.linspace(x_min, x_max, nx), np.linspace(y_min, y_max, ny))
+    x = torch.tensor(x, requires_grad=True)
+    y = torch.tensor(y, requires_grad=True)
+    loss = func(x, y)
+    loss.backward(torch.ones((nx, ny)))
+    plt.quiver(x.detach(), y.detach(), x.grad, y.grad)
+    plt.show()
