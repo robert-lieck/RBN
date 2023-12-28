@@ -65,6 +65,98 @@ class ConstrainedModuleList(torch.nn.ModuleList, ConstrainedModuleMixin):
     pass
 
 
+class Prob(torch.nn.Module, ConstrainedModuleMixin):
+    """
+    A class for probability distributions that enforces positivity and normalisation constraints and projects the
+    gradient in backward passes.
+
+    :ivar p: probabilities
+    :ivar dim: dimensions along which normalisation is applied
+    """
+    def __init__(self, p, dim=None, raise_zero_norms=True, *args, **kwargs):
+        """
+        :param p: initial probabilities
+        :param dim: dimensions along which normalisation is to be applied or ``None`` for all dimensions
+        :param args: passed on to super()__init__
+        :param kwargs: passed on to super()__init__
+        """
+        super().__init__(*args, **kwargs)
+        self.p = torch.nn.Parameter(p)
+        self.p.register_hook(self.project_grad)
+        if dim is None:
+            self.dim = tuple(range(len(self.p.shape)))
+        else:
+            self.dim = dim
+        self.raise_zero_norms = raise_zero_norms
+        self.enforce_constraints()
+
+    def project_grad(self, grad):
+        """
+        Projects the gradient to the tangent space :math:`g^\top = g - \frac{1}{|g|} \sum g`.
+
+        Registered as a hook on the parameter.
+
+        :param grad: unconstrained gradient
+        :return: projected gradient
+        """
+        shape = np.array(grad.shape)
+        return grad - grad.sum(dim=self.dim, keepdim=True) / np.prod(shape[torch.tensor(self.dim)])
+
+    def enforce_constraints(self, recurse=True):
+        """
+        Enforces positivity constraints (by clipping) and normalisation constraints.
+        """
+        with torch.no_grad():
+            self.p.clip_(0)
+            s = self.p.sum(dim=self.dim, keepdim=True)
+            if self.raise_zero_norms and torch.any(s == 0):
+                raise RuntimeError("Some normalisation constants are zero")
+            self.p.div_(s)
+
+
+class LogProb(torch.nn.Module, ConstrainedModuleMixin):
+
+    def __init__(self, p=None, log_p=None, dim=None, raise_zero_norms=True, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if (p is None) == (log_p is None):
+            raise ValueError("Have to provide exactly one of 't' and 'log_t'")
+        if p is not None:
+            log_p = to_log(p)
+        self.log_p = torch.nn.Parameter(log_p)
+        self.log_p.register_hook(self.project_grad)
+        if dim is None:
+            self.dim = tuple(range(len(self.log_p.shape)))
+        else:
+            self.dim = dim
+        self.raise_zero_norms = raise_zero_norms
+        self.enforce_constraints()
+
+    def remap(self, param, _top_level=True, prefix=None):
+        if param is self.log_p:
+            return self.p
+        else:
+            raise KeyError
+
+    def enforce_constraints(self, recurse=True):
+        with torch.no_grad():
+            s = torch.logsumexp(self.log_p, dim=self.dim, keepdim=True)
+            if self.raise_zero_norms and torch.any(torch.isinf(s)):
+                raise RuntimeError("Some log-normalisation constants are inf")
+            self.log_p.sub_(s)
+
+    def project_grad(self, grad):
+        shape = np.array(grad.shape)
+        return grad - grad.sum(dim=self.dim, keepdim=True) / np.prod(shape[torch.tensor(self.dim)])
+
+    @property
+    def p(self):
+        return from_log(self.log_p)
+
+    @p.setter
+    def p(self, value):
+        self.log_p = to_log(value)
+
+
 class SequenceDataModule(pl.LightningDataModule):
     def __init__(self, sequences, val_split=0.2, test_split=0.1):
         super().__init__()
@@ -182,10 +274,51 @@ def normalize_non_zero(a, axis=_no_value, make_zeros_uniform=False, skip_type_ch
 
 
 def as_detached_tensor(t):
+    """
+    Create a detached copy of tensor. If ``t`` already is a tensor, clone and detach it, otherwise create a new tensor.
+
+    :param t: tensor to detach and copy
+    :return: detached and copied tensor
+    """
     if torch.is_tensor(t):
         return t.clone().detach()
     else:
         return torch.tensor(t)
+
+
+def to_log(t, eps=1e-12):
+    """
+    Transform tensor to log representation by computing :math:`\log(t + \epsilon)`.
+
+    :param t: input tensor to transform
+    :param eps: small constant to avoid inf
+    :return: log-transformed tensor
+    """
+    return torch.log(t + eps)
+
+
+def from_log(t, eps=1e-12):
+    """
+    Transform tensor from log representation by computing :math:`\exp(t) - \epsilon`.
+
+    :param t: input tensor to transform
+    :param eps: small constant used to avoid inf in transforming to log representation
+    :return: transformed tensor
+    """
+    return torch.exp(t) - eps
+
+
+def log_normalize(t, *args, **kwargs):
+    """
+    Normalise tensor ``t`` in log representation by computing :math:`t - \log \sum \exp t` using PyTorch logsumexp.
+
+    :param t:
+    :param args: positional arguments passed on to logsumexp
+    :param kwargs: key-word arguments passed on to logsumexp
+    :return: normalised tensor
+    """
+    return t - torch.logsumexp(t, *args, **kwargs)
+
 
 def plot_vec(func, x_min=0, y_min=0, x_max=1, y_max=1, nx=10, ny=10):
     x, y = np.meshgrid(np.linspace(x_min, x_max, nx), np.linspace(y_min, y_max, ny))
