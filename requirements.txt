@@ -1,3 +1,12 @@
+setuptools
+packaging
+
+seaborn
+scipy
+matplotlib
 numpy
-triangularmap
 torch
+pytorch_lightning
+
+triangularmap
+pyulib
