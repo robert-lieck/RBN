@@ -6,8 +6,6 @@ rbnet.pcfg.PCFG
 .. autoclass:: PCFG
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

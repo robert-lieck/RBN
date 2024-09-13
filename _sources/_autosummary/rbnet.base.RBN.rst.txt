@@ -6,8 +6,6 @@ rbnet.base.RBN
 .. autoclass:: RBN
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

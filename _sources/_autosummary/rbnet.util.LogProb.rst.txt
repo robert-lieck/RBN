@@ -1,0 +1,11 @@
+rbnet.util.LogProb
+==================
+
+.. currentmodule:: rbnet.util
+
+.. autoclass:: LogProb
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

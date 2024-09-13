@@ -6,8 +6,6 @@ rbnet.base.NonTermVar
 .. autoclass:: NonTermVar
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

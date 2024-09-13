@@ -7,7 +7,7 @@
   <title>rbnet.multivariate_normal.MultivariateNormal &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -110,13 +110,13 @@ additional functionality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>loc</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – </p></li>
-<li><p><strong>covariance_matrix</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>) – </p></li>
-<li><p><strong>precision_matrix</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>) – </p></li>
-<li><p><strong>scale_tril</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>) – </p></li>
-<li><p><strong>norm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>) – </p></li>
-<li><p><strong>log_norm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>) – </p></li>
-<li><p><strong>validate_args</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>) – </p></li>
+<li><p><strong>loc</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>)</p></li>
+<li><p><strong>covariance_matrix</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>)</p></li>
+<li><p><strong>precision_matrix</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>)</p></li>
+<li><p><strong>scale_tril</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>)</p></li>
+<li><p><strong>norm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>)</p></li>
+<li><p><strong>log_norm</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span>)</p></li>
+<li><p><strong>validate_args</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>)</p></li>
 <li><p><strong>dim</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>) – explicitly specify the event dimensionality if <cite>loc</cite> is a (batch of) scalars; otherwise this is
 taken to correspond to the last axis of <cite>loc</cite></p></li>
 </ul>
@@ -149,97 +149,22 @@ taken to correspond to the last axis of <cite>loc</cite></p></li>
 <p class="rubric">Private Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.MultivariateNormal._expand_scalar" title="rbnet.multivariate_normal.MultivariateNormal._expand_scalar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_scalar</span></code></a>(diag, dim)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_scalar</span></code>(diag, dim)</p></td>
 <td><p>Expand an array of scalars into an array of diagonal matrices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.MultivariateNormal._expand_diagonal" title="rbnet.multivariate_normal.MultivariateNormal._expand_diagonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_diagonal</span></code></a>(diag[, dim])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_diagonal</span></code>(diag[, dim])</p></td>
 <td><p>Expand an array of diagonals into an array of diagonal matrices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.MultivariateNormal._to_tensor" title="rbnet.multivariate_normal.MultivariateNormal._to_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_to_tensor</span></code></a>(t)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_to_tensor</span></code>(t)</p></td>
 <td><p>Return <cite>t</cite> as a pytorch tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.MultivariateNormal._expand_mat" title="rbnet.multivariate_normal.MultivariateNormal._expand_mat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_mat</span></code></a>(mat)</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">rtype<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-</dl>
-</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_expand_mat</span></code>(mat)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr class="docutils" />
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.MultivariateNormal._expand_diagonal">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_expand_diagonal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#MultivariateNormal._expand_diagonal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.MultivariateNormal._expand_diagonal" title="Link to this definition"></a></dt>
-<dd><p>Expand an array of diagonals into an array of diagonal matrices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>diag</strong> – Array of shape (…, dim) with entries that specify the values on the diagonal of the matrices.</p></li>
-<li><p><strong>dim</strong> – Dimensionality of the resulting matrices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of shape (…, dim, dim) with diagonal matrices.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.MultivariateNormal._expand_mat">
-<span class="sig-name descname"><span class="pre">_expand_mat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#MultivariateNormal._expand_mat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.MultivariateNormal._expand_mat" title="Link to this definition"></a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.MultivariateNormal._expand_scalar">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_expand_scalar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#MultivariateNormal._expand_scalar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.MultivariateNormal._expand_scalar" title="Link to this definition"></a></dt>
-<dd><p>Expand an array of scalars into an array of diagonal matrices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>diag</strong> – Array of arbitrary shape (…) with scalars that specify the value on the diagonal of the matrices.</p></li>
-<li><p><strong>dim</strong> – Dimensionality of the resulting matrices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of shape (…, dim, dim) with diagonal matrices.</p>
-</dd>
-</dl>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diag</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">diag</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">MultivariateNormal</span><span class="o">.</span><span class="n">_expand_scalar</span><span class="p">(</span><span class="n">diag</span><span class="o">=</span><span class="n">diag</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tensor([0., 1., 2.])
-tensor([[[0., 0., 0.],
-         [0., 0., 0.],
-         [0., 0., 0.]],
-
-        [[1., 0., 0.],
-         [0., 1., 0.],
-         [0., 0., 1.]],
-
-        [[2., 0., 0.],
-         [0., 2., 0.],
-         [0., 0., 2.]]])
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.MultivariateNormal._to_tensor">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_to_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#MultivariateNormal._to_tensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.MultivariateNormal._to_tensor" title="Link to this definition"></a></dt>
-<dd><p>Return <cite>t</cite> as a pytorch tensor. If <cite>t</cite> already is a tensor it is returned as is, otherwise <code class="docutils literal notranslate"><span class="pre">torch.tensor(t)</span></code>
-is returned.</p>
-</dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="rbnet.multivariate_normal.MultivariateNormal.torch">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">torch</span></span><a class="headerlink" href="#rbnet.multivariate_normal.MultivariateNormal.torch" title="Link to this definition"></a></dt>

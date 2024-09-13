@@ -6,7 +6,7 @@
   <title>rbnet.util &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -20,7 +20,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -78,39 +78,424 @@
            <div itemprop="articleBody">
              
   <h1>Source code for rbnet.util</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data.dataset</span> <span class="kn">import</span> <span class="n">random_split</span>
+<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 
+<span class="n">_no_value</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+<span class="c1"># always use strict zip if available</span>
+<span class="n">_buildin_zip</span> <span class="o">=</span> <span class="nb">zip</span>
+<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]]</span> <span class="o">&gt;=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">]):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="nb">zip</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">|</span> <span class="n">kwargs</span>
+        <span class="k">yield from</span> <span class="n">_buildin_zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="nb">zip</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">yield from</span> <span class="n">_buildin_zip</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ConstrainedModuleMixin">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstrainedModuleMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A mixin class for modules with constraints to work cooperatively. Calling :meth:`~enforce_constraints` will</span>
+<span class="sd">    recursively try to call this method on child modules.</span>
+
+<span class="sd">    Typical usage would be to call :meth:`~enforce_constraints` on the top-level parent module before the forward pass</span>
+<span class="sd">    and/or after an optimisation step.</span>
+
+<span class="sd">    See :class:`~Prob` for an example.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConstrainedModuleMixin.enforce_constraints">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.enforce_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">enforce_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enforce constraints for module parameters and child modules.</span>
+
+<span class="sd">        If modules have constrained parameters, they should override this method to enforce these constraints. If</span>
+<span class="sd">        they also have child modules and ``recurse=True``, they should additionally call</span>
+<span class="sd">        ``super().enforce_constraints()`` to recursively propagate the call.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">recurse</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">module</span><span class="o">.</span><span class="n">enforce_constraints</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ConstrainedModuleMixin.remap">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.remap">[docs]</a>
+    <span class="k">def</span> <span class="nf">remap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">_top_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># try to use child for remapping</span>
+                <span class="n">rm</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">_top_level</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">):</span>
+                <span class="c1"># either has no remap function or could not find param</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}{</span><span class="n">rm</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">rm</span>
+        <span class="k">if</span> <span class="n">_top_level</span><span class="p">:</span>
+            <span class="c1"># top-level call should return non-remapped param as fallback</span>
+            <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">param</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># nested calls should signal they could not find param</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ConstrainedModuleList">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.ConstrainedModuleList.html#rbnet.util.ConstrainedModuleList">[docs]</a>
+<span class="k">class</span> <span class="nc">ConstrainedModuleList</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ModuleList</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A plain ModuleList with :class:`~ConstrainedModuleMixin` to be cooperative and not break recursive calls.&quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="Prob">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.Prob.html#rbnet.util.Prob">[docs]</a>
+<span class="k">class</span> <span class="nc">Prob</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for probability distributions that enforces positivity and normalisation constraints and projects the</span>
+<span class="sd">    gradient in backward passes.</span>
+
+<span class="sd">    :ivar p: probabilities</span>
+<span class="sd">    :ivar dim: dimensions along which normalisation is applied</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raise_zero_norms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param p: initial probabilities</span>
+<span class="sd">        :param dim: dimensions along which normalisation is to be applied or ``None`` for all dimensions</span>
+<span class="sd">        :param args: passed on to super()__init__</span>
+<span class="sd">        :param kwargs: passed on to super()__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_grad</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_zero_norms</span> <span class="o">=</span> <span class="n">raise_zero_norms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enforce_constraints</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Prob.project_grad">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.Prob.html#rbnet.util.Prob.project_grad">[docs]</a>
+    <span class="k">def</span> <span class="nf">project_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Projects the gradient to the tangent space :math:`\bar{g} = g - 1/|g| \sum g`, registered as a hook on the</span>
+<span class="sd">        parameter.</span>
+
+<span class="sd">        :param grad: unconstrained gradient</span>
+<span class="sd">        :return: projected gradient</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">grad</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)])</span></div>
+
+
+<div class="viewcode-block" id="Prob.enforce_constraints">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.Prob.html#rbnet.util.Prob.enforce_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">enforce_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Enforces positivity constraints (by clipping) and normalisation constraints.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">clip_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_zero_norms</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Some normalisation constants are zero&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">div_</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LogProb">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.LogProb.html#rbnet.util.LogProb">[docs]</a>
+<span class="k">class</span> <span class="nc">LogProb</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">raise_zero_norms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">log_p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Have to provide exactly one of &#39;t&#39; and &#39;log_t&#39;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_p</span> <span class="o">=</span> <span class="n">to_log</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">log_p</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="o">.</span><span class="n">register_hook</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_grad</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_zero_norms</span> <span class="o">=</span> <span class="n">raise_zero_norms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enforce_constraints</span><span class="p">()</span>
+
+<div class="viewcode-block" id="LogProb.remap">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.LogProb.html#rbnet.util.LogProb.remap">[docs]</a>
+    <span class="k">def</span> <span class="nf">remap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">_top_level</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span></div>
+
+
+<div class="viewcode-block" id="LogProb.enforce_constraints">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.LogProb.html#rbnet.util.LogProb.enforce_constraints">[docs]</a>
+    <span class="k">def</span> <span class="nf">enforce_constraints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recurse</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_zero_norms</span> <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">s</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Some log-normalisation constants are inf&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LogProb.project_grad">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.LogProb.html#rbnet.util.LogProb.project_grad">[docs]</a>
+    <span class="k">def</span> <span class="nf">project_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grad</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">grad</span> <span class="o">-</span> <span class="n">grad</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)])</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">from_log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_p</span><span class="p">)</span>
+
+    <span class="nd">@p</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">p</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_p</span> <span class="o">=</span> <span class="n">to_log</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SequenceDataModule">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule">[docs]</a>
+<span class="k">class</span> <span class="nc">SequenceDataModule</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningDataModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">,</span> <span class="n">val_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_split</span> <span class="o">=</span> <span class="n">val_split</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_split</span> <span class="o">=</span> <span class="n">test_split</span>
+
+<div class="viewcode-block" id="SequenceDataModule.setup">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.setup">[docs]</a>
+    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">total_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+        <span class="n">val_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_samples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_split</span><span class="p">)</span>
+        <span class="n">test_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_samples</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_split</span><span class="p">)</span>
+        <span class="n">train_size</span> <span class="o">=</span> <span class="n">total_samples</span> <span class="o">-</span> <span class="n">val_size</span> <span class="o">-</span> <span class="n">test_size</span>
+
+        <span class="n">train_data</span><span class="p">,</span> <span class="n">val_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sequences</span><span class="p">,</span> <span class="p">[</span><span class="n">train_size</span><span class="p">,</span> <span class="n">val_size</span><span class="p">,</span> <span class="n">test_size</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span> <span class="o">=</span> <span class="n">val_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test_data</span></div>
+
+
+<div class="viewcode-block" id="SequenceDataModule.train_dataloader">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.train_dataloader">[docs]</a>
+    <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SequenceDataModule.val_dataloader">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.val_dataloader">[docs]</a>
+    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SequenceDataModule.test_dataloader">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.test_dataloader">[docs]</a>
+    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># from https://github.com/robert-lieck/pyulib</span>
 <div class="viewcode-block" id="normalize_non_zero">
 <a class="viewcode-back" href="../../_autosummary/rbnet.util.normalize_non_zero.html#rbnet.util.normalize_non_zero">[docs]</a>
-<span class="k">def</span> <span class="nf">normalize_non_zero</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_type_check</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;For the given ND array, normalise each 1D array obtained by indexing the &#39;axis&#39; dimension if the sum along the</span>
-<span class="sd">    other dimensions (for that entry) is non-zero. Normalisation is performed in place.&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">normalize_non_zero</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">_no_value</span><span class="p">,</span> <span class="n">make_zeros_uniform</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_type_check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">check_positivity</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    For the given ND array (NumPy or PyTorch), normalise each 1D array obtained by indexing the &#39;axis&#39; dimension if</span>
+<span class="sd">    the sum along the other dimensions (for that entry) is non-zero. Normalisation is performed in place.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># check array type (NumPy/PyTorch)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="s2">&quot;numpy&quot;</span>
+        <span class="nb">any</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span>
+        <span class="nb">all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span>
+        <span class="n">logical_not</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span>
+        <span class="n">ones_like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="n">lib</span> <span class="o">=</span> <span class="s2">&quot;pytorch&quot;</span>
+        <span class="nb">any</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span>
+        <span class="nb">all</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span>
+        <span class="n">logical_not</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logical_not</span>
+        <span class="n">ones_like</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not implemented for arrays of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="c1"># check that dtype is float (in place division of integer arrays silently rounds)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_type_check</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">((</span><span class="n">lib</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">))</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">lib</span> <span class="o">==</span> <span class="s2">&quot;pytorch&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_floating_point</span><span class="p">(</span><span class="n">a</span><span class="p">))):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot guarantee that normalisation works as expected on array of type &#39;</span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39;. &quot;</span>
                             <span class="sa">f</span><span class="s2">&quot;Use &#39;skip_type_check=True&#39; to skip this check.&quot;</span><span class="p">)</span>
-    <span class="c1"># normalise along last axis per default</span>
-    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="c1"># check positivity</span>
+    <span class="k">if</span> <span class="n">check_positivity</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Some elements are negative&quot;</span><span class="p">)</span>
+    <span class="c1"># normalise over everything is axis is not provided</span>
+    <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="n">_no_value</span><span class="p">:</span>
+        <span class="c1"># if axis is not specified, keep old behaviour for compatibility</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Not passing an explicit value to &#39;axis&#39; is deprecated and will result in an error in the &quot;</span>
+                      <span class="s2">&quot;future. The old behaviour of implicitly assuming the last axis is currently kept for &quot;</span>
+                      <span class="s2">&quot;compatibility. The former default value of &#39;None&#39; now results in normalising over &quot;</span>
+                      <span class="s2">&quot;everything.&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># None normalises over everything</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
     <span class="c1"># make axis a tuple if it isn&#39;t</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="n">axis</span><span class="p">,)</span>
-    <span class="c1"># compute sum along axis, keeping dimensions</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="c1"># check for non-zero entries</span>
-    <span class="n">non_zero</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">non_zero</span><span class="p">):</span>
-        <span class="c1"># directly return if there are no non-zero entries</span>
-        <span class="k">return</span> <span class="n">a</span>
-    <span class="c1"># construct an index tuple to select the appropriate entries for normalisation (the dimensions specified by axis</span>
-    <span class="c1"># have to be replaced by full slices &#39;:&#39; to broadcast normalisation along these dimensions)</span>
-    <span class="n">non_zero_arr</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">axis</span> <span class="k">else</span> <span class="n">n</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">non_zero</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()))</span>
+
+    <span class="c1"># helper function to compute sum and non-zero entries</span>
+    <span class="k">def</span> <span class="nf">get_sum</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">lib</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lib</span> <span class="o">==</span> <span class="s2">&quot;pytorch&quot;</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">non_zero</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># construct an index tuple to select the appropriate entries for normalisation (the dimensions specified by axis</span>
+        <span class="c1"># have to be replaced by full slices &#39;:&#39; to broadcast normalisation along these dimensions)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">as_tuple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">lib</span> <span class="o">==</span> <span class="s2">&quot;pytorch&quot;</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="n">non_zero_arr</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">axis</span> <span class="k">else</span> <span class="n">n</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">non_zero</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">non_zero</span><span class="p">,</span> <span class="n">non_zero_arr</span>
+
+    <span class="c1"># compute sum and non-zero entries</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">non_zero</span><span class="p">,</span> <span class="n">non_zero_arr</span> <span class="o">=</span> <span class="n">get_sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="c1"># handle zero entries</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">non_zero</span><span class="p">):</span>
+        <span class="c1"># all entries are zero</span>
+        <span class="k">if</span> <span class="n">make_zeros_uniform</span><span class="p">:</span>
+            <span class="c1"># replace a with uniform array</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">ones_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">get_sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># nothing to normalise: directly return</span>
+            <span class="k">return</span> <span class="n">a</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">non_zero</span><span class="p">):</span>
+        <span class="c1"># some entries are zero</span>
+        <span class="k">if</span> <span class="n">make_zeros_uniform</span><span class="p">:</span>
+            <span class="c1"># create a uniform array, fill non-zero entries with those from a</span>
+            <span class="n">new_a</span> <span class="o">=</span> <span class="n">ones_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">new_a</span><span class="p">[</span><span class="n">non_zero_arr</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">non_zero_arr</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">new_a</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">non_zero</span><span class="p">,</span> <span class="n">non_zero_arr</span> <span class="o">=</span> <span class="n">get_sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
     <span class="c1"># in-place replace non-zero entries by their normalised values</span>
     <span class="n">a</span><span class="p">[</span><span class="n">non_zero_arr</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">non_zero_arr</span><span class="p">]</span> <span class="o">/</span> <span class="n">s</span><span class="p">[</span><span class="n">non_zero_arr</span><span class="p">]</span>
     <span class="c1"># return array</span>
     <span class="k">return</span> <span class="n">a</span></div>
+
+
+
+<div class="viewcode-block" id="as_detached_tensor">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.as_detached_tensor.html#rbnet.util.as_detached_tensor">[docs]</a>
+<span class="k">def</span> <span class="nf">as_detached_tensor</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a detached copy of tensor. If ``t`` already is a tensor, clone and detach it, otherwise create a new tensor.</span>
+
+<span class="sd">    :param t: tensor to detach and copy</span>
+<span class="sd">    :return: detached and copied tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">t</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="to_log">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.to_log.html#rbnet.util.to_log">[docs]</a>
+<span class="k">def</span> <span class="nf">to_log</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transform tensor to log representation by computing :math:`\log(t + \epsilon)`.</span>
+
+<span class="sd">    :param t: input tensor to transform</span>
+<span class="sd">    :param eps: small constant to avoid inf</span>
+<span class="sd">    :return: log-transformed tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="from_log">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.from_log.html#rbnet.util.from_log">[docs]</a>
+<span class="k">def</span> <span class="nf">from_log</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transform tensor from log representation by computing :math:`\exp(t) - \epsilon`.</span>
+
+<span class="sd">    :param t: input tensor to transform</span>
+<span class="sd">    :param eps: small constant used to avoid inf in transforming to log representation</span>
+<span class="sd">    :return: transformed tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="n">eps</span></div>
+
+
+
+<div class="viewcode-block" id="log_normalize">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.log_normalize.html#rbnet.util.log_normalize">[docs]</a>
+<span class="k">def</span> <span class="nf">log_normalize</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalise tensor ``t`` in log representation by computing :math:`t - \log \sum \exp t` using PyTorch logsumexp.</span>
+
+<span class="sd">    :param t:</span>
+<span class="sd">    :param args: positional arguments passed on to logsumexp</span>
+<span class="sd">    :param kwargs: key-word arguments passed on to logsumexp</span>
+<span class="sd">    :return: normalised tensor</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="plot_vec">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.plot_vec.html#rbnet.util.plot_vec">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_vec</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+    <span class="n">x_vec</span><span class="p">,</span> <span class="n">y_vec</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_vec</span><span class="p">,</span> <span class="n">y_vec</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="plot_grad">
+<a class="viewcode-back" href="../../_autosummary/rbnet.util.plot_grad.html#rbnet.util.plot_grad">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_grad</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">nx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 </pre></div>
 

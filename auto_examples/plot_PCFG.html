@@ -7,7 +7,7 @@
   <title>Abstracted PCFGs &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,13 +21,13 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Discrete RBN" href="plot_discrete_RBN.html" />
-    <link rel="prev" title="Gallery and Examples" href="index.html" /> 
+    <link rel="prev" title="Plot Vector/Gradient Field" href="plot_vec_grad.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,6 +53,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery and Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_vec_grad.html">Plot Vector/Gradient Field</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Abstracted PCFGs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#defining-the-pcfg">Defining the PCFG</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#parsing-sentences">Parsing Sentences</a></li>
@@ -91,7 +92,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-pcfg-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="abstracted-pcfgs">
 <span id="sphx-glr-auto-examples-plot-pcfg-py"></span><h1>Abstracted PCFGs<a class="headerlink" href="#abstracted-pcfgs" title="Link to this heading"></a></h1>
@@ -145,35 +146,39 @@ to download the full example code</p>
                       <span class="n">start</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/RBN/RBN/rbnet/util.py:299: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ../torch/csrc/utils/tensor_new.cpp:278.)
+  return torch.tensor(t)
+</pre></div>
+</div>
 </section>
 <section id="parsing-sentences">
 <h2>Parsing Sentences<a class="headerlink" href="#parsing-sentences" title="Link to this heading"></a></h2>
 <p>Let’s test the grammar by computing the marginal likelihood of some grammatical sentences
 (which should be greater than zero) and for some un-grammatical ones (which should have zero marginal likelihood)</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="c1"># grammatical</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">grammatical_sentences</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;I run&quot;</span><span class="p">,</span>
     <span class="s2">&quot;You never run&quot;</span><span class="p">,</span>
     <span class="s2">&quot;We run very veeery slowly&quot;</span><span class="p">,</span>
     <span class="s2">&quot;They always run alone&quot;</span><span class="p">,</span>
     <span class="s2">&quot;I never sleep really very quickly&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;You do-not drink very quickly&quot;</span><span class="p">,</span>
-    <span class="c1"># un-grammatical</span>
+    <span class="s2">&quot;You do-not drink very quickly&quot;</span><span class="p">]</span>
+<span class="n">ungrammatical_sentences</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;I You&quot;</span><span class="p">,</span>
     <span class="s2">&quot;run fast&quot;</span>
-<span class="p">]:</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">grammatical_sentences</span> <span class="o">+</span> <span class="n">ungrammatical_sentences</span><span class="p">:</span>
     <span class="n">marginal_likelihood</span> <span class="o">=</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">marginal_likelihood</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>I run --&gt; 0.011551999999999998
-You never run --&gt; 0.00017559039999999996
-We run very veeery slowly --&gt; 1.7309186566826655e-06
-They always run alone --&gt; 1.0675896319999996e-05
-I never sleep really very quickly --&gt; 5.261992716315302e-08
-You do-not drink very quickly --&gt; 4.327296641706664e-07
-I You --&gt; 0.0
-run fast --&gt; 0.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>I run --&gt; 0.041666667908096755
+You never run --&gt; 0.0017361111240322576
+We run very veeery slowly --&gt; 1.3563368156502012e-05
+They always run alone --&gt; 0.00028935185400537626
+I never sleep really very quickly --&gt; 1.130280679708501e-06
+You do-not drink very quickly --&gt; 9.042245437668008e-06
+I You --&gt; -5.4372458772976525e-24
+run fast --&gt; -2.0901856201675087e-24
 </pre></div>
 </div>
 <p>We can also print a simple textual visualisation of the parse chart, which shows
@@ -193,7 +198,7 @@ run fast --&gt; 0.0
                            ╱                ╲
                           ╱                  ╲
                          ╱                    ╲
-                        ╱        start|1.76e-04╲
+                        ╱        start|1.74e-03╲
                        ╱╲                      ╱╲
                       ╱  ╲                    ╱  ╲
                      ╱    ╲                  ╱    ╲
@@ -205,7 +210,7 @@ run fast --&gt; 0.0
                ╱                ╲      ╱                ╲
               ╱                  ╲    ╱                  ╲
              ╱                    ╲  ╱                    ╲
-            ╱                    []╲╱         verb|3.85e-03╲
+            ╱                    []╲╱         verb|6.94e-03╲
            ╱╲                      ╱╲                      ╱╲
           ╱  ╲                    ╱  ╲                    ╱  ╲
          ╱    ╲                  ╱    ╲                  ╱    ╲
@@ -217,16 +222,19 @@ run fast --&gt; 0.0
    ╱                ╲      ╱                ╲      ╱                ╲
   ╱                  ╲    ╱                  ╲    ╱                  ╲
  ╱                    ╲  ╱                    ╲  ╱                    ╲
-╱       subject|1.9e-01╲╱verb_qualifier|1.9e-01╲╱         verb|2.53e-01╲
+╱       subject|2.5e-01╲╱verb_qualifier|2.5e-01╲╱         verb|1.67e-01╲
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.008 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.026 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-pcfg-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cfcf0afa49cfde57bfef252aaa21d878/plot_PCFG.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_PCFG.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c510416e2cc60bc81f8b6069e2a7bcd9/plot_PCFG.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_PCFG.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/1d1f0c31b0ddc3ddf52e6407a575dc93/plot_PCFG.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_PCFG.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -237,7 +245,7 @@ run fast --&gt; 0.0
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Gallery and Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_vec_grad.html" class="btn btn-neutral float-left" title="Plot Vector/Gradient Field" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="plot_discrete_RBN.html" class="btn btn-neutral float-right" title="Discrete RBN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

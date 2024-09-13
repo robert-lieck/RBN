@@ -1,0 +1,6 @@
+rbnet.util.plot\_vec
+====================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: plot_vec

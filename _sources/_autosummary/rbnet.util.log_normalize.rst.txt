@@ -1,0 +1,6 @@
+rbnet.util.log\_normalize
+=========================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: log_normalize

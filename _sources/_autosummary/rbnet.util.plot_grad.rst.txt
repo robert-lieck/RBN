@@ -1,0 +1,6 @@
+rbnet.util.plot\_grad
+=====================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: plot_grad

@@ -1,0 +1,11 @@
+rbnet.pcfg.DiscreteCell
+=======================
+
+.. currentmodule:: rbnet.pcfg
+
+.. autoclass:: DiscreteCell
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

@@ -28,8 +28,8 @@
    :template: custom-module-template.rst
    :recursive:
 
-   rbnet.base
-   rbnet.multivariate_normal
-   rbnet.pcfg
-   rbnet.util
+   base
+   multivariate_normal
+   pcfg
+   util
 

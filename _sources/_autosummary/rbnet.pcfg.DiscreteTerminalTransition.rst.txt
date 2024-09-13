@@ -6,8 +6,6 @@ rbnet.pcfg.DiscreteTerminalTransition
 .. autoclass:: DiscreteTerminalTransition
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

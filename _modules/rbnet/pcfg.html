@@ -6,7 +6,7 @@
   <title>rbnet.pcfg &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -20,7 +20,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -81,10 +81,12 @@
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
 
 <span class="kn">from</span> <span class="nn">triangularmap</span> <span class="kn">import</span> <span class="n">TMap</span>
 
-<span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">normalize_non_zero</span>
+<span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">normalize_non_zero</span><span class="p">,</span> <span class="n">as_detached_tensor</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">,</span> <span class="n">ConstrainedModuleList</span><span class="p">,</span> <span class="n">LogProb</span>
 <span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span><span class="p">,</span> <span class="n">SequentialRBN</span>
 
 
@@ -92,15 +94,23 @@
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG">[docs]</a>
 <span class="k">class</span> <span class="nc">PCFG</span><span class="p">(</span><span class="n">SequentialRBN</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="n">terminal_indices</span><span class="p">,</span> <span class="n">non_terminals</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="n">terminal_indices</span><span class="p">,</span> <span class="n">non_terminals</span><span class="p">,</span> <span class="n">auto_tokenise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span> <span class="o">=</span> <span class="n">terminal_indices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_non_terminals</span> <span class="o">=</span> <span class="n">non_terminals</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto_tokenise</span> <span class="o">=</span> <span class="n">auto_tokenise</span>
+
+<div class="viewcode-block" id="PCFG.tokenise">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.tokenise">[docs]</a>
+    <span class="k">def</span> <span class="nf">tokenise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span></div>
+
 
 <div class="viewcode-block" id="PCFG.init_inside">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.init_inside">[docs]</a>
     <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
-        <span class="n">sequence</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_indices</span><span class="p">[</span><span class="n">s</span><span class="p">]]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sequence</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_tokenise</span><span class="p">:</span>
+            <span class="n">sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenise</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init_inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">)</span></div>
 
 
@@ -108,7 +118,7 @@
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.map_inside_chart">[docs]</a>
     <span class="k">def</span> <span class="nf">map_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">new_arr</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">probs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_arr</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">probs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">arr</span><span class="p">:</span>
             <span class="n">field</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">probs</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -124,9 +134,9 @@
 
 <div class="viewcode-block" id="AbstractedPCFG">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG">[docs]</a>
-<span class="k">class</span> <span class="nc">AbstractedPCFG</span><span class="p">(</span><span class="n">PCFG</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">AbstractedPCFG</span><span class="p">(</span><span class="n">PCFG</span><span class="p">,</span> <span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">non_terminals</span><span class="p">,</span> <span class="n">terminals</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">start</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">non_terminals</span><span class="p">,</span> <span class="n">terminals</span><span class="p">,</span> <span class="n">rules</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable</span>
 <span class="sd">        with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.</span>
@@ -135,8 +145,8 @@
 <span class="sd">        :param terminals: list or array of terminal symbols</span>
 <span class="sd">        :param rules: iterable of rules-weight tuples with rules provided either as strings of the form</span>
 <span class="sd">         ``(&quot;X --&gt; Y Z&quot;, w)`` or ``(&quot;X --&gt; Y&quot;, w)`` for non-terminal and terminal rules, respectively (symbols have to</span>
-<span class="sd">          be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for</span>
-<span class="sd">          arbitrary symbols, where w is the rule weight.</span>
+<span class="sd">         be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for</span>
+<span class="sd">         arbitrary symbols, where w is the rule weight.</span>
 <span class="sd">        :param start: the start symbol</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminals</span> <span class="o">=</span> <span class="n">terminals</span>
@@ -148,7 +158,7 @@
         <span class="c1"># deterministic prior</span>
         <span class="n">prior_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">non_term_size</span><span class="p">)</span>
         <span class="n">prior_weights</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">non_terminal_indices</span><span class="p">[</span><span class="n">start</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[</span><span class="n">prior_weights</span><span class="p">])</span>
+        <span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[</span><span class="n">prior_weights</span><span class="p">],</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">prob_rep</span><span class="p">)</span>
 
         <span class="c1"># transition probabilities</span>
         <span class="n">non_terminal_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">non_term_size</span><span class="p">,</span> <span class="n">non_term_size</span><span class="p">,</span> <span class="n">non_term_size</span><span class="p">))</span>
@@ -176,13 +186,18 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Right-hand side of rules must consist of one (terminal) or two (non-terminal) &quot;</span>
                                  <span class="sa">f</span><span class="s2">&quot;symbols; this one has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span><span class="si">}</span><span class="s2"> symbols: rhs=</span><span class="si">{</span><span class="n">rhs</span><span class="si">}</span><span class="s2">, lhs=</span><span class="si">{</span><span class="n">lhs</span><span class="si">}</span><span class="s2">, w=</span><span class="si">{</span><span class="n">w</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-        <span class="n">non_terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">non_terminal_weights</span><span class="p">)</span>
-        <span class="n">terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">terminal_weights</span><span class="p">)</span>
-        <span class="n">cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">non_term_size</span><span class="p">),</span>
-                          <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">non_terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()]),</span>
-                          <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">terminal_transition</span><span class="p">,</span> <span class="n">non_terminal_transition</span><span class="p">])</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> <span class="n">non_terminals</span><span class="o">=</span><span class="n">non_terminals</span><span class="p">,</span> <span class="n">terminal_indices</span><span class="o">=</span><span class="n">terminal_indices</span><span class="p">)</span></div>
+        <span class="n">struc_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">non_terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
+        <span class="c1"># fix weights for symbols that have ONLY terminal/non-terminal transitions</span>
+        <span class="n">terminal_weights</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">terminal_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">make_zeros_uniform</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">non_terminal_weights</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">non_terminal_weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">make_zeros_uniform</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># create transitions and cell</span>
+        <span class="n">non_terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">non_terminal_weights</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">prob_rep</span><span class="p">)</span>
+        <span class="n">terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">terminal_weights</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">prob_rep</span><span class="p">)</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">DiscreteCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">non_term_size</span><span class="p">),</span>
+                            <span class="n">weights</span><span class="o">=</span><span class="n">struc_weights</span><span class="p">,</span>
+                            <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">terminal_transition</span><span class="p">,</span> <span class="n">non_terminal_transition</span><span class="p">],</span>
+                            <span class="n">prob_rep</span><span class="o">=</span><span class="n">prob_rep</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cells</span><span class="o">=</span><span class="p">[</span><span class="n">cell</span><span class="p">],</span> <span class="n">prior</span><span class="o">=</span><span class="n">prior</span><span class="p">,</span> <span class="n">non_terminals</span><span class="o">=</span><span class="n">non_terminals</span><span class="p">,</span> <span class="n">terminal_indices</span><span class="o">=</span><span class="n">terminal_indices</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 
@@ -248,7 +263,7 @@
         <span class="n">non_terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">non_terminal_weights</span><span class="p">)</span>
         <span class="n">terminal_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">terminal_weights</span><span class="p">)</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">non_term_size</span><span class="p">),</span>
-                          <span class="n">weights</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">non_terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()]),</span>
+                          <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="n">terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">non_terminal_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()],</span>
                           <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">terminal_transition</span><span class="p">,</span> <span class="n">non_terminal_transition</span><span class="p">])</span>
 
 
@@ -275,13 +290,14 @@
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar">[docs]</a>
 <span class="k">class</span> <span class="nc">DiscreteNonTermVar</span><span class="p">(</span><span class="n">NonTermVar</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cardinality</span><span class="p">,</span> <span class="n">chart_type</span><span class="o">=</span><span class="s2">&quot;TMap&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cardinality</span><span class="p">,</span> <span class="n">chart_type</span><span class="o">=</span><span class="s2">&quot;TMap&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A discrete non-terminal variable with cardinality ``n``.</span>
+<span class="sd">        A discrete non-terminal variable with cardinality ``cardinality``.</span>
 
 <span class="sd">        :param cardinality: cardinality</span>
 <span class="sd">        :param chart_type: type of chart to use (&quot;dict&quot; or &quot;TMap&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span> <span class="o">=</span> <span class="n">cardinality</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">=</span> <span class="n">chart_type</span>
 
@@ -296,86 +312,87 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="s2">&quot;TMap&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">TMap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">TMap</span><span class="o">.</span><span class="n">size_from_n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">TMap</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">TMap</span><span class="o">.</span><span class="n">size_from_n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown chart type &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DiscreteNonTermVar.mixture">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar.mixture">[docs]</a>
-    <span class="k">def</span> <span class="nf">mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute a mixture distribution over a discrete variable.</span>
 
-<span class="sd">        :param components: array-like with mixture components along ``axis``</span>
-<span class="sd">        :param weights: weights of the mixture components in an array-like of shape ``axis``</span>
-<span class="sd">        :param axis: integer or tuple of integers indicating the dimensions or axes of ``components`` along which to</span>
-<span class="sd">         compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)</span>
+<span class="sd">        :param components: array-like with mixture components along ``dim``</span>
+<span class="sd">        :param weights: [optional] weights of the mixture components; must be compatible (broadcastable) to</span>
+<span class="sd">         ``components``</span>
+<span class="sd">        :param dim: integer or tuple of integers indicating the dimensions of ``components`` along which to sum to</span>
+<span class="sd">         compute the mixture</span>
 <span class="sd">        :return: distribution corresponding to the mixture</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">components</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="n">axis</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cardinality</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_tensor</span><span class="p">(</span><span class="n">components</span><span class="p">):</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">components</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,)</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;weights&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> dimensions and &#39;axis&#39; has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span><span class="si">}</span><span class="s2"> entries &quot;</span>
-                                 <span class="sa">f</span><span class="s2">&quot;but they must be the same&quot;</span><span class="p">)</span>
-            <span class="c1"># bring &#39;weights&#39; into broadcastable shape, keeping dimension at right location according to &#39;axis&#39;</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">axis</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="o">.</span><span class="n">shape</span><span class="p">)))</span>
-            <span class="n">components</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">components</span>
-        <span class="k">return</span> <span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">*</span> <span class="n">components</span>
+        <span class="k">return</span> <span class="n">components</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span></div>
 </div>
 
 
 
 <div class="viewcode-block" id="DiscretePrior">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscretePrior.html#rbnet.pcfg.DiscretePrior">[docs]</a>
-<span class="k">class</span> <span class="nc">DiscretePrior</span><span class="p">(</span><span class="n">Prior</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DiscretePrior</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A prior distribution over discrete non-terminal variables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">struc_weights</span><span class="p">,</span> <span class="n">prior_weights</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">struc_weights</span><span class="p">,</span> <span class="n">prior_weights</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialise prior with structural distribution p(z) and individual prior distributions p(a1), ..., p(an) for</span>
-<span class="sd">        n non-terminal variables a1, ..., an. The cardinality of z is n.</span>
+<span class="sd">        Initialise prior with structural distribution ``p(z)`` and individual prior distributions ``p(a1), ..., p(an)``</span>
+<span class="sd">         for ``n`` non-terminal variables ``a1, ..., an``. The cardinality of ``z`` is ``n``.</span>
 
-<span class="sd">        :param struc_weights: Numpy array of shape (n,) with weights for the structural distribution</span>
-<span class="sd">        :param prior_weights: iterable over n Numpy arrays if shapes (K1,), ..., (Kn,) with weights for the prior</span>
-<span class="sd">         distribution of the n non-terminal variables.</span>
+<span class="sd">        :param struc_weights: array of shape ``(n,)`` with weights for the structural distribution</span>
+<span class="sd">        :param prior_weights: iterable over ``n`` arrays if shapes ``(K1,), ..., (Kn,)`` with weights for the prior</span>
+<span class="sd">         distribution of the ``n`` non-terminal variables.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">struc_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">struc_weights</span> <span class="o">=</span> <span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span>
+        <span class="n">prior_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">prior_weights</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">struc_weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">struc_weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">structural_distributions</span> <span class="o">=</span> <span class="n">struc_weights</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">structural_distribution</span> <span class="o">=</span> <span class="n">prob_rep</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">struc_weights</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;struc_weights` must be one-dimensional&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prior_weights</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected as many distributions as weights, but got: &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">prior_weights</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">struc_weights</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">prior_distributions</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">prior_weights</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prior_distributions</span> <span class="o">=</span> <span class="n">ConstrainedModuleList</span><span class="p">([</span><span class="n">prob_rep</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">prior_weights</span><span class="p">])</span>
 
 <div class="viewcode-block" id="DiscretePrior.marginal_likelihood">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscretePrior.html#rbnet.pcfg.DiscretePrior.marginal_likelihood">[docs]</a>
     <span class="k">def</span> <span class="nf">marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structural_distributions</span> <span class="o">*</span>
-                      <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">root_location</span><span class="p">])</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior_distributions</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">)]))</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structural_distribution</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="n">root_location</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior_distributions</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">)]</span>
+        <span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
 </div>
 
 
 
 <div class="viewcode-block" id="DiscreteBinaryNonTerminalTransition">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html#rbnet.pcfg.DiscreteBinaryNonTerminalTransition">[docs]</a>
-<span class="k">class</span> <span class="nc">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A binary non-terminal transition for discrete non-terminal variables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialise a non-terminal transition p(a, b | c) for random variables `a`, `b`, `c`. The child variables `b` and</span>
 <span class="sd">        `c` may be different variables than `a` (if the RBN has multiple non-terminal variables), which is determined by</span>
@@ -387,11 +404,12 @@
 <span class="sd">        :param left_idx: index of the left child variable</span>
 <span class="sd">        :param right_idx: index of the right child variable</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">prob_rep</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; has to be three-dimensional&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span> <span class="o">=</span> <span class="n">left_idx</span>
@@ -410,11 +428,11 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-                    <span class="n">left_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span><span class="p">][</span><span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">]</span>
-                    <span class="n">right_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span><span class="p">][</span><span class="n">split</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
+                    <span class="c1"># get inside probabilities (clone to avoid problems with inplace operations below – not sure why)</span>
+                    <span class="n">left_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span><span class="p">][</span><span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+                    <span class="n">right_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span><span class="p">][</span><span class="n">split</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
                     <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">*</span> <span class="n">left_inside</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">right_inside</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">],</span>
-                               <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">left_inside</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">right_inside</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
                     <span class="p">)</span>
                 <span class="k">return</span> <span class="n">inside_marginals</span>
         <span class="k">else</span><span class="p">:</span>
@@ -425,12 +443,12 @@
 
 <div class="viewcode-block" id="DiscreteTerminalTransition">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition">[docs]</a>
-<span class="k">class</span> <span class="nc">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A binary terminal transition for discrete non-terminal and terminal variables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialise a terminal transition p(a | b) for non-terminal variable `b` and terminal variable `a`.</span>
 
@@ -438,11 +456,15 @@
 <span class="sd">         cardinalities of the variables a, b, respectively.</span>
 <span class="sd">        :param term_idx: index of the terminal variable</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">normalize_non_zero</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All transition weights for the following indices are zero: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">s</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">prob_rep</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; has to be two-dimensional&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">term_idx</span> <span class="o">=</span> <span class="n">term_idx</span>
@@ -463,44 +485,55 @@
                     <span class="c1"># no terminal transition to THIS terminal variable possible</span>
                     <span class="k">return</span> <span class="p">[]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">[</span><span class="n">var_val</span><span class="p">,</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">var_val</span><span class="p">,</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected locations to be (start, end) index, but got: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </div>
 
 
 
-<div class="viewcode-block" id="StaticCell">
-<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell">[docs]</a>
-<span class="k">class</span> <span class="nc">StaticCell</span><span class="p">(</span><span class="n">Cell</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A cell with a static structural distribution, i.e., the probabilities over the different transitions&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="DiscreteCell">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteCell.html#rbnet.pcfg.DiscreteCell">[docs]</a>
+<span class="k">class</span> <span class="nc">DiscreteCell</span><span class="p">(</span><span class="n">Cell</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A cell for a discrete variable, where the structural distribution may depend on the variable&#39;s value&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">transitions</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">)</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asfarray</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param variable: the discrete non-terminal variable for this cell</span>
+<span class="sd">        :param weights: 2D weights with shape ``(|z|, |x|)`` for the structural transition :math:`p(z | x)`,</span>
+<span class="sd">         where ``|z|`` and ``|x|`` are the number of transitions and the cardinality of the variable, respectively.</span>
+<span class="sd">        :param transitions: iterable over transitions in this cell</span>
+<span class="sd">        :param args: passed on to super().__init__</span>
+<span class="sd">        :param kwargs: passed on to super().__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All weights have to be non-negative&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">weights</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span> <span class="o">=</span> <span class="n">prob_rep</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; must be one-dimensional&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;weights&#39; must be two-dimensional&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span> <span class="o">!=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of transitions and number of weights must be the same, but got: &quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of transitions and size of first weight dimension must be the same, but got: &quot;</span>
                              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span> <span class="o">=</span> <span class="n">transitions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span> <span class="o">=</span> <span class="n">ConstrainedModuleList</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">cardinality</span> <span class="o">!=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cardinality of variable and size of second weight dimension must be the same, but got: &quot;</span>
+                             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">transitions</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="StaticCell.transitions">
-<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell.transitions">[docs]</a>
+<div class="viewcode-block" id="DiscreteCell.transitions">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteCell.html#rbnet.pcfg.DiscreteCell.transitions">[docs]</a>
     <span class="k">def</span> <span class="nf">transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Transition</span><span class="p">]:</span>
         <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transitions</span></div>
 
 
-<div class="viewcode-block" id="StaticCell.inside_mixture">
-<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell.inside_mixture">[docs]</a>
+<div class="viewcode-block" id="DiscreteCell.inside_mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteCell.html#rbnet.pcfg.DiscreteCell.inside_mixture">[docs]</a>
     <span class="k">def</span> <span class="nf">inside_mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inside_marginals</span><span class="p">):</span>
         <span class="c1"># iterate over possible transitions</span>
         <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">valid_transitions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">valid_transitions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">):</span>
             <span class="c1"># if there are possible transitions</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -508,8 +541,23 @@
                 <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">i</span><span class="p">))</span>
                 <span class="n">valid_transitions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="c1"># computed weighted mixture over transitions and return</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="p">[</span><span class="n">valid_transitions</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">valid_transitions</span><span class="p">,</span> <span class="p">:])</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="StaticCell">
+<a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell">[docs]</a>
+<span class="k">class</span> <span class="nc">StaticCell</span><span class="p">(</span><span class="n">DiscreteCell</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A cell with a static structural distribution (probabilities over the different transitions)&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">transitions</span><span class="p">,</span> <span class="n">prob_rep</span><span class="o">=</span><span class="n">LogProb</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">as_detached_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">variable</span><span class="o">.</span><span class="n">cardinality</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span>
+                         <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+                         <span class="n">transitions</span><span class="o">=</span><span class="n">transitions</span><span class="p">,</span>
+                         <span class="n">prob_rep</span><span class="o">=</span><span class="n">prob_rep</span><span class="p">,</span>
+                         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 </pre></div>
 

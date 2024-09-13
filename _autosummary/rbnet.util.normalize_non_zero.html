@@ -7,7 +7,7 @@
   <title>rbnet.util.normalize_non_zero &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,12 +21,13 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="rbnet.util" href="rbnet.util.html" /> 
+    <link rel="next" title="rbnet.util.plot_grad" href="rbnet.util.plot_grad.html" />
+    <link rel="prev" title="rbnet.util.log_normalize" href="rbnet.util.log_normalize.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,7 +59,18 @@
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.util.html">rbnet.util</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.as_detached_tensor.html">rbnet.util.as_detached_tensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.from_log.html">rbnet.util.from_log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.log_normalize.html">rbnet.util.log_normalize</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.util.normalize_non_zero</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_grad.html">rbnet.util.plot_grad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_vec.html">rbnet.util.plot_vec</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.to_log.html">rbnet.util.to_log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleList.html">rbnet.util.ConstrainedModuleList</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html">rbnet.util.ConstrainedModuleMixin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.LogProb.html">rbnet.util.LogProb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.Prob.html">rbnet.util.Prob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.SequenceDataModule.html">rbnet.util.SequenceDataModule</a></li>
 </ul>
 </li>
 </ul>
@@ -97,9 +109,9 @@
 <h1>rbnet.util.normalize_non_zero<a class="headerlink" href="#rbnet-util-normalize-non-zero" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="rbnet.util.normalize_non_zero">
-<span class="sig-prename descclassname"><span class="pre">rbnet.util.</span></span><span class="sig-name descname"><span class="pre">normalize_non_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_type_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#normalize_non_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.normalize_non_zero" title="Link to this definition"></a></dt>
-<dd><p>For the given ND array, normalise each 1D array obtained by indexing the ‘axis’ dimension if the sum along the
-other dimensions (for that entry) is non-zero. Normalisation is performed in place.</p>
+<span class="sig-prename descclassname"><span class="pre">rbnet.util.</span></span><span class="sig-name descname"><span class="pre">normalize_non_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis=&lt;object</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_zeros_uniform=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_type_check=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_positivity=True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#normalize_non_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.normalize_non_zero" title="Link to this definition"></a></dt>
+<dd><p>For the given ND array (NumPy or PyTorch), normalise each 1D array obtained by indexing the ‘axis’ dimension if
+the sum along the other dimensions (for that entry) is non-zero. Normalisation is performed in place.</p>
 </dd></dl>
 
 </section>
@@ -108,7 +120,8 @@ other dimensions (for that entry) is non-zero. Normalisation is performed in pla
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.util.html" class="btn btn-neutral float-left" title="rbnet.util" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.util.log_normalize.html" class="btn btn-neutral float-left" title="rbnet.util.log_normalize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.util.plot_grad.html" class="btn btn-neutral float-right" title="rbnet.util.plot_grad" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

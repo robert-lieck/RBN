@@ -58,18 +58,19 @@ pcfg = AbstractedPCFG(terminals=terminals,
 # -----------------
 # Let's test the grammar by computing the marginal likelihood of some grammatical sentences
 # (which should be greater than zero) and for some un-grammatical ones (which should have zero marginal likelihood)
-for sentence in [
-    # grammatical
+
+grammatical_sentences = [
     "I run",
     "You never run",
     "We run very veeery slowly",
     "They always run alone",
     "I never sleep really very quickly",
-    "You do-not drink very quickly",
-    # un-grammatical
+    "You do-not drink very quickly"]
+ungrammatical_sentences = [
     "I You",
     "run fast"
-]:
+]
+for sentence in grammatical_sentences + ungrammatical_sentences:
     marginal_likelihood = pcfg.inside(sequence=sentence.split())
     print(f"{sentence} --> {marginal_likelihood}")
 

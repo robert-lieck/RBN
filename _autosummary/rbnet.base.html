@@ -7,7 +7,7 @@
   <title>rbnet.base &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -112,22 +112,22 @@
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Cell.html#rbnet.base.Cell" title="rbnet.base.Cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell</span></code></a>(variable)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Cell.html#rbnet.base.Cell" title="rbnet.base.Cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell</span></code></a>(variable, *args, **kwargs)</p></td>
 <td><p>Base class for RBN cells associated to a non-terminal template variable.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonTermVar</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonTermVar</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class for non-terminal variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prior</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prior</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class for prior transitions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RBN</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RBN</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class for RBNs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a>(cells, prior)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a>(cells, prior, *args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Base class for RBN transitions, which have to implement <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_marginals()</span></code></a>.</p></td>
 </tr>
 </tbody>

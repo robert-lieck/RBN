@@ -7,7 +7,7 @@
   <title>rbnet.multivariate_normal.PairwiseProduct &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -157,187 +157,70 @@
 <p class="rubric">Private Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cost_comp" title="rbnet.multivariate_normal.PairwiseProduct._cost_comp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cost_comp</span></code></a>(cost1, cost2, comp)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cost_comp</span></code>(cost1, cost2, comp)</p></td>
 <td><p>Compares cost1 and cost2 using comp. Costs are numpy arrays [i, mm, mv, ma, va] with i indicating the number of matrix inversion, mm that of matrix-matrix multiplications, mv that of matrix-vector multiplications, ma that of matrix-matrix additions, and va that of vector-vector additions. Comparison is performed element-wise in this order, that is::.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cost_lt" title="rbnet.multivariate_normal.PairwiseProduct._cost_lt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cost_lt</span></code></a>(cost1, cost2)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cost_lt</span></code>(cost1, cost2)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov1_cost" title="rbnet.multivariate_normal.PairwiseProduct._cov1_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov1_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov1_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov2_cost" title="rbnet.multivariate_normal.PairwiseProduct._cov2_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov2_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov2_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._prec1_cost" title="rbnet.multivariate_normal.PairwiseProduct._prec1_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec1_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec1_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._prec2_cost" title="rbnet.multivariate_normal.PairwiseProduct._prec2_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec2_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec2_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._sum_cov_cost" title="rbnet.multivariate_normal.PairwiseProduct._sum_cov_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sum_cov_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sum_cov_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._sum_cov_inv_cost" title="rbnet.multivariate_normal.PairwiseProduct._sum_cov_inv_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sum_cov_inv_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_sum_cov_inv_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._prec_v1_cost" title="rbnet.multivariate_normal.PairwiseProduct._prec_v1_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_v1_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_v1_cost</span></code>()</p></td>
 <td><p>Cost of computing precision by adding prec1 and prec2</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._prec_v2_cost" title="rbnet.multivariate_normal.PairwiseProduct._prec_v2_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_v2_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_v2_cost</span></code>()</p></td>
 <td><p>Cost of computing precision by inverting cov (if cov is not present assume infinite costsfor tie-breaking).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._prec_cost" title="rbnet.multivariate_normal.PairwiseProduct._prec_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_prec_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v1" title="rbnet.multivariate_normal.PairwiseProduct._cov_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v1</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v1</span></code>()</p></td>
 <td><p>Compute covariance from prec1 and prec2</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v1_cost" title="rbnet.multivariate_normal.PairwiseProduct._cov_v1_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v1_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v1_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v2" title="rbnet.multivariate_normal.PairwiseProduct._cov_v2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v2</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v2</span></code>()</p></td>
 <td><p>Compute covariance from cov1 and cov2</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v2_cost" title="rbnet.multivariate_normal.PairwiseProduct._cov_v2_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v2_cost</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_v2_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._cov_cost" title="rbnet.multivariate_normal.PairwiseProduct._cov_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_cov_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v1" title="rbnet.multivariate_normal.PairwiseProduct._mean_v1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v1</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v1</span></code>()</p></td>
 <td><p>Compute mean from cov, prec1, and prec2</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v1_cost" title="rbnet.multivariate_normal.PairwiseProduct._mean_v1_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v1_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v1_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v2" title="rbnet.multivariate_normal.PairwiseProduct._mean_v2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v2</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v2</span></code>()</p></td>
 <td><p>Compute mean from cov, prec1, and prec2</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v2_cost" title="rbnet.multivariate_normal.PairwiseProduct._mean_v2_cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v2_cost</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_mean_v2_cost</span></code>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr class="docutils" />
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cost_comp">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_cost_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cost_comp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cost_comp" title="Link to this definition"></a></dt>
-<dd><p>Compares cost1 and cost2 using comp. Costs are numpy arrays [i, mm, mv, ma, va] with i indicating the number of
-matrix inversion, mm that of matrix-matrix multiplications, mv that of matrix-vector multiplications, ma that
-of matrix-matrix additions, and va that of vector-vector additions. Comparison is performed element-wise in this
-order, that is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">comp</span><span class="p">(</span><span class="n">i1</span><span class="p">,</span> <span class="n">i2</span><span class="p">):</span>
-    <span class="k">return</span> <span class="kc">True</span>
-<span class="k">elif</span> <span class="ow">not</span> <span class="n">i1</span> <span class="o">==</span> <span class="n">i2</span><span class="p">:</span>
-    <span class="k">return</span> <span class="kc">False</span>
-</pre></div>
-</div>
-<p>continue with mm1 and mm2 etc…</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cost_lt">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_cost_lt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cost1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cost_lt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cost_lt" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov1_cost">
-<span class="sig-name descname"><span class="pre">_cov1_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov1_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov1_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov2_cost">
-<span class="sig-name descname"><span class="pre">_cov2_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov2_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov2_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov_cost">
-<span class="sig-name descname"><span class="pre">_cov_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov_v1">
-<span class="sig-name descname"><span class="pre">_cov_v1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov_v1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v1" title="Link to this definition"></a></dt>
-<dd><p>Compute covariance from prec1 and prec2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov_v1_cost">
-<span class="sig-name descname"><span class="pre">_cov_v1_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov_v1_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v1_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov_v2">
-<span class="sig-name descname"><span class="pre">_cov_v2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov_v2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v2" title="Link to this definition"></a></dt>
-<dd><p>Compute covariance from cov1 and cov2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._cov_v2_cost">
-<span class="sig-name descname"><span class="pre">_cov_v2_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._cov_v2_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._cov_v2_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._mean_v1">
-<span class="sig-name descname"><span class="pre">_mean_v1</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._mean_v1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v1" title="Link to this definition"></a></dt>
-<dd><p>Compute mean from cov, prec1, and prec2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._mean_v1_cost">
-<span class="sig-name descname"><span class="pre">_mean_v1_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._mean_v1_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v1_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._mean_v2">
-<span class="sig-name descname"><span class="pre">_mean_v2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._mean_v2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v2" title="Link to this definition"></a></dt>
-<dd><p>Compute mean from cov, prec1, and prec2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._mean_v2_cost">
-<span class="sig-name descname"><span class="pre">_mean_v2_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._mean_v2_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._mean_v2_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._prec1_cost">
-<span class="sig-name descname"><span class="pre">_prec1_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._prec1_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._prec1_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._prec2_cost">
-<span class="sig-name descname"><span class="pre">_prec2_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._prec2_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._prec2_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._prec_cost">
-<span class="sig-name descname"><span class="pre">_prec_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._prec_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._prec_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._prec_v1_cost">
-<span class="sig-name descname"><span class="pre">_prec_v1_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._prec_v1_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._prec_v1_cost" title="Link to this definition"></a></dt>
-<dd><p>Cost of computing precision by adding prec1 and prec2</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._prec_v2_cost">
-<span class="sig-name descname"><span class="pre">_prec_v2_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._prec_v2_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._prec_v2_cost" title="Link to this definition"></a></dt>
-<dd><p>Cost of computing precision by inverting cov (if cov is not present assume infinite costsfor tie-breaking).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._sum_cov_cost">
-<span class="sig-name descname"><span class="pre">_sum_cov_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._sum_cov_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._sum_cov_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct._sum_cov_inv_cost">
-<span class="sig-name descname"><span class="pre">_sum_cov_inv_cost</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/multivariate_normal.html#PairwiseProduct._sum_cov_inv_cost"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct._sum_cov_inv_cost" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py property">
 <dt class="sig sig-object py" id="rbnet.multivariate_normal.PairwiseProduct.cov">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cov</span></span><a class="headerlink" href="#rbnet.multivariate_normal.PairwiseProduct.cov" title="Link to this definition"></a></dt>

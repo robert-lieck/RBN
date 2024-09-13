@@ -14,11 +14,29 @@ rbnet.util
    .. autosummary::
       :toctree:
    
+      as_detached_tensor
+      from_log
+      log_normalize
       normalize_non_zero
+      plot_grad
+      plot_vec
+      to_log
    
    
 
    
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      ConstrainedModuleList
+      ConstrainedModuleMixin
+      LogProb
+      Prob
+      SequenceDataModule
    
    
 

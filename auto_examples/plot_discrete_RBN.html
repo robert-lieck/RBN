@@ -7,7 +7,7 @@
   <title>Discrete RBN &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -53,6 +53,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery and Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="plot_vec_grad.html">Plot Vector/Gradient Field</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_PCFG.html">Abstracted PCFGs</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Discrete RBN</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#abstract-pcfg">Abstract PCFG</a><ul>
@@ -94,7 +95,7 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-discrete-rbn-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="discrete-rbn">
 <span id="sphx-glr-auto-examples-plot-discrete-rbn-py"></span><h1>Discrete RBN<a class="headerlink" href="#discrete-rbn" title="Link to this heading"></a></h1>
@@ -170,8 +171,8 @@ terminal transition does not change the value. Thus, the marginal likelihood for
 <span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]]),</span> <span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;bbbb&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.0 0.0
-0.0 0.0
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor(-4.6865e-26, grad_fn=&lt;SumBackward0&gt;) tensor(-2.4137e-25, dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
+tensor(-4.6865e-26, grad_fn=&lt;SumBackward0&gt;) tensor(-2.4137e-25, dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
 </pre></div>
 </div>
 <p>For other sequences, we see that the marginal likelihood is non-zero, and we can also inspect the parse chart, which
@@ -181,127 +182,179 @@ contains the inside probabilities for the values of the non-terminal variable</p
 <span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.00390625 0.00390625
-                                               ╱╲
-                                              ╱  ╲
-                                             ╱    ╲
-                                            ╱      ╲
-                                           ╱        ╲
-                                          ╱          ╲
-                                         ╱            ╲
-                                        ╱              ╲
-                                       ╱                ╲
-                                      ╱                  ╲
-                                     ╱                    ╲
-                                    ╱ [0.        0.0078125]╲
-                                   ╱╲                      ╱╲
-                                  ╱  ╲                    ╱  ╲
-                                 ╱    ╲                  ╱    ╲
-                                ╱      ╲                ╱      ╲
-                               ╱        ╲              ╱        ╲
-                              ╱          ╲            ╱          ╲
-                             ╱            ╲          ╱            ╲
-                            ╱              ╲        ╱              ╲
-                           ╱                ╲      ╱                ╲
-                          ╱                  ╲    ╱                  ╲
-                         ╱                    ╲  ╱                    ╲
-                        ╱               [0. 0.]╲╱     [0.      0.03125]╲
-                       ╱╲                      ╱╲                      ╱╲
-                      ╱  ╲                    ╱  ╲                    ╱  ╲
-                     ╱    ╲                  ╱    ╲                  ╱    ╲
-                    ╱      ╲                ╱      ╲                ╱      ╲
-                   ╱        ╲              ╱        ╲              ╱        ╲
-                  ╱          ╲            ╱          ╲            ╱          ╲
-                 ╱            ╲          ╱            ╲          ╱            ╲
-                ╱              ╲        ╱              ╲        ╱              ╲
-               ╱                ╲      ╱                ╲      ╱                ╲
-              ╱                  ╲    ╱                  ╲    ╱                  ╲
-             ╱                    ╲  ╱                    ╲  ╱                    ╲
-            ╱               [0. 0.]╲╱               [0. 0.]╲╱         [0.    0.125]╲
-           ╱╲                      ╱╲                      ╱╲                      ╱╲
-          ╱  ╲                    ╱  ╲                    ╱  ╲                    ╱  ╲
-         ╱    ╲                  ╱    ╲                  ╱    ╲                  ╱    ╲
-        ╱      ╲                ╱      ╲                ╱      ╲                ╱      ╲
-       ╱        ╲              ╱        ╲              ╱        ╲              ╱        ╲
-      ╱          ╲            ╱          ╲            ╱          ╲            ╱          ╲
-     ╱            ╲          ╱            ╲          ╱            ╲          ╱            ╲
-    ╱              ╲        ╱              ╲        ╱              ╲        ╱              ╲
-   ╱                ╲      ╱                ╲      ╱                ╲      ╱                ╲
-  ╱                  ╲    ╱                  ╲    ╱                  ╲    ╱                  ╲
- ╱                    ╲  ╱                    ╲  ╱                    ╲  ╱                    ╲
-╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.  0.5]╲
-                                                                       ╱╲
-                                                                      ╱  ╲
-                                                                     ╱    ╲
-                                                                    ╱      ╲
-                                                                   ╱        ╲
-                                                                  ╱          ╲
-                                                                 ╱            ╲
-                                                                ╱              ╲
-                                                               ╱                ╲
-                                                              ╱                  ╲
-                                                             ╱                    ╲
-                                                            ╱                      ╲
-                                                           ╱                        ╲
-                                                          ╱                          ╲
-                                                         ╱                            ╲
-                                                        ╱                              ╲
-                                                       ╱                                ╲
-                                                      ╱[0.00390625 0.         0.0078125 ]╲
-                                                     ╱╲                                  ╱╲
-                                                    ╱  ╲                                ╱  ╲
-                                                   ╱    ╲                              ╱    ╲
-                                                  ╱      ╲                            ╱      ╲
-                                                 ╱        ╲                          ╱        ╲
-                                                ╱          ╲                        ╱          ╲
-                                               ╱            ╲                      ╱            ╲
-                                              ╱              ╲                    ╱              ╲
-                                             ╱                ╲                  ╱                ╲
-                                            ╱                  ╲                ╱                  ╲
-                                           ╱                    ╲              ╱                    ╲
-                                          ╱                      ╲            ╱                      ╲
-                                         ╱                        ╲          ╱                        ╲
-                                        ╱                          ╲        ╱                          ╲
-                                       ╱                            ╲      ╱                            ╲
-                                      ╱                              ╲    ╱                              ╲
-                                     ╱                                ╲  ╱                                ╲
-                                    ╱                        [0. 0. 0.]╲╱      [0.015625 0.       0.03125 ]╲
-                                   ╱╲                                  ╱╲                                  ╱╲
-                                  ╱  ╲                                ╱  ╲                                ╱  ╲
-                                 ╱    ╲                              ╱    ╲                              ╱    ╲
-                                ╱      ╲                            ╱      ╲                            ╱      ╲
-                               ╱        ╲                          ╱        ╲                          ╱        ╲
-                              ╱          ╲                        ╱          ╲                        ╱          ╲
-                             ╱            ╲                      ╱            ╲                      ╱            ╲
-                            ╱              ╲                    ╱              ╲                    ╱              ╲
-                           ╱                ╲                  ╱                ╲                  ╱                ╲
-                          ╱                  ╲                ╱                  ╲                ╱                  ╲
-                         ╱                    ╲              ╱                    ╲              ╱                    ╲
-                        ╱                      ╲            ╱                      ╲            ╱                      ╲
-                       ╱                        ╲          ╱                        ╲          ╱                        ╲
-                      ╱                          ╲        ╱                          ╲        ╱                          ╲
-                     ╱                            ╲      ╱                            ╲      ╱                            ╲
-                    ╱                              ╲    ╱                              ╲    ╱                              ╲
-                   ╱                                ╲  ╱                                ╲  ╱                                ╲
-                  ╱                        [0. 0. 0.]╲╱                        [0. 0. 0.]╲╱            [0.0625 0.     0.125 ]╲
-                 ╱╲                                  ╱╲                                  ╱╲                                  ╱╲
-                ╱  ╲                                ╱  ╲                                ╱  ╲                                ╱  ╲
-               ╱    ╲                              ╱    ╲                              ╱    ╲                              ╱    ╲
-              ╱      ╲                            ╱      ╲                            ╱      ╲                            ╱      ╲
-             ╱        ╲                          ╱        ╲                          ╱        ╲                          ╱        ╲
-            ╱          ╲                        ╱          ╲                        ╱          ╲                        ╱          ╲
-           ╱            ╲                      ╱            ╲                      ╱            ╲                      ╱            ╲
-          ╱              ╲                    ╱              ╲                    ╱              ╲                    ╱              ╲
-         ╱                ╲                  ╱                ╲                  ╱                ╲                  ╱                ╲
-        ╱                  ╲                ╱                  ╲                ╱                  ╲                ╱                  ╲
-       ╱                    ╲              ╱                    ╲              ╱                    ╲              ╱                    ╲
-      ╱                      ╲            ╱                      ╲            ╱                      ╲            ╱                      ╲
-     ╱                        ╲          ╱                        ╲          ╱                        ╲          ╱                        ╲
-    ╱                          ╲        ╱                          ╲        ╱                          ╲        ╱                          ╲
-   ╱                            ╲      ╱                            ╲      ╱                            ╲      ╱                            ╲
-  ╱                              ╲    ╱                              ╲    ╱                              ╲    ╱                              ╲
- ╱                                ╲  ╱                                ╲  ╱                                ╲  ╱                                ╲
-╱                     [0.  0.5 0. ]╲╱                     [0.  0.5 0. ]╲╱                     [0.  0.5 0. ]╲╱                     [0.  0.  0.5]╲
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor(0.0039, grad_fn=&lt;SumBackward0&gt;) tensor(0.0110, dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
+                                                                   ╱╲
+                                                                  ╱  ╲
+                                                                 ╱    ╲
+                                                                ╱      ╲
+                                                               ╱        ╲
+                                                              ╱          ╲
+                                                             ╱            ╲
+                                                            ╱              ╲
+                                                           ╱                ╲
+                                                          ╱                  ╲
+                                                         ╱                    ╲
+                                                        ╱                      ╲
+                                                       ╱                        ╲
+                                                      ╱                          ╲
+                                                     ╱                            ╲
+                                                    ╱                              ╲
+                                                   ╱ [-3.1245203e-26  7.8125000e-03]╲
+                                                  ╱╲                                ╱╲
+                                                 ╱  ╲                              ╱  ╲
+                                                ╱    ╲                            ╱    ╲
+                                               ╱      ╲                          ╱      ╲
+                                              ╱        ╲                        ╱        ╲
+                                             ╱          ╲                      ╱          ╲
+                                            ╱            ╲                    ╱            ╲
+                                           ╱              ╲                  ╱              ╲
+                                          ╱                ╲                ╱                ╲
+                                         ╱                  ╲              ╱                  ╲
+                                        ╱                    ╲            ╱                    ╲
+                                       ╱                      ╲          ╱                      ╲
+                                      ╱                        ╲        ╱                        ╲
+                                     ╱                          ╲      ╱                          ╲
+                                    ╱                            ╲    ╱                            ╲
+                                   ╱                              ╲  ╱                              ╲
+                                  ╱   [-1.874586e-25 -1.874586e-25]╲╱ [-1.2498081e-25  3.1250000e-02]╲
+                                 ╱╲                                ╱╲                                ╱╲
+                                ╱  ╲                              ╱  ╲                              ╱  ╲
+                               ╱    ╲                            ╱    ╲                            ╱    ╲
+                              ╱      ╲                          ╱      ╲                          ╱      ╲
+                             ╱        ╲                        ╱        ╲                        ╱        ╲
+                            ╱          ╲                      ╱          ╲                      ╱          ╲
+                           ╱            ╲                    ╱            ╲                    ╱            ╲
+                          ╱              ╲                  ╱              ╲                  ╱              ╲
+                         ╱                ╲                ╱                ╲                ╱                ╲
+                        ╱                  ╲              ╱                  ╲              ╱                  ╲
+                       ╱                    ╲            ╱                    ╲            ╱                    ╲
+                      ╱                      ╲          ╱                      ╲          ╱                      ╲
+                     ╱                        ╲        ╱                        ╲        ╱                        ╲
+                    ╱                          ╲      ╱                          ╲      ╱                          ╲
+                   ╱                            ╲    ╱                            ╲    ╱                            ╲
+                  ╱                              ╲  ╱                              ╲  ╱                              ╲
+                 ╱   [-7.498344e-25 -7.498344e-25]╲╱   [-7.498344e-25 -7.498344e-25]╲╱ [-4.9992324e-25  1.2500000e-01]╲
+                ╱╲                                ╱╲                                ╱╲                                ╱╲
+               ╱  ╲                              ╱  ╲                              ╱  ╲                              ╱  ╲
+              ╱    ╲                            ╱    ╲                            ╱    ╲                            ╱    ╲
+             ╱      ╲                          ╱      ╲                          ╱      ╲                          ╱      ╲
+            ╱        ╲                        ╱        ╲                        ╱        ╲                        ╱        ╲
+           ╱          ╲                      ╱          ╲                      ╱          ╲                      ╱          ╲
+          ╱            ╲                    ╱            ╲                    ╱            ╲                    ╱            ╲
+         ╱              ╲                  ╱              ╲                  ╱              ╲                  ╱              ╲
+        ╱                ╲                ╱                ╲                ╱                ╲                ╱                ╲
+       ╱                  ╲              ╱                  ╲              ╱                  ╲              ╱                  ╲
+      ╱                    ╲            ╱                    ╲            ╱                    ╲            ╱                    ╲
+     ╱                      ╲          ╱                      ╲          ╱                      ╲          ╱                      ╲
+    ╱                        ╲        ╱                        ╲        ╱                        ╲        ╱                        ╲
+   ╱                          ╲      ╱                          ╲      ╱                          ╲      ╱                          ╲
+  ╱                            ╲    ╱                            ╲    ╱                            ╲    ╱                            ╲
+ ╱                              ╲  ╱                              ╲  ╱                              ╲  ╱                              ╲
+╱   [ 5.000000e-01 -9.996445e-25]╲╱   [ 5.000000e-01 -9.996445e-25]╲╱   [ 5.000000e-01 -9.996445e-25]╲╱   [-9.996445e-25  5.000000e-01]╲
+                                                                                                       ╱╲
+                                                                                                      ╱  ╲
+                                                                                                     ╱    ╲
+                                                                                                    ╱      ╲
+                                                                                                   ╱        ╲
+                                                                                                  ╱          ╲
+                                                                                                 ╱            ╲
+                                                                                                ╱              ╲
+                                                                                               ╱                ╲
+                                                                                              ╱                  ╲
+                                                                                             ╱                    ╲
+                                                                                            ╱                      ╲
+                                                                                           ╱                        ╲
+                                                                                          ╱                          ╲
+                                                                                         ╱                            ╲
+                                                                                        ╱                              ╲
+                                                                                       ╱                                ╲
+                                                                                      ╱                                  ╲
+                                                                                     ╱                                    ╲
+                                                                                    ╱                                      ╲
+                                                                                   ╱                                        ╲
+                                                                                  ╱                                          ╲
+                                                                                 ╱                                            ╲
+                                                                                ╱                                              ╲
+                                                                               ╱                                                ╲
+                                                                              ╱    [ 1.0973938e-02 -1.6457273e-25  7.3159589e-03]╲
+                                                                             ╱╲                                                  ╱╲
+                                                                            ╱  ╲                                                ╱  ╲
+                                                                           ╱    ╲                                              ╱    ╲
+                                                                          ╱      ╲                                            ╱      ╲
+                                                                         ╱        ╲                                          ╱        ╲
+                                                                        ╱          ╲                                        ╱          ╲
+                                                                       ╱            ╲                                      ╱            ╲
+                                                                      ╱              ╲                                    ╱              ╲
+                                                                     ╱                ╲                                  ╱                ╲
+                                                                    ╱                  ╲                                ╱                  ╲
+                                                                   ╱                    ╲                              ╱                    ╲
+                                                                  ╱                      ╲                            ╱                      ╲
+                                                                 ╱                        ╲                          ╱                        ╲
+                                                                ╱                          ╲                        ╱                          ╲
+                                                               ╱                            ╲                      ╱                            ╲
+                                                              ╱                              ╲                    ╱                              ╲
+                                                             ╱                                ╲                  ╱                                ╲
+                                                            ╱                                  ╲                ╱                                  ╲
+                                                           ╱                                    ╲              ╱                                    ╲
+                                                          ╱                                      ╲            ╱                                      ╲
+                                                         ╱                                        ╲          ╱                                        ╲
+                                                        ╱                                          ╲        ╱                                          ╲
+                                                       ╱                                            ╲      ╱                                            ╲
+                                                      ╱                                              ╲    ╱                                              ╲
+                                                     ╱                                                ╲  ╱                                                ╲
+                                                    ╱    [-1.0861534e-24 -3.6205111e-25 -3.6205111e-25]╲╱    [ 4.9382724e-02 -7.4057724e-25  3.2921813e-02]╲
+                                                   ╱╲                                                  ╱╲                                                  ╱╲
+                                                  ╱  ╲                                                ╱  ╲                                                ╱  ╲
+                                                 ╱    ╲                                              ╱    ╲                                              ╱    ╲
+                                                ╱      ╲                                            ╱      ╲                                            ╱      ╲
+                                               ╱        ╲                                          ╱        ╲                                          ╱        ╲
+                                              ╱          ╲                                        ╱          ╲                                        ╱          ╲
+                                             ╱            ╲                                      ╱            ╲                                      ╱            ╲
+                                            ╱              ╲                                    ╱              ╲                                    ╱              ╲
+                                           ╱                ╲                                  ╱                ╲                                  ╱                ╲
+                                          ╱                  ╲                                ╱                  ╲                                ╱                  ╲
+                                         ╱                    ╲                              ╱                    ╲                              ╱                    ╲
+                                        ╱                      ╲                            ╱                      ╲                            ╱                      ╲
+                                       ╱                        ╲                          ╱                        ╲                          ╱                        ╲
+                                      ╱                          ╲                        ╱                          ╲                        ╱                          ╲
+                                     ╱                            ╲                      ╱                            ╲                      ╱                            ╲
+                                    ╱                              ╲                    ╱                              ╲                    ╱                              ╲
+                                   ╱                                ╲                  ╱                                ╲                  ╱                                ╲
+                                  ╱                                  ╲                ╱                                  ╲                ╱                                  ╲
+                                 ╱                                    ╲              ╱                                    ╲              ╱                                    ╲
+                                ╱                                      ╲            ╱                                      ╲            ╱                                      ╲
+                               ╱                                        ╲          ╱                                        ╲          ╱                                        ╲
+                              ╱                                          ╲        ╱                                          ╲        ╱                                          ╲
+                             ╱                                            ╲      ╱                                            ╲      ╱                                            ╲
+                            ╱                                              ╲    ╱                                              ╲    ╱                                              ╲
+                           ╱                                                ╲  ╱                                                ╲  ╱                                                ╲
+                          ╱          [-4.88769e-24 -1.62923e-24 -1.62923e-24]╲╱          [-4.88769e-24 -1.62923e-24 -1.62923e-24]╲╱ [ 2.22222239e-01 -1.33303895e-24  1.48148164e-01]╲
+                         ╱╲                                                  ╱╲                                                  ╱╲                                                  ╱╲
+                        ╱  ╲                                                ╱  ╲                                                ╱  ╲                                                ╱  ╲
+                       ╱    ╲                                              ╱    ╲                                              ╱    ╲                                              ╱    ╲
+                      ╱      ╲                                            ╱      ╲                                            ╱      ╲                                            ╱      ╲
+                     ╱        ╲                                          ╱        ╲                                          ╱        ╲                                          ╱        ╲
+                    ╱          ╲                                        ╱          ╲                                        ╱          ╲                                        ╱          ╲
+                   ╱            ╲                                      ╱            ╲                                      ╱            ╲                                      ╱            ╲
+                  ╱              ╲                                    ╱              ╲                                    ╱              ╲                                    ╱              ╲
+                 ╱                ╲                                  ╱                ╲                                  ╱                ╲                                  ╱                ╲
+                ╱                  ╲                                ╱                  ╲                                ╱                  ╲                                ╱                  ╲
+               ╱                    ╲                              ╱                    ╲                              ╱                    ╲                              ╱                    ╲
+              ╱                      ╲                            ╱                      ╲                            ╱                      ╲                            ╱                      ╲
+             ╱                        ╲                          ╱                        ╲                          ╱                        ╲                          ╱                        ╲
+            ╱                          ╲                        ╱                          ╲                        ╱                          ╲                        ╱                          ╲
+           ╱                            ╲                      ╱                            ╲                      ╱                            ╲                      ╱                            ╲
+          ╱                              ╲                    ╱                              ╲                    ╱                              ╲                    ╱                              ╲
+         ╱                                ╲                  ╱                                ╲                  ╱                                ╲                  ╱                                ╲
+        ╱                                  ╲                ╱                                  ╲                ╱                                  ╲                ╱                                  ╲
+       ╱                                    ╲              ╱                                    ╲              ╱                                    ╲              ╱                                    ╲
+      ╱                                      ╲            ╱                                      ╲            ╱                                      ╲            ╱                                      ╲
+     ╱                                        ╲          ╱                                        ╲          ╱                                        ╲          ╱                                        ╲
+    ╱                                          ╲        ╱                                          ╲        ╱                                          ╲        ╱                                          ╲
+   ╱                                            ╲      ╱                                            ╲      ╱                                            ╲      ╱                                            ╲
+  ╱                                              ╲    ╱                                              ╲    ╱                                              ╲    ╱                                              ╲
+ ╱                                                ╲  ╱                                                ╲  ╱                                                ╲  ╱                                                ╲
+╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13 -1.3328594e-24  6.6666669e-01]╲
 </pre></div>
 </div>
 <p>Note how</p>
@@ -324,13 +377,13 @@ The variables could be discrete or continuous, but for this example, we take the
 discrete variable (i.e. it cannot actually change value) and all the dynamics instead happens on the structural level.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">zero_var</span> <span class="o">=</span> <span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">one_var</span> <span class="o">=</span> <span class="n">DiscreteNonTermVar</span><span class="p">(</span><span class="n">cardinality</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">prior</span> <span class="o">=</span> <span class="n">DiscretePrior</span><span class="p">(</span><span class="n">struc_weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="n">prior_weights</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">]])</span>
 
-<span class="n">zero_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mi">1</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">one_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mi">1</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">zero_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mf">1.</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">one_non_term_transition</span> <span class="o">=</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[[</span><span class="mf">1.</span><span class="p">]]],</span> <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">zero_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">one_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">zero_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">one_term_transition</span> <span class="o">=</span> <span class="n">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="p">[[</span><span class="mf">1.</span><span class="p">]],</span> <span class="n">term_idx</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">zero_cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">zero_var</span><span class="p">,</span>
                        <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
@@ -360,9 +413,9 @@ discrete variable (i.e. it cannot actually change value) and all the dynamics in
 <span class="nb">print</span><span class="p">(</span><span class="n">rbn</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.0
-0.0
-0.00390625
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor(0., grad_fn=&lt;SumBackward0&gt;)
+tensor(0., grad_fn=&lt;SumBackward0&gt;)
+tensor(0.0039, grad_fn=&lt;SumBackward0&gt;)
                ╱╲
               ╱  ╲
              ╱    ╲
@@ -409,13 +462,16 @@ discrete variable (i.e. it cannot actually change value) and all the dynamics in
 ╱        [0.]╲╱        [0.]╲╱        [0.]╲╱       [0.5]╲
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.013 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.043 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-discrete-rbn-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/541a486d46921e429bc6d69b693c24a9/plot_discrete_RBN.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_discrete_RBN.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/0ec593894379d3958b2aa306169dd825/plot_discrete_RBN.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_discrete_RBN.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/69675f9bc72c9f3de8f213318d200bdb/plot_discrete_RBN.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">plot_discrete_RBN.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>

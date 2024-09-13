@@ -7,7 +7,7 @@
   <title>rbnet.pcfg.DiscreteNonTermVar &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,13 +21,13 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="rbnet.pcfg.DiscretePrior" href="rbnet.pcfg.DiscretePrior.html" />
-    <link rel="prev" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html" /> 
+    <link rel="prev" title="rbnet.pcfg.DiscreteCell" href="rbnet.pcfg.DiscreteCell.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,6 +60,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteCell.html">rbnet.pcfg.DiscreteCell</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.pcfg.DiscreteNonTermVar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html">rbnet.pcfg.DiscretePrior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
@@ -105,9 +106,9 @@
 <h1>rbnet.pcfg.DiscreteNonTermVar<a class="headerlink" href="#rbnet-pcfg-discretenontermvar" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteNonTermVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cardinality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TMap'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteNonTermVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cardinality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TMap'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a></p>
-<p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">cardinality</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -121,22 +122,25 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cardinality[, chart_type])</p></td>
-<td><p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></td>
+<td><p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">cardinality</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar.get_chart" title="rbnet.pcfg.DiscreteNonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(n, *args, **kwargs)</p></td>
 <td><p>Initialise a chart for sequence of length <cite>n</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="rbnet.pcfg.DiscreteNonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(components[, weights, axis])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="rbnet.pcfg.DiscreteNonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(components[, weights, dim])</p></td>
 <td><p>Compute a mixture distribution over a discrete variable.</p></td>
 </tr>
 </tbody>
 </table>
 <details><summary>Inherited from <a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Return a parse chart to store this variable type in.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.mixture" title="rbnet.base.NonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar.mixture" title="rbnet.base.NonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Compute a mixture over this variable type.</p></td>
 </tr>
 </tbody>
@@ -146,14 +150,14 @@
 <p class="rubric">Private Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteNonTermVar._abc_impl" title="rbnet.pcfg.DiscreteNonTermVar._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <details><summary>Inherited from <a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar._abc_impl" title="rbnet.base.NonTermVar._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -167,11 +171,6 @@
 </table>
 </details></div>
 <hr class="docutils" />
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar._abc_impl" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar.get_chart">
 <span class="sig-name descname"><span class="pre">get_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar.get_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar.get_chart" title="Link to this definition"></a></dt>
@@ -183,15 +182,16 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteNonTermVar.mixture">
-<span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar.mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteNonTermVar.mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteNonTermVar.mixture" title="Link to this definition"></a></dt>
 <dd><p>Compute a mixture distribution over a discrete variable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>components</strong> – array-like with mixture components along <code class="docutils literal notranslate"><span class="pre">axis</span></code></p></li>
-<li><p><strong>weights</strong> – weights of the mixture components in an array-like of shape <code class="docutils literal notranslate"><span class="pre">axis</span></code></p></li>
-<li><p><strong>axis</strong> – integer or tuple of integers indicating the dimensions or axes of <code class="docutils literal notranslate"><span class="pre">components</span></code> along which to
-compute the mixture (the other dimensions are treated as batch dimensions; weights are broadcast along those)</p></li>
+<li><p><strong>components</strong> – array-like with mixture components along <code class="docutils literal notranslate"><span class="pre">dim</span></code></p></li>
+<li><p><strong>weights</strong> – [optional] weights of the mixture components; must be compatible (broadcastable) to
+<code class="docutils literal notranslate"><span class="pre">components</span></code></p></li>
+<li><p><strong>dim</strong> – integer or tuple of integers indicating the dimensions of <code class="docutils literal notranslate"><span class="pre">components</span></code> along which to sum to
+compute the mixture</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -208,7 +208,7 @@ compute the mixture (the other dimensions are treated as batch dimensions; weigh
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html" class="btn btn-neutral float-left" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.pcfg.DiscreteCell.html" class="btn btn-neutral float-left" title="rbnet.pcfg.DiscreteCell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="rbnet.pcfg.DiscretePrior.html" class="btn btn-neutral float-right" title="rbnet.pcfg.DiscretePrior" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

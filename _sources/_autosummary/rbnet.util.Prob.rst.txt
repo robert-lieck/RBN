@@ -1,0 +1,11 @@
+rbnet.util.Prob
+===============
+
+.. currentmodule:: rbnet.util
+
+.. autoclass:: Prob
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

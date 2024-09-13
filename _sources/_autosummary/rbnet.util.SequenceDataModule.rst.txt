@@ -1,0 +1,11 @@
+rbnet.util.SequenceDataModule
+=============================
+
+.. currentmodule:: rbnet.util
+
+.. autoclass:: SequenceDataModule
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

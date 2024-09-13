@@ -1,0 +1,6 @@
+rbnet.util.as\_detached\_tensor
+===============================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: as_detached_tensor

@@ -6,8 +6,6 @@ rbnet.pcfg.ExpandedPCFG
 .. autoclass:: ExpandedPCFG
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

@@ -7,7 +7,7 @@
   <title>rbnet.base.RBN &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -104,18 +104,37 @@
 <h1>rbnet.base.RBN<a class="headerlink" href="#rbnet-base-rbn" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.base.RBN">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">RBN</span></span><a class="reference internal" href="../_modules/rbnet/base.html#RBN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">RBN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for RBNs.</p>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Public Data Attributes:</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.root_location" title="rbnet.base.RBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a></p></td>
+<td><p>Return the location of the root variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.inside_chart" title="rbnet.base.RBN.inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_chart</span></code></a></p></td>
+<td><p>Return the chart with inside probabilities for all variables.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.terminal_chart" title="rbnet.base.RBN.terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal_chart</span></code></a></p></td>
+<td><p>Return the chart with terminal variables.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.prior" title="rbnet.base.RBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a></p></td>
+<td><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.root_location" title="rbnet.base.RBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a>()</p></td>
-<td><p>Return the location of the root variables.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.non_terminals" title="rbnet.base.RBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
 <td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
@@ -126,16 +145,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.update_inside_chart" title="rbnet.base.RBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
 <td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.get_inside_chart" title="rbnet.base.RBN.get_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_inside_chart</span></code></a>()</p></td>
-<td><p>Return the chart with inside probabilities for all variables.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.get_terminal_chart" title="rbnet.base.RBN.get_terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_terminal_chart</span></code></a>()</p></td>
-<td><p>Return the chart with terminal variables.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.prior" title="rbnet.base.RBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a>()</p></td>
-<td><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Compute the inside probabilities and return the marginal data likelihood.</p></td>
 </tr>
 </tbody>
@@ -145,7 +155,7 @@
 <p class="rubric">Private Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.RBN._abc_impl" title="rbnet.base.RBN._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -159,33 +169,6 @@
 </table>
 </details></div>
 <hr class="docutils" />
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rbnet.base.RBN._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.base.RBN._abc_impl" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.RBN.get_inside_chart">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_inside_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN.get_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN.get_inside_chart" title="Link to this definition"></a></dt>
-<dd><p>Return the chart with inside probabilities for all variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>inside chart</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.RBN.get_terminal_chart">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_terminal_chart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN.get_terminal_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN.get_terminal_chart" title="Link to this definition"></a></dt>
-<dd><p>Return the chart with terminal variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>terminal chart</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.base.RBN.init_inside">
 <span class="sig-name descname"><span class="pre">init_inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN.init_inside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN.init_inside" title="Link to this definition"></a></dt>
@@ -200,6 +183,17 @@ Derived classes may override it to implement tasks such as initialising charts f
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>marginal likelihood</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rbnet.base.RBN.inside_chart">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inside_chart</span></span><a class="headerlink" href="#rbnet.base.RBN.inside_chart" title="Link to this definition"></a></dt>
+<dd><p>Return the chart with inside probabilities for all variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>inside chart</p>
 </dd>
 </dl>
 </dd></dl>
@@ -236,9 +230,9 @@ indicates that variables should be conditioned on these values.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="rbnet.base.RBN.prior">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN.prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN.prior" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prior</span></span><a class="headerlink" href="#rbnet.base.RBN.prior" title="Link to this definition"></a></dt>
 <dd><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement
 <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p>
 <dl class="field-list simple">
@@ -248,14 +242,25 @@ indicates that variables should be conditioned on these values.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="py property">
 <dt class="sig sig-object py" id="rbnet.base.RBN.root_location">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root_location</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#RBN.root_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.RBN.root_location" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root_location</span></span><a class="headerlink" href="#rbnet.base.RBN.root_location" title="Link to this definition"></a></dt>
 <dd><p>Return the location of the root variables. This is typically the value returned in the last iteration of
 <a class="reference internal" href="#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>location of the root variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="rbnet.base.RBN.terminal_chart">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">terminal_chart</span></span><a class="headerlink" href="#rbnet.base.RBN.terminal_chart" title="Link to this definition"></a></dt>
+<dd><p>Return the chart with terminal variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>terminal chart</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,0 +1,11 @@
+rbnet.util.ConstrainedModuleMixin
+=================================
+
+.. currentmodule:: rbnet.util
+
+.. autoclass:: ConstrainedModuleMixin
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_plot_PCFG.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -133,6 +133,13 @@ Now we can define our PCFG by providing it with the terminals, non-terminals, ru
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /home/runner/work/RBN/RBN/rbnet/util.py:299: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ../torch/csrc/utils/tensor_new.cpp:278.)
+      return torch.tensor(t)
+
 
 
 
@@ -143,22 +150,23 @@ Parsing Sentences
 Let's test the grammar by computing the marginal likelihood of some grammatical sentences
 (which should be greater than zero) and for some un-grammatical ones (which should have zero marginal likelihood)
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-76
+.. GENERATED FROM PYTHON SOURCE LINES 61-77
 
 .. code-block:: Python
 
-    for sentence in [
-        # grammatical
+
+    grammatical_sentences = [
         "I run",
         "You never run",
         "We run very veeery slowly",
         "They always run alone",
         "I never sleep really very quickly",
-        "You do-not drink very quickly",
-        # un-grammatical
+        "You do-not drink very quickly"]
+    ungrammatical_sentences = [
         "I You",
         "run fast"
-    ]:
+    ]
+    for sentence in grammatical_sentences + ungrammatical_sentences:
         marginal_likelihood = pcfg.inside(sequence=sentence.split())
         print(f"{sentence} --> {marginal_likelihood}")
 
@@ -170,24 +178,24 @@ Let's test the grammar by computing the marginal likelihood of some grammatical 
 
  .. code-block:: none
 
-    I run --> 0.011551999999999998
-    You never run --> 0.00017559039999999996
-    We run very veeery slowly --> 1.7309186566826655e-06
-    They always run alone --> 1.0675896319999996e-05
-    I never sleep really very quickly --> 5.261992716315302e-08
-    You do-not drink very quickly --> 4.327296641706664e-07
-    I You --> 0.0
-    run fast --> 0.0
+    I run --> 0.041666667908096755
+    You never run --> 0.0017361111240322576
+    We run very veeery slowly --> 1.3563368156502012e-05
+    They always run alone --> 0.00028935185400537626
+    I never sleep really very quickly --> 1.130280679708501e-06
+    You do-not drink very quickly --> 9.042245437668008e-06
+    I You --> -5.4372458772976525e-24
+    run fast --> -2.0901856201675087e-24
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-79
+.. GENERATED FROM PYTHON SOURCE LINES 78-80
 
 We can also print a simple textual visualisation of the parse chart, which shows
 ``non-terminal symbol|inside probability`` at each location
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-81
+.. GENERATED FROM PYTHON SOURCE LINES 80-82
 
 .. code-block:: Python
 
@@ -212,7 +220,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                                ╱                ╲                           
                               ╱                  ╲                          
                              ╱                    ╲                         
-                            ╱        start|1.76e-04╲                        
+                            ╱        start|1.74e-03╲                        
                            ╱╲                      ╱╲                       
                           ╱  ╲                    ╱  ╲                      
                          ╱    ╲                  ╱    ╲                     
@@ -224,7 +232,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                    ╱                ╲      ╱                ╲               
                   ╱                  ╲    ╱                  ╲              
                  ╱                    ╲  ╱                    ╲             
-                ╱                    []╲╱         verb|3.85e-03╲            
+                ╱                    []╲╱         verb|6.94e-03╲            
                ╱╲                      ╱╲                      ╱╲           
               ╱  ╲                    ╱  ╲                    ╱  ╲          
              ╱    ╲                  ╱    ╲                  ╱    ╲         
@@ -236,7 +244,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
        ╱                ╲      ╱                ╲      ╱                ╲   
       ╱                  ╲    ╱                  ╲    ╱                  ╲  
      ╱                    ╲  ╱                    ╲  ╱                    ╲ 
-    ╱       subject|1.9e-01╲╱verb_qualifier|1.9e-01╲╱         verb|2.53e-01╲
+    ╱       subject|2.5e-01╲╱verb_qualifier|2.5e-01╲╱         verb|1.67e-01╲
 
 
 
@@ -244,7 +252,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.008 seconds)
+   **Total running time of the script:** (0 minutes 0.026 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_PCFG.py:
@@ -260,6 +268,10 @@ We can also print a simple textual visualisation of the parse chart, which shows
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: plot_PCFG.py <plot_PCFG.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: plot_PCFG.zip <plot_PCFG.zip>`
 
 
 .. only:: html

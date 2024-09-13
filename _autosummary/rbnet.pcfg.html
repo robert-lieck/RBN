@@ -7,7 +7,7 @@
   <title>rbnet.pcfg &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -60,6 +60,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">rbnet.pcfg</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteCell.html">rbnet.pcfg.DiscreteCell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html">rbnet.pcfg.DiscreteNonTermVar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html">rbnet.pcfg.DiscretePrior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
@@ -111,23 +112,26 @@
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteBinaryNonTerminalTransition</span></code></a>(weights)</p></td>
 <td><p>A binary non-terminal transition for discrete non-terminal variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar" title="rbnet.pcfg.DiscreteNonTermVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteNonTermVar</span></code></a>(cardinality[, chart_type])</p></td>
-<td><p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteCell.html#rbnet.pcfg.DiscreteCell" title="rbnet.pcfg.DiscreteCell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteCell</span></code></a>(variable, weights, transitions)</p></td>
+<td><p>A cell for a discrete variable, where the structural distribution may depend on the variable's value</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html#rbnet.pcfg.DiscretePrior" title="rbnet.pcfg.DiscretePrior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscretePrior</span></code></a>(struc_weights, prior_weights)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html#rbnet.pcfg.DiscreteNonTermVar" title="rbnet.pcfg.DiscreteNonTermVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteNonTermVar</span></code></a>(cardinality[, chart_type])</p></td>
+<td><p>A discrete non-terminal variable with cardinality <code class="docutils literal notranslate"><span class="pre">cardinality</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html#rbnet.pcfg.DiscretePrior" title="rbnet.pcfg.DiscretePrior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscretePrior</span></code></a>(struc_weights, prior_weights)</p></td>
 <td><p>A prior distribution over discrete non-terminal variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition" title="rbnet.pcfg.DiscreteTerminalTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteTerminalTransition</span></code></a>(weights[, term_idx])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition" title="rbnet.pcfg.DiscreteTerminalTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiscreteTerminalTransition</span></code></a>(weights[, ...])</p></td>
 <td><p>A binary terminal transition for discrete non-terminal and terminal variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.ExpandedPCFG.html#rbnet.pcfg.ExpandedPCFG" title="rbnet.pcfg.ExpandedPCFG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpandedPCFG</span></code></a>(non_terminals, terminals, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.ExpandedPCFG.html#rbnet.pcfg.ExpandedPCFG" title="rbnet.pcfg.ExpandedPCFG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ExpandedPCFG</span></code></a>(non_terminals, terminals, ...)</p></td>
 <td><p>An ExpandedPCFG...</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PCFG</span></code></a>(cells, prior, terminal_indices, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PCFG</span></code></a>(cells, prior, terminal_indices, ...[, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell" title="rbnet.pcfg.StaticCell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StaticCell</span></code></a>(variable, weights, transitions)</p></td>
-<td><p>A cell with a static structural distribution, i.e., the probabilities over the different transitions</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell" title="rbnet.pcfg.StaticCell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StaticCell</span></code></a>(variable, weights, transitions[, ...])</p></td>
+<td><p>A cell with a static structural distribution (probabilities over the different transitions)</p></td>
 </tr>
 </tbody>
 </table>

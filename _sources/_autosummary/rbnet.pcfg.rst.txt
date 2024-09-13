@@ -21,6 +21,7 @@ rbnet.pcfg
    
       AbstractedPCFG
       DiscreteBinaryNonTerminalTransition
+      DiscreteCell
       DiscreteNonTermVar
       DiscretePrior
       DiscreteTerminalTransition

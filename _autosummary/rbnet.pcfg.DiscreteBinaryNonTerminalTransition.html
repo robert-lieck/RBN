@@ -7,7 +7,7 @@
   <title>rbnet.pcfg.DiscreteBinaryNonTerminalTransition &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,12 +21,12 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rbnet.pcfg.DiscreteNonTermVar" href="rbnet.pcfg.DiscreteNonTermVar.html" />
+    <link rel="next" title="rbnet.pcfg.DiscreteCell" href="rbnet.pcfg.DiscreteCell.html" />
     <link rel="prev" title="rbnet.pcfg.AbstractedPCFG" href="rbnet.pcfg.AbstractedPCFG.html" /> 
 </head>
 
@@ -60,6 +60,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.AbstractedPCFG.html">rbnet.pcfg.AbstractedPCFG</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.pcfg.DiscreteBinaryNonTerminalTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteCell.html">rbnet.pcfg.DiscreteCell</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteNonTermVar.html">rbnet.pcfg.DiscreteNonTermVar</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscretePrior.html">rbnet.pcfg.DiscretePrior</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.DiscreteTerminalTransition.html">rbnet.pcfg.DiscreteTerminalTransition</a></li>
@@ -105,8 +106,8 @@
 <h1>rbnet.pcfg.DiscreteBinaryNonTerminalTransition<a class="headerlink" href="#rbnet-pcfg-discretebinarynonterminaltransition" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteBinaryNonTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteBinaryNonTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_idx=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_idx=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_rep=&lt;class</span> <span class="pre">'rbnet.util.LogProb'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
 <p>A binary non-terminal transition for discrete non-terminal variables.</p>
 <p>Initialise a non-terminal transition p(a, b | c) for random variables <cite>a</cite>, <cite>b</cite>, <cite>c</cite>. The child variables <cite>b</cite> and
 <cite>c</cite> may be different variables than <cite>a</cite> (if the RBN has multiple non-terminal variables), which is determined by
@@ -123,10 +124,45 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 </dd>
 </dl>
 <div class="autoclasstoc docutils container">
+<p class="rubric">Public Data Attributes:</p>
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">T_destination</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<div class="autoclasstoc docutils container">
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(weights[, left_idx, right_idx])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(weights[, left_idx, right_idx, ...])</p></td>
 <td><p>Initialise a non-terminal transition p(a, b | c) for random variables <cite>a</cite>, <cite>b</cite>, <cite>c</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
@@ -136,8 +172,190 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 </table>
 <details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
 <td><p>Compute the marginals over inside probabilities</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_buffer</span></code>(name, tensor[, persistent])</p></td>
+<td><p>Add a buffer to the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_parameter</span></code>(name, param)</p></td>
+<td><p>Add a parameter to the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_module</span></code>(name, module)</p></td>
+<td><p>Add a child module to the current module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_module</span></code>(name, module)</p></td>
+<td><p>Alias for <code class="xref py py-func docutils literal notranslate"><span class="pre">add_module()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_submodule</span></code>(target)</p></td>
+<td><p>Return the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameter</span></code>(target)</p></td>
+<td><p>Return the parameter given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code>(target)</p></td>
+<td><p>Return the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_extra_state</span></code>()</p></td>
+<td><p>Return any extra state to include in the module's state_dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_extra_state</span></code>(state)</p></td>
+<td><p>Set extra state contained in the loaded <cite>state_dict</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(fn)</p></td>
+<td><p>Apply <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>) as well as self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the GPU.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipu</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the IPU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpu</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the XPU.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu</span></code>()</p></td>
+<td><p>Move all model parameters and buffers to the CPU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code>(dst_type)</p></td>
+<td><p>Casts all parameters and buffers to <code class="xref py py-attr docutils literal notranslate"><span class="pre">dst_type</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">float</span></code> datatype.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">double</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">double</span></code> datatype.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">half</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">half</span></code> datatype.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bfloat16</span></code>()</p></td>
+<td><p>Casts all floating point parameters and buffers to <code class="docutils literal notranslate"><span class="pre">bfloat16</span></code> datatype.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_empty</span></code>(*, device[, recurse])</p></td>
+<td><p>Move the parameters and buffers to the specified device without copying storage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code>(*args, **kwargs)</p></td>
+<td><p>Move and/or cast the parameters and buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_full_backward_pre_hook</span></code>(hook[, prepend])</p></td>
+<td><p>Register a backward pre-hook on the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_backward_hook</span></code>(hook)</p></td>
+<td><p>Register a backward hook on the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_full_backward_hook</span></code>(hook[, prepend])</p></td>
+<td><p>Register a backward hook on the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_forward_pre_hook</span></code>(hook, *[, ...])</p></td>
+<td><p>Register a forward pre-hook on the module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_forward_hook</span></code>(hook, *[, prepend, ...])</p></td>
+<td><p>Register a forward hook on the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(*args, **kwargs)</p></td>
+<td><p>Call self as a function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getstate__</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setstate__</span></code>(state)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getattr__</span></code>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setattr__</span></code>(name, value)</p></td>
+<td><p>Implement setattr(self, name, value).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__delattr__</span></code>(name)</p></td>
+<td><p>Implement delattr(self, name).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_state_dict_pre_hook</span></code>(hook)</p></td>
+<td><p>Register a pre-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code>(*args[, destination, prefix, ...])</p></td>
+<td><p>Return a dictionary containing references to the whole state of the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_load_state_dict_post_hook</span></code>(hook)</p></td>
+<td><p>Register a post hook to be run after module's <code class="docutils literal notranslate"><span class="pre">load_state_dict</span></code> is called.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state_dict</span></code>(state_dict[, strict, assign])</p></td>
+<td><p>Copy parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into this module and its descendants.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code>([recurse])</p></td>
+<td><p>Return an iterator over module parameters.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_parameters</span></code>([prefix, recurse, ...])</p></td>
+<td><p>Return an iterator over module parameters, yielding both the name of the parameter as well as the parameter itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">buffers</span></code>([recurse])</p></td>
+<td><p>Return an iterator over module buffers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_buffers</span></code>([prefix, recurse, ...])</p></td>
+<td><p>Return an iterator over module buffers, yielding both the name of the buffer as well as the buffer itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">children</span></code>()</p></td>
+<td><p>Return an iterator over immediate children modules.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_children</span></code>()</p></td>
+<td><p>Return an iterator over immediate children modules, yielding both the name of the module as well as the module itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">modules</span></code>()</p></td>
+<td><p>Return an iterator over all modules in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">named_modules</span></code>([memo, prefix, remove_duplicate])</p></td>
+<td><p>Return an iterator over all modules in the network, yielding both the name of the module as well as the module itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>([mode])</p></td>
+<td><p>Set the module in training mode.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code>()</p></td>
+<td><p>Set the module in evaluation mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">requires_grad_</span></code>([requires_grad])</p></td>
+<td><p>Change if autograd should record operations on parameters in this module.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_grad</span></code>([set_to_none])</p></td>
+<td><p>Reset gradients of all model parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">share_memory</span></code>()</p></td>
+<td><p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor.share_memory_()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">extra_repr</span></code>()</p></td>
+<td><p>Set the extra representation of the module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code>()</p></td>
+<td><p>Return repr(self).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__dir__</span></code>()</p></td>
+<td><p>Default dir() implementation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compile</span></code>(*args, **kwargs)</p></td>
+<td><p>Compile this Module's forward using <code class="xref py py-func docutils literal notranslate"><span class="pre">torch.compile()</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.enforce_constraints" title="rbnet.util.ConstrainedModuleMixin.enforce_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enforce_constraints</span></code></a>([recurse])</p></td>
+<td><p>Enforce constraints for module parameters and child modules.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.remap" title="rbnet.util.ConstrainedModuleMixin.remap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap</span></code></a>(param[, _top_level, prefix])</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -146,14 +364,68 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 <p class="rubric">Private Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl" title="rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 <details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition._abc_impl" title="rbnet.base.Transition._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -165,13 +437,115 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 </tr>
 </tbody>
 </table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details></div>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Private Methods:</p>
+<details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_apply</span></code>(fn[, recurse])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_backward_hooks</span></code>()</p></td>
+<td><p>Return the backward hooks for use in the call function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_backward_pre_hooks</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_maybe_warn_non_full_backward_hook</span></code>(inputs, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_slow_forward</span></code>(*input, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_wrapped_call_impl</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_call_impl</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_register_state_dict_hook</span></code>(hook)</p></td>
+<td><p>Register a state-dict hook.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_save_to_state_dict</span></code>(destination, prefix, ...)</p></td>
+<td><p>Save module state to the <cite>destination</cite> dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_register_load_state_dict_pre_hook</span></code>(hook[, ...])</p></td>
+<td><p>Register a pre-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code> method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_from_state_dict</span></code>(state_dict, prefix, ...)</p></td>
+<td><p>Copy parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into only this module, but not its descendants.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_named_members</span></code>(get_members_fn[, prefix, ...])</p></td>
+<td><p>Help yield various names + members of modules.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_name</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_replicate_for_data_parallel</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </details></div>
 <hr class="docutils" />
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition._abc_impl" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals">
 <span class="sig-name descname"><span class="pre">inside_marginals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inside_chart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminal_chart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition.inside_marginals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals" title="Link to this definition"></a></dt>
@@ -209,8 +583,7 @@ otherwise general inside marginals (as a function of the variable) should be com
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>array-like or iterable with inside probabilities; if the transition is not possible, this should be
-of length zero or contain only inside probabilities representing zero</p>
+<dd class="field-even"><p>array-like or iterable with inside probabilities</p>
 </dd>
 </dl>
 </dd></dl>
@@ -224,7 +597,7 @@ of length zero or contain only inside probabilities representing zero</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="rbnet.pcfg.AbstractedPCFG.html" class="btn btn-neutral float-left" title="rbnet.pcfg.AbstractedPCFG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rbnet.pcfg.DiscreteNonTermVar.html" class="btn btn-neutral float-right" title="rbnet.pcfg.DiscreteNonTermVar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rbnet.pcfg.DiscreteCell.html" class="btn btn-neutral float-right" title="rbnet.pcfg.DiscreteCell" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

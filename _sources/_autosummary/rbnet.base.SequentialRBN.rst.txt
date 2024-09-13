@@ -6,8 +6,6 @@ rbnet.base.SequentialRBN
 .. autoclass:: SequentialRBN
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::

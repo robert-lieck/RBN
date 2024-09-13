@@ -7,7 +7,7 @@
   <title>rbnet.base.NonTermVar &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -21,7 +21,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -104,7 +104,7 @@
 <h1>rbnet.base.NonTermVar<a class="headerlink" href="#rbnet-base-nontermvar" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.base.NonTermVar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">NonTermVar</span></span><a class="reference internal" href="../_modules/rbnet/base.html#NonTermVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.NonTermVar" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">NonTermVar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#NonTermVar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.NonTermVar" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for non-terminal variables. Instances of <a class="reference internal" href="#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonTermVar</span></code></a> represent a specific type of template
 variable. A parse chart for that variable for specific input data can be requested via <a class="reference internal" href="#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_chart()</span></code></a>. Mixtures
@@ -113,10 +113,13 @@ over this variable type can be computed via <a class="reference internal" href="
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.NonTermVar.get_chart" title="rbnet.base.NonTermVar.get_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_chart</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Return a parse chart to store this variable type in.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.NonTermVar.mixture" title="rbnet.base.NonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.NonTermVar.mixture" title="rbnet.base.NonTermVar.mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixture</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Compute a mixture over this variable type.</p></td>
 </tr>
 </tbody>
@@ -126,7 +129,7 @@ over this variable type can be computed via <a class="reference internal" href="
 <p class="rubric">Private Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.NonTermVar._abc_impl" title="rbnet.base.NonTermVar._abc_impl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -140,11 +143,6 @@ over this variable type can be computed via <a class="reference internal" href="
 </table>
 </details></div>
 <hr class="docutils" />
-<dl class="py attribute">
-<dt class="sig sig-object py" id="rbnet.base.NonTermVar._abc_impl">
-<span class="sig-name descname"><span class="pre">_abc_impl</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;_abc._abc_data</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#rbnet.base.NonTermVar._abc_impl" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.base.NonTermVar.get_chart">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#NonTermVar.get_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.NonTermVar.get_chart" title="Link to this definition"></a></dt>

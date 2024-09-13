@@ -6,8 +6,6 @@ rbnet.pcfg.DiscretePrior
 .. autoclass:: DiscretePrior
    :members:
    :undoc-members:
-   :private-members:
-   :inherited-members:
    :show-inheritance:
 
    .. autoclasstoc::
