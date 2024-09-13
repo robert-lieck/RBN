@@ -28,7 +28,7 @@ class PCFG(SequentialRBN):
 
     def map_inside_chart(self, precision=None):
         new_arr = []
-        for probs in self.inside_chart[0]._arr:
+        for probs in self.inside_chart[0].arr:
             field = []
             for idx, p in enumerate(probs):
                 if p > 0:
@@ -51,8 +51,8 @@ class AbstractedPCFG(PCFG, pl.LightningModule, ConstrainedModuleMixin):
         :param terminals: list or array of terminal symbols
         :param rules: iterable of rules-weight tuples with rules provided either as strings of the form
          ``("X --> Y Z", w)`` or ``("X --> Y", w)`` for non-terminal and terminal rules, respectively (symbols have to
-          be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for
-          arbitrary symbols, where w is the rule weight.
+         be strings without whitespace for this), or of the form ``((X, (Y, Z)), w)`` or ``((X, (Y,)), w)`` for
+         arbitrary symbols, where w is the rule weight.
         :param start: the start symbol
         """
         self.terminals = terminals
@@ -192,7 +192,7 @@ class DiscreteNonTermVar(NonTermVar):
 
     def __init__(self, cardinality, chart_type="TMap", *args, **kwargs):
         """
-        A discrete non-terminal variable with cardinality ``n``.
+        A discrete non-terminal variable with cardinality ``cardinality``.
 
         :param cardinality: cardinality
         :param chart_type: type of chart to use ("dict" or "TMap")
@@ -413,7 +413,7 @@ class DiscreteCell(Cell, ConstrainedModuleMixin):
 
 
 class StaticCell(DiscreteCell):
-    """A cell with a static structural distribution, i.e., the probabilities over the different transitions"""
+    """A cell with a static structural distribution (probabilities over the different transitions)"""
 
     def __init__(self, variable, weights, transitions, prob_rep=LogProb, *args, **kwargs):
         weights = as_detached_tensor(weights).unsqueeze(1).expand(-1, variable.cardinality)

@@ -1,4 +1,6 @@
 import warnings
+import sys
+from functools import wraps
 
 import numpy as np
 import torch
@@ -10,6 +12,17 @@ import matplotlib.pyplot as plt
 
 _no_value = object()
 
+# always use strict zip if available
+_buildin_zip = zip
+if np.all([int(i) for i in sys.version.split(".")[:2]] >= [3, 10]):
+    @wraps(zip)
+    def zip(*args, **kwargs):
+        kwargs = dict(strict=True) | kwargs
+        yield from _buildin_zip(*args, **kwargs)
+else:
+    @wraps(zip)
+    def zip(*args, **kwargs):
+        yield from _buildin_zip(*args, **kwargs)
 
 class ConstrainedModuleMixin:
     """
@@ -62,6 +75,7 @@ class ConstrainedModuleMixin:
 
 
 class ConstrainedModuleList(torch.nn.ModuleList, ConstrainedModuleMixin):
+    """A plain ModuleList with :class:`~ConstrainedModuleMixin` to be cooperative and not break recursive calls."""
     pass
 
 
@@ -91,10 +105,9 @@ class Prob(torch.nn.Module, ConstrainedModuleMixin):
         self.enforce_constraints()
 
     def project_grad(self, grad):
-        """
-        Projects the gradient to the tangent space :math:`g^\top = g - \frac{1}{|g|} \sum g`.
-
-        Registered as a hook on the parameter.
+        r"""
+        Projects the gradient to the tangent space :math:`\bar{g} = g - 1/|g| \sum g`, registered as a hook on the
+        parameter.
 
         :param grad: unconstrained gradient
         :return: projected gradient
@@ -333,5 +346,5 @@ def plot_grad(func, x_min=0, y_min=0, x_max=1, y_max=1, nx=10, ny=10):
     y = torch.tensor(y, requires_grad=True)
     loss = func(x, y)
     loss.backward(torch.ones((nx, ny)))
-    plt.quiver(x.detach(), y.detach(), x.grad, y.grad)
+    plt.quiver(x.detach().numpy(), y.detach().numpy(), x.grad, y.grad)
     plt.show()

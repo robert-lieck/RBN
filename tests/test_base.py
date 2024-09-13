@@ -191,9 +191,10 @@ class TestStaticCell(TestCase):
                 end = start + idx + 1
                 insides = rbn.inside_chart[0][start, end].detach().numpy()
                 try:
-                    self.assertTrue(np.all(np.logical_or(insides == level_insides[idx], insides == 0)))
+                    self.assertTrue(np.all(np.logical_or(np.isclose(insides, level_insides[idx]), insides == 0)))
                 except AssertionError:
                     print(f"(start, end): {(start, end)}")
+                    print(f"idx: {idx}")
                     print(f"insides: {insides}")
                     print(f"level_insides: {level_insides}")
                     raise
