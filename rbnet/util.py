@@ -9,6 +9,7 @@ from torch.utils.data.dataset import random_split
 import pytorch_lightning as pl
 import matplotlib.pyplot as plt
 
+from triangularmap import TMap
 
 _no_value = object()
 
@@ -23,6 +24,44 @@ else:
     @wraps(zip)
     def zip(*args, **kwargs):
         yield from _buildin_zip(*args, **kwargs)
+
+
+class TupleTMap(TMap):
+    """
+    A tuple of :class:`~TMap` objects. All getters/setters of attributes and items return/take tuples of values.
+    Internally, a :class:`~TupleTMap` object actually maintains a tuple of :class:`~TMap` objects and delegates all
+    calls to these objects.
+    """
+
+    def __init__(self, arrs, *args, **kwargs):
+        # do NOT call super().__init__
+        l = np.array([len(a) for a in arrs])
+        if not np.all(l == l[0]):
+            raise ValueError(f"Input arrays have different lengths: {l}")
+        self._tmaps = tuple(TMap(a, *args, **kwargs) for a in arrs)
+
+    def __getattribute__(self, item):
+        if item in ['_tmaps']:
+            return super().__getattribute__(item)
+        ret = tuple(getattr(t, item) for t in self._tmaps)
+        if callable(ret[0]):
+            return lambda *args, **kwargs: tuple(r(*args, **kwargs) for r in ret)
+        else:
+            return ret
+
+    def __setattr__(self, key, value):
+        if key == '_tmaps':
+            super().__setattr__(key, value)
+        for t, v in zip(self._tmaps, value):
+            setattr(t, key, v)
+
+    def __getitem__(self, item):
+        return tuple(t.__getitem__(item) for t in self._tmaps)
+
+    def __setitem__(self, key, value):
+        for t, v in zip(self._tmaps, value):
+            t.__setitem__(key, v)
+
 
 class ConstrainedModuleMixin:
     """
