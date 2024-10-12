@@ -1,6 +1,6 @@
 import torch
 
-from rbnet.base import SequentialRBN, Prior, NonTermVar, Transition, Cell
+from rbnet.base import Prior, NonTermVar, Transition, Cell
 from rbnet.util import TupleTMap
 
 

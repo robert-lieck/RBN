@@ -81,9 +81,9 @@ Taking this into account, the general form of the inside probabilities for the n
         \sum_{\tau \in \mathcal{T}_x}
         p_S(z_{i:k}=\tau \mid x_{i:k})
         {\sum\cdots\sum}_{i<j_1<\ldots<j_{\eta-1}<k} \\
-        & {\int\cdots\int}_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+        & {\int\cdots\int}_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
         p_{\tau}(v_{i:j_1}, \ldots, v_{j_{\eta-1}:k} \mid x_{i:k})
-        \prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+        \prod_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
         \beta(v_{j:j^\prime}).
 
 We denote the second line as *inside marginals* :math:`\widetilde{\beta}_{i:\ldots:k}(x_{i:k})`
@@ -93,9 +93,9 @@ We denote the second line as *inside marginals* :math:`\widetilde{\beta}_{i:\ldo
     .. math::
         \widetilde{\beta}_{i:\ldots:k}(x_{i:k})
         =
-        {\int\cdots\int}_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+        {\int\cdots\int}_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
         p_{\tau}(v_{i:j_1}, \ldots, v_{j_{\eta-1}:k} \mid x_{i:k})
-        \prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+        \prod_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
         \beta(v_{j:j^\prime}),
 
 where the subscript :math:`i:\ldots:k` indicates the dependency on :math:`i<j_1<\ldots<j_{\eta-1}<k`.
@@ -137,11 +137,11 @@ To explain the different parts of the equation in more detail, we have:
    {\sum\cdots\sum}_{i<j_1<\ldots<j_{\eta-1}<k}
 
 - The multi-integral to marginalise out the set of generated non-terminal (child) variables (denoted by
-  :math:`\{v_{j:j^\prime}\in\mathcal{X}\}`). Importantly, this does not include any terminal variables that may have been
+  :math:`\{v_{j:j^\prime}\}\subseteq\mathcal{X}`). Importantly, this does not include any terminal variables that may have been
   generated along with the non-terminal variables:
 
 .. math::
-   & {\int\cdots\int}_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+   & {\int\cdots\int}_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
 
 - The actual transition probability. The generated variables :math:`v_{i:j_1}, \ldots, v_{j_{\eta-1}:k}` may contain
   both non-terminal variables and terminal variables:
@@ -152,10 +152,124 @@ To explain the different parts of the equation in more detail, we have:
 - The recursive part containing the product of inside probabilities of all generated non-terminal variables.
 
 .. math::
-   \prod_{\{v_{j:j^\prime}\in\mathcal{X}\}}
+   \prod_{\{v_{j:j^\prime}\}\subseteq\mathcal{X}}
    \beta(v_{j:j^\prime}).
 
 .. _marginal likelihood:
+
+Non-Sequential Case
+^^^^^^^^^^^^^^^^^^^
+
+Everything transfers to the non-sequential case, which is more abstract but the equations become simpler.
+
+.. admonition:: Inside Probabilities (Non-Sequential)
+
+    .. math::
+        \begin{aligned}
+        \beta(x_\pi) ={}& p(\mathbf{Y}_\pi \ |\ x_\pi) \\
+        ={}&
+        \sum_{\tau \in \mathcal{T}_x}
+        p_S(z_{\pi}=\tau \mid x_{\pi})
+        \sum_{(\pi_1,\pi_2,\ldots)\in\mathcal{P}_\tau(\pi)}
+        \underbrace{
+        \int_{\{v_{\pi_i}\}\subseteq\mathcal{X}}
+        p_{\tau}(v_{\pi_1}, v_{\pi_2}, \ldots \mid x_{\pi})
+        \prod_{\{v_{\pi_i}\}\subseteq\mathcal{X}} \beta(v_{\pi_i})
+        }_{\widetilde{\beta}^{(\tau)}_{(\pi_1,\pi_2,\ldots)}(x_\pi)} \\
+        ={}&
+        \sum_{\tau \in \mathcal{T}_x}
+        p_S(z_{\pi}=\tau \mid x_{\pi})
+        \sum_{(\pi_1,\pi_2,\ldots)\in\mathcal{P}_\tau(\pi)}
+        {\widetilde{\beta}^{(\tau)}_{(\pi_1,\pi_2,\ldots)}(x_\pi)}
+        & \text{\makebox[0pt][r]{(Inside Mixture)}} \\
+        \widetilde{\beta}^{(\tau)}_{(\pi_1,\pi_2,\ldots)}(x_\pi)
+        ={}&
+        \int_{\{v_{\pi_i}\}\subseteq\mathcal{X}}
+        p_{\tau}(v_{\pi_1}, v_{\pi_2}, \ldots \mid x_{\pi})
+        \prod_{\{v_{\pi_i}\}\subseteq\mathcal{X}}
+        \beta(v_{\pi_i}),
+        & \text{\makebox[0pt][r]{(Inside Marginals)}}
+        \end{aligned}
+
+where
+
+- :math:`\pi` references a subset of terminal variables
+
+- :math:`\mathbf{Y}_\pi` is the actual subset of terminal variables referenced by :math:`\pi`
+
+- :math:`\beta(x_\pi)` is the probability of generating :math:`\mathbf{Y}_\pi` conditional on the non-terminal variable
+  :math:`x_\pi` with all intermediate variables marginalised out
+
+- :math:`\mathcal{P}_\tau(\pi)` is the set of all possible partitionings of :math:`\pi` compatible with transition
+  :math:`\tau`, in particular, for transitions with a fixed arity :math:`\eta`, the number of parts must equal
+  :math:`\eta` (the number of variables produced by :math:`\tau`)
+
+- :math:`(\pi_1,\pi_2,\ldots)\in\mathcal{P}_\tau(\pi)` is one particular partition, so that each :math:`\pi_i` is
+  the subset of data points represented by the variable :math:`v_{\pi_i}`.
+
+This formulation also generalises to context-free graph grammars. For instance, in node-replacement graph grammars,
+variables correspond to nodes and each transition :math:`\tau` defines additional constraints for the partition
+:math:`(\pi_1,\pi_2,\ldots)\in\mathcal{P}_\tau(\pi)`, such that the node replacement rule is fulfilled.
+
+Outside Probabilities
+---------------------
+
+For simplicity, we directly provide the outside probabilities for the general non-sequential case.
+
+.. admonition:: Outside Probabilities
+
+    .. math::
+        \begin{aligned}
+        \alpha(x_\pi) ={}& p(x_\pi, \mathbf{Y} \setminus \mathbf{Y}_\pi) \\
+        ={}&
+        \sum_{\bar{\tau} \in \bar{\mathcal{T}}_x} \
+        \sum_{(\bar{\pi},\pi_1,\pi_2,\ldots)\in\bar{\mathcal{P}}_{\bar{\tau}}(\pi)}
+        \underbrace{
+        \int_{\bar{x}_{\bar{\pi}}}
+        \int_{\{v_{\pi_i}\}\subseteq\mathcal{X}}
+        p_S(z_{\bar{\pi}}=\bar{\tau} \mid \bar{x}_{\bar{\pi}}) \
+        p_{\bar{\tau}}(x_{\pi}, v_{\pi_1}, v_{\pi_2}, \ldots \mid \bar{x}_{\bar{\pi}}) \
+        \alpha(\bar{x}_{\bar{\pi}})
+        \prod_{\{v_{\pi_i}\}\subseteq\mathcal{X}} \beta(v_{\pi_i})
+        }_{\widetilde{\alpha}^{(\bar{\tau})}_{(\bar{\pi},\pi_1,\pi_2,\ldots)}(x_\pi)} \\
+        ={}&
+        \sum_{\bar{\tau} \in \bar{\mathcal{T}}_x} \
+        \sum_{(\bar{\pi},\pi_1,\pi_2,\ldots)\in\bar{\mathcal{P}}_{\bar{\tau}}(\pi)}
+        \widetilde{\alpha}^{(\bar{\tau})}_{(\bar{\pi},\pi_1,\pi_2,\ldots)}(x_\pi)
+        & \text{\makebox[0pt][r]{(Outside Mixture)}} \\
+        \widetilde{\alpha}^{(\bar{\tau})}_{(\bar{\pi},\pi_1,\pi_2,\ldots)}(x_\pi)
+        ={}&
+        \int_{\bar{x}_{\bar{\pi}}}
+        \int_{\{v_{\pi_i}\}\subseteq\mathcal{X}}
+        p_S(z_{\bar{\pi}}=\bar{\tau} \mid \bar{x}_{\bar{\pi}}) \
+        p_{\bar{\tau}}(x_{\pi}, v_{\pi_1}, v_{\pi_2}, \ldots \mid \bar{x}_{\bar{\pi}}) \
+        \alpha(\bar{x}_{\bar{\pi}})
+        \prod_{\{v_{\pi_i}\}\subseteq\mathcal{X}} \beta(v_{\pi_i})
+        & \text{\makebox[0pt][r]{(Outside Marginals)}}
+        \end{aligned}
+
+where
+
+- :math:`\mathbf{Y} \setminus \mathbf{Y}_\pi` the set of all terminal variables without by :math:`\mathbf{Y}_\pi`,
+  that is, the complement of the variables from respective the inside probabilities
+
+- :math:`\alpha(x_\pi)` is the joint probability of generating :math:`x_\pi` and all terminal variables
+  :math:`\mathbf{Y} \setminus \mathbf{Y}_\pi`
+
+- :math:`\bar{\mathcal{T}}_x` is the set of transitions that include :math:`x` as one of the generated variables;
+  if :math:`x` appears multiple times in the generated variables, these are listed as separate transitions
+  :math:`\bar{\tau}` and the position of the respective occurrence of :math:`x` is marked and used in the evaluation
+  of :math:`p_{\bar{\tau}}`
+
+- :math:`\bar{\pi}, \pi, \pi_1, \pi_2, \ldots` reference subsets of terminal variables, such that
+  :math:`\pi, \pi_1, \pi_2, \ldots` is a partition of :math:`\bar{\pi}`, and
+
+  .. math::
+     \bar{\mathcal{P}}_{\bar{\tau}}(\pi)
+      = \{ (\bar{\pi},\pi_1,\pi_2,\ldots) \ | \ \pi, \pi_1, \pi_2, \cdots \text{ partitions } \bar{\pi} \}
+
+  is the set of all such possibilities compatible with transition :math:`\bar{\tau}`; note that
+  the elements of :math:`\bar{\mathcal{P}}_{\bar{\tau}}(\pi)` contain the parent set :math:`\bar{\pi}`, not :math:`\pi`.
 
 Marginal Likelihood
 -------------------

@@ -121,13 +121,15 @@ class RBN(ABC):
                                                     terminal_chart=self.terminal_chart,
                                                     value=non_term_value)
                     )
-                # compute the mixture over inside marginals and update chart for variable(s)
+                # compute the mixture over inside marginals
+                inside_mixture = cell.inside_mixture(inside_marginals)
+                # update chart for variable(s)
                 self.update_inside_chart(var_idx=non_term_idx,
                                          locations=non_term_loc,
-                                         values=cell.inside_mixture(inside_marginals))
+                                         values=inside_mixture)
         # add the prior likelihood for the root location
         return self.prior.marginal_likelihood(root_location=self.root_location,
-                                                inside_chart=self.inside_chart)
+                                              inside_chart=self.inside_chart)
 
 
 class Transition(ABC, torch.nn.Module):
