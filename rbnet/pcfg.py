@@ -300,9 +300,7 @@ class DiscreteBinaryNonTerminalTransition(Transition, ConstrainedModuleMixin):
         self.left_idx = left_idx
         self.right_idx = right_idx
 
-    def inside_marginals(self, location, inside_chart, terminal_chart, value=None, **kwargs):
-        if value is not None:
-            NotImplementedError("Conditional inside probabilities currently not implemented")
+    def inside_marginals(self, location, inside_chart, terminal_chart, **kwargs):
         if isinstance(location, tuple) and len(location) == 2:
             start, end = location
             if end - start <= 1:
@@ -348,9 +346,7 @@ class DiscreteTerminalTransition(Transition, ConstrainedModuleMixin):
             raise ValueError("'weights' has to be two-dimensional")
         self.term_idx = term_idx
 
-    def inside_marginals(self, location, inside_chart, terminal_chart, value=None, **kwargs):
-        if value is not None:
-            NotImplementedError("Conditional inside probabilities currently not implemented")
+    def inside_marginals(self, location, inside_chart, terminal_chart, **kwargs):
         if isinstance(location, tuple) and len(location) == 2:
             start, end = location
             if end - start > 1:

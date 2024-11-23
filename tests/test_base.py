@@ -24,7 +24,6 @@ class TestStaticCell(TestCase):
         self.assertRaises(NotImplementedError, lambda: x.inside_chart)
         self.assertRaises(NotImplementedError, lambda: x.terminal_chart)
         self.assertRaises(NotImplementedError, x.inside_schedule)
-        self.assertRaises(NotImplementedError, x.non_terminals, None)
         self.assertRaises(NotImplementedError, lambda: x.prior)
         self.assertRaises(NotImplementedError, lambda: x.root_location)
         self.assertRaises(NotImplementedError, x.update_inside_chart, None, None, None)
@@ -215,7 +214,7 @@ class TestStaticCell(TestCase):
                               prob_rep=Prob)
         terminals = "ABCDE"
         N = len(terminals)
-        term_prob, non_term_prob = pcfg.cells[0].transition_probabilities.p[:, 0]
+        term_prob, non_term_prob = pcfg._cells[0].transition_probabilities.p[:, 0]
         marginal_likelihood = pcfg.inside(sequence=terminals).detach().numpy()
         self.assertNotEqual(marginal_likelihood, 0)
 

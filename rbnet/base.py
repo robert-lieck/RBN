@@ -36,17 +36,9 @@ class RBN(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def non_terminals(self, locations, *args, **kwargs):
+    def cells(self):
         """
-        Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations
-        and its associated cell. If `locations` specifies a batch of locations, the tuple contains the corresponding
-        batch of variables' values, but still only the single associated cell.
-
-        Returning ``None`` for the variable's values indicates that should be marginalised out; returning proper values
-        indicates that variables should be conditioned on these values.
-
-        :param locations: location or batch of locations of variables in chart
-        :yield: (variable's value, cell) or (batch of variables' values, cell)
+        Return iterable over cells (corresponding to the non-terminal variables).
         """
         raise NotImplementedError
 
@@ -111,15 +103,14 @@ class RBN(ABC):
         # get the next batch of non-terminal locations (e.g. level in CYK)
         for non_term_loc in self.inside_schedule():
             # go through all variables and associated cells (which contain the allowed transitions) at these locations
-            for non_term_idx, (non_term_value, cell) in enumerate(self.non_terminals(non_term_loc)):
+            for non_term_idx, cell in enumerate(self.cells()):
                 # go through the possible transitions allowed for this non-terminal and collect inside marginals
                 inside_marginals = []
                 for transition in cell.transitions():
                     inside_marginals.append(
                         transition.inside_marginals(location=non_term_loc,
                                                     inside_chart=self.inside_chart,
-                                                    terminal_chart=self.terminal_chart,
-                                                    value=non_term_value)
+                                                    terminal_chart=self.terminal_chart)
                     )
                 # compute the mixture over inside marginals
                 inside_mixture = cell.inside_mixture(inside_marginals)
@@ -141,7 +132,7 @@ class Transition(ABC, torch.nn.Module):
         super().__init__(*args, **kwargs)
 
     @abstractmethod
-    def inside_marginals(self, location, inside_chart, terminal_chart, value=None, **kwargs):
+    def inside_marginals(self, location, inside_chart, terminal_chart, **kwargs):
         r"""
         Compute the marginals over inside probabilities
 
@@ -171,10 +162,6 @@ class Transition(ABC, torch.nn.Module):
         :param location: location of the variable for which to compute the inside marginals
         :param inside_chart: a lookup chart with inside probabilities for other variables
         :param terminal_chart: a lookup chart with values of the terminal variables
-        :param value: value of the variable for which to compute the inside marginals or ``None``; if value is
-         provided this means that *conditional* inside probabilities should be computed (for the given value);
-         otherwise general inside marginals (as a function of the variable) should be computed; also see
-         :meth:`RBN.non_terminals`
         :return: array-like or iterable with inside probabilities
         """
         raise NotImplementedError
@@ -284,7 +271,7 @@ class SequentialRBN(RBN, torch.nn.Module):
 
     def __init__(self, cells, prior, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.cells = ConstrainedModuleList(cells)
+        self._cells = ConstrainedModuleList(cells)
         self._prior = prior
         self.n = None
         self._terminal_chart = None
@@ -293,7 +280,7 @@ class SequentialRBN(RBN, torch.nn.Module):
     def init_inside(self, sequence):
         self.n = len(sequence)
         self._terminal_chart = sequence
-        self._inside_chart = [c.variable.get_chart(len(sequence)) for c in self.cells]
+        self._inside_chart = [c.variable.get_chart(len(sequence)) for c in self._cells]
 
     def inside_schedule(self, *args, **kwargs):
         for span in range(1, self.n + 1):
@@ -304,9 +291,8 @@ class SequentialRBN(RBN, torch.nn.Module):
     def root_location(self):
         return 0, self.n
 
-    def non_terminals(self, locations, *args, **kwargs):
-        for c in self.cells:
-            yield None, c
+    def cells(self):
+        return self._cells
 
     def update_inside_chart(self, var_idx, locations, values):
         self._inside_chart[var_idx][locations] = values
