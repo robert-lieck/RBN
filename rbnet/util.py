@@ -134,7 +134,8 @@ class Prob(torch.nn.Module, ConstrainedModuleMixin):
         :param kwargs: passed on to super()__init__
         """
         super().__init__(*args, **kwargs)
-        self.p = torch.nn.Parameter(p)
+        self.p = torch.nn.Parameter(ensure_is_floating_point(p,
+                                                             "Probabilities 'p' must be of floating point type"))
         self.p.register_hook(self.project_grad)
         if dim is None:
             self.dim = tuple(range(len(self.p.shape)))
@@ -171,9 +172,9 @@ class LogProb(torch.nn.Module, ConstrainedModuleMixin):
     def __init__(self, p=None, log_p=None, dim=None, raise_zero_norms=True, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if (p is None) == (log_p is None):
-            raise ValueError("Have to provide exactly one of 't' and 'log_t'")
+            raise ValueError("Have to provide exactly one of 'p' and 'log_p'")
         if p is not None:
-            log_p = to_log(p)
+            log_p = torch.log(torch.as_tensor(p))
         self.log_p = torch.nn.Parameter(log_p)
         self.log_p.register_hook(self.project_grad)
         if dim is None:
@@ -202,11 +203,11 @@ class LogProb(torch.nn.Module, ConstrainedModuleMixin):
 
     @property
     def p(self):
-        return from_log(self.log_p)
+        return torch.exp(self.log_p)
 
     @p.setter
     def p(self, value):
-        self.log_p = to_log(value)
+        self.log_p = torch.log(value)
 
 
 class SequenceDataModule(pl.LightningDataModule):
@@ -325,6 +326,15 @@ def normalize_non_zero(a, axis=_no_value, make_zeros_uniform=False, skip_type_ch
     return a
 
 
+def ensure_is_floating_point(t, msg=None):
+    t = torch.tensor(t)
+    if not torch.is_floating_point(t):
+        if msg is None:
+            msg = "Values must be of floating point type"
+        raise TypeError(msg)
+    return t
+
+
 def as_detached_tensor(t):
     """
     Create a detached copy of tensor. If ``t`` already is a tensor, clone and detach it, otherwise create a new tensor.
@@ -335,29 +345,7 @@ def as_detached_tensor(t):
     if torch.is_tensor(t):
         return t.clone().detach()
     else:
-        return torch.tensor(t)
-
-
-def to_log(t, eps=1e-12):
-    """
-    Transform tensor to log representation by computing :math:`\log(t + \epsilon)`.
-
-    :param t: input tensor to transform
-    :param eps: small constant to avoid inf
-    :return: log-transformed tensor
-    """
-    return torch.log(t + eps)
-
-
-def from_log(t, eps=1e-12):
-    """
-    Transform tensor from log representation by computing :math:`\exp(t) - \epsilon`.
-
-    :param t: input tensor to transform
-    :param eps: small constant used to avoid inf in transforming to log representation
-    :return: transformed tensor
-    """
-    return torch.exp(t) - eps
+        return torch.tensor(np.array(t))
 
 
 def log_normalize(t, *args, **kwargs):
