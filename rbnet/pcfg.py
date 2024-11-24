@@ -32,7 +32,7 @@ class PCFG(SequentialRBN):
             field = []
             for idx, p in enumerate(probs):
                 if p > 0:
-                    field.append(f"{self._non_terminals[idx]}|{np.format_float_scientific(p, precision=precision)}")
+                    field.append(f"{self._non_terminals[idx]}:{np.format_float_scientific(p, precision=precision)}")
             if len(field) == 1:
                 new_arr.append(field[0])
             else:
@@ -44,8 +44,9 @@ class AbstractedPCFG(PCFG, pl.LightningModule, ConstrainedModuleMixin):
 
     def __init__(self, non_terminals, terminals, rules, start, prob_rep=LogProb, *args, **kwargs):
         """
-        An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable
-        with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.
+        An :class:`~AbstractedPCFG` defines an :class:`~rbnet.base.RBN` that has only one non-terminal and one
+        terminal variable, both being discrete with a cardinality corresponding to the number of non-terminal and
+        terminal symbols of the PCFG, respectively.
 
         :param non_terminals: list or array of non-terminal symbols
         :param terminals: list or array of terminal symbols

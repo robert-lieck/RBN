@@ -2,14 +2,31 @@
 Abstracted PCFGs
 ================
 
-This is an example of defining a simple discrete RBN equivalent to a PCFG.
+This is an example of defining a simple discrete RBN equivalent to a PCFG using the :class:`AbstractedPCFG
+<rbnet.pcfg.AbstractedPCFG>` class.
 """
+
+from rbnet.pcfg import AbstractedPCFG
+
+# %%
+# Minimal Example
+# ---------------
+# We start with a minimal example (also used in :doc:`/auto_examples/plot_discrete_RBN`):
+
+pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
+    ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
+    ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
+    ("A --> a", 1), ("B --> b", 1)       # terminal transition
+])
+
+print(pcfg.inside(sequence="aaaa"))
+print(pcfg.inside(sequence="bbbb"))
+print(pcfg.inside(sequence="aaab"))
+print(pcfg.inside_chart[0].pretty())
 
 # %%
 # Defining the PCFG
 # -----------------
-# We use an :class:`AbstractedPCFG <rbnet.pcfg.AbstractedPCFG>`
-from rbnet.pcfg import AbstractedPCFG
 
 # %%
 # First we define a number of words (terminal symbols) of different categories that sentences can be composed of:
