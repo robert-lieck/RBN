@@ -1,0 +1,298 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rbnet.autoencoder &mdash; rbnet  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/autoclasstoc.css?v=08871587" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rbnet
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery and Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_summary.html">API Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rbnet</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">rbnet.autoencoder</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rbnet.autoencoder</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Cell</span>
+<span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">TupleTMap</span>
+
+
+<div class="viewcode-block" id="AutoencoderNonTermVar">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderNonTermVar.html#rbnet.autoencoder.AutoencoderNonTermVar">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoencoderNonTermVar</span><span class="p">(</span><span class="n">NonTermVar</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">chart_type</span><span class="o">=</span><span class="s2">&quot;TMap&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A point-wise continuous non-terminal variable of dimensionality ``dim``. Distributions over these variables</span>
+<span class="sd">        can be thought of as Dirac deltas (the limit of infinitely narrow Gaussians), represented by a location</span>
+<span class="sd">        (a specific variable value) and weight (in the case of mixtures or inside probabilities).</span>
+
+<span class="sd">        :param cardinality: cardinality</span>
+<span class="sd">        :param chart_type: type of chart to use (&quot;dict&quot; or &quot;TMap&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">=</span> <span class="n">chart_type</span>
+
+<div class="viewcode-block" id="AutoencoderNonTermVar.get_chart">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderNonTermVar.html#rbnet.autoencoder.AutoencoderNonTermVar.get_chart">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise a chart for sequence of length `n`.</span>
+<span class="sd">        :param n: length of the sequence</span>
+<span class="sd">        :return: chart</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="s2">&quot;dict&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="s2">&quot;TMap&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">TupleTMap</span><span class="p">([</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">TupleTMap</span><span class="o">.</span><span class="n">size_from_n</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)),</span>  <span class="c1"># the variable values</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">TupleTMap</span><span class="o">.</span><span class="n">size_from_n</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>               <span class="c1"># the inside probabilities</span>
+            <span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown chart type &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AutoencoderNonTermVar.mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderNonTermVar.html#rbnet.autoencoder.AutoencoderNonTermVar.mixture">[docs]</a>
+    <span class="k">def</span> <span class="nf">mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Approximate a mixture by its weighted average. The new weight is the sum of mixture weights. Mixture weights</span>
+<span class="sd">        are provided as part of the ``components``; additional weights provided as ``weights`` are multiplied on the</span>
+<span class="sd">        weights provided in ``components``.</span>
+
+<span class="sd">        :param components: array-like with pairs of (values, weights) mixture components along ``dim``</span>
+<span class="sd">        :param weights: [optional] weights of the mixture components; must be compatible (broadcastable) to weights in</span>
+<span class="sd">         ``components``</span>
+<span class="sd">        :param dim: integer or tuple of integers indicating the dimensions of ``components`` along which to sum to</span>
+<span class="sd">         compute the mixture</span>
+<span class="sd">        :return: distribution corresponding to the mixture</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">components</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">mix_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">components</span><span class="p">])</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">components</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mix_weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">*</span> <span class="n">mix_weights</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">mix_weights</span> <span class="o">*</span> <span class="n">components</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">),</span> <span class="n">mix_weights</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AutoencoderTransition">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderTransition.html#rbnet.autoencoder.AutoencoderTransition">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoencoderTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An autoencoder transition combining a deterministic binary non-terminal and unary terminal transition. The</span>
+<span class="sd">    general :meth:`~rbnet.base.Transition.inside_marginals` simplify for autoencoders. First, we operate on point</span>
+<span class="sd">    estimates (delta distributions), so we assume the following form for the inside distribution</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \beta_{i:k}(x_{i:k}) &amp;:= w_{i:k} \, \delta(x_{i:k}=\bar{x}_{i:k}) \\</span>
+<span class="sd">            \widetilde{\beta}_{i:j:k}(x_{i:k}) &amp;:= \widetilde{w}_{i:j:k} \, \delta(x_{i:k}=\widetilde{x}_{i:j:k})~,</span>
+
+<span class="sd">    where :math:`\bar{x}_{i:k}` and :math:`\widetilde{x}_{i:j:k}` define the location of the delta distributions and</span>
+<span class="sd">    :math:`w_{i:k}` and :math:`\widetilde{w}_{i:j:k}` their norm.</span>
+
+<span class="sd">    For binary non-terminals, we then get</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \widetilde{\beta}_{i:j:k}(x_{i:k})</span>
+<span class="sd">            &amp;= \int\int p_{N}(x_{i:j}, x_{j:k} \mid x_{i:k}) \beta(x_{i:j}) \beta(x_{j:k}) dx_{i:j} dx_{j:k} \\</span>
+<span class="sd">            &amp;= p_{N}(\bar{x}_{i:j}, \bar{x}_{j:k} \mid x_{i:k}) \, w_{i:j} \, w_{j:k}</span>
+
+<span class="sd">    and for unary terminals</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \widetilde{\beta}_{i:j:k}(x_{i:i+1})</span>
+<span class="sd">            = p_{T}(y_{i+1} \mid x_{i:i+1})~.</span>
+
+<span class="sd">    We now recover the form assumed above by fixing the value of :math:`x_{i:k}` and :math:`x_{i:i+1}` given by a</span>
+<span class="sd">    deterministic encoder, while the transition probabilities are provided by the stochastic forward model, i.e.,</span>
+<span class="sd">    the decoder</span>
+
+<span class="sd">        .. math::</span>
+<span class="sd">            \widetilde{x}_{i:j:k} &amp;:= \mbox{non-terminal encoder}(\bar{x}_{i:j}, \bar{x}_{j:k}) \\</span>
+<span class="sd">            p_{N}(\bar{x}_{i:j}, \bar{x}_{j:k} \mid x_{i:k}) &amp;:= \mbox{non-terminal decoder}(\bar{x}_{i:j}, \bar{x}_{j:k} \mid \widetilde{x}_{i:j:k}) \\</span>
+<span class="sd">            \widetilde{x}_{i:i+1} &amp;:= \mbox{terminal encoder}(y_{i+1}) \\</span>
+<span class="sd">            p_{T}(y_{i+1} \mid x_{i:i+1}) &amp;:= \mbox{terminal decoder}(y_{i+1} \mid \widetilde{x}_{i:i+1})~.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">terminal_encoder</span><span class="p">,</span> <span class="n">terminal_decoder</span><span class="p">,</span>
+                 <span class="n">non_terminal_encoder</span><span class="p">,</span> <span class="n">non_terminal_decoder</span><span class="p">,</span>
+                 <span class="n">left_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right_idx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span> <span class="o">=</span> <span class="n">left_idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span> <span class="o">=</span> <span class="n">right_idx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal_encoder</span> <span class="o">=</span> <span class="n">terminal_encoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal_decoder</span> <span class="o">=</span> <span class="n">terminal_decoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_terminal_encoder</span> <span class="o">=</span> <span class="n">non_terminal_encoder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">non_terminal_decoder</span> <span class="o">=</span> <span class="n">non_terminal_decoder</span>
+
+<div class="viewcode-block" id="AutoencoderTransition.inside_marginals">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderTransition.html#rbnet.autoencoder.AutoencoderTransition.inside_marginals">[docs]</a>
+    <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Conditional inside probabilities currently not implemented&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="k">if</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># terminal transition</span>
+                <span class="n">parent_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminal_encoder</span><span class="p">(</span><span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">])</span>
+                <span class="n">transition_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">terminal_decoder</span><span class="p">(</span><span class="n">parent_var</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">])</span>
+                <span class="k">return</span> <span class="p">[(</span><span class="n">parent_var</span><span class="p">,</span> <span class="n">transition_prob</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+                    <span class="c1"># get inside probabilities (clone to avoid problems with inplace operations below – not sure why)</span>
+                    <span class="n">left_var</span><span class="p">,</span> <span class="n">left_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span><span class="p">][</span><span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">]</span>
+                    <span class="n">right_var</span><span class="p">,</span> <span class="n">right_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span><span class="p">][</span><span class="n">split</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
+                    <span class="n">parent_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_terminal_encoder</span><span class="p">(</span><span class="n">left_var</span><span class="p">,</span> <span class="n">right_var</span><span class="p">)</span>
+                    <span class="n">transition_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">non_terminal_decoder</span><span class="p">(</span><span class="n">parent_var</span><span class="p">,</span> <span class="n">left_var</span><span class="p">,</span> <span class="n">right_var</span><span class="p">)</span>
+                    <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">parent_var</span><span class="p">,</span> <span class="n">transition_prob</span> <span class="o">*</span> <span class="n">left_inside</span> <span class="o">*</span> <span class="n">right_inside</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">inside_marginals</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected locations to be (start, end) index, but got: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AutoencoderCell">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderCell.html#rbnet.autoencoder.AutoencoderCell">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoencoderCell</span><span class="p">(</span><span class="n">Cell</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">transition</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param variable: the :class:`~AutoencoderVariable` for this cell</span>
+<span class="sd">        :param transition: the :class:`~AutoencoderTransition` for this cell</span>
+<span class="sd">        :param args: passed on to super().__init__</span>
+<span class="sd">        :param kwargs: passed on to super().__init__</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">variable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transition</span> <span class="o">=</span> <span class="n">transition</span>
+
+<div class="viewcode-block" id="AutoencoderCell.transitions">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderCell.html#rbnet.autoencoder.AutoencoderCell.transitions">[docs]</a>
+    <span class="k">def</span> <span class="nf">transitions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">yield from</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_transition</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="AutoencoderCell.inside_mixture">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderCell.html#rbnet.autoencoder.AutoencoderCell.inside_mixture">[docs]</a>
+    <span class="k">def</span> <span class="nf">inside_mixture</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inside_marginals</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected only one element for a single transition, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">mixture</span><span class="p">(</span><span class="n">components</span><span class="o">=</span><span class="n">inside_marginals</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AutoencoderPrior">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderPrior.html#rbnet.autoencoder.AutoencoderPrior">[docs]</a>
+<span class="k">class</span> <span class="nc">AutoencoderPrior</span><span class="p">(</span><span class="n">Prior</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AutoencoderPrior.marginal_likelihood">
+<a class="viewcode-back" href="../../_autosummary/rbnet.autoencoder.AutoencoderPrior.html#rbnet.autoencoder.AutoencoderPrior.marginal_likelihood">[docs]</a>
+    <span class="k">def</span> <span class="nf">marginal_likelihood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root_location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">inside_chart</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Expected inside chart with one variable, but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inside_chart</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">root_location</span><span class="p">]</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

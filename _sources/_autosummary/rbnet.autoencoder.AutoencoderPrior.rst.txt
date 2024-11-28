@@ -1,0 +1,11 @@
+rbnet.autoencoder.AutoencoderPrior
+==================================
+
+.. currentmodule:: rbnet.autoencoder
+
+.. autoclass:: AutoencoderPrior
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

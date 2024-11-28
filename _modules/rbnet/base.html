@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.base &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -13,15 +15,11 @@
       <link rel="stylesheet" type="text/css" href="../../_static/autoclasstoc.css?v=08871587" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -120,20 +118,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-<div class="viewcode-block" id="RBN.non_terminals">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.non_terminals">[docs]</a>
+<div class="viewcode-block" id="RBN.cells">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.cells">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">non_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Iterate through all non-terminal variables, yielding tuples of a variable&#39;s values at the specified locations</span>
-<span class="sd">        and its associated cell. If `locations` specifies a batch of locations, the tuple contains the corresponding</span>
-<span class="sd">        batch of variables&#39; values, but still only the single associated cell.</span>
-
-<span class="sd">        Returning ``None`` for the variable&#39;s values indicates that should be marginalised out; returning proper values</span>
-<span class="sd">        indicates that variables should be conditioned on these values.</span>
-
-<span class="sd">        :param locations: location or batch of locations of variables in chart</span>
-<span class="sd">        :yield: (variable&#39;s value, cell) or (batch of variables&#39; values, cell)</span>
+<span class="sd">        Return iterable over cells (corresponding to the non-terminal variables).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
@@ -207,23 +197,24 @@
         <span class="c1"># get the next batch of non-terminal locations (e.g. level in CYK)</span>
         <span class="k">for</span> <span class="n">non_term_loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inside_schedule</span><span class="p">():</span>
             <span class="c1"># go through all variables and associated cells (which contain the allowed transitions) at these locations</span>
-            <span class="k">for</span> <span class="n">non_term_idx</span><span class="p">,</span> <span class="p">(</span><span class="n">non_term_value</span><span class="p">,</span> <span class="n">cell</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">non_terminals</span><span class="p">(</span><span class="n">non_term_loc</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">non_term_idx</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">()):</span>
                 <span class="c1"># go through the possible transitions allowed for this non-terminal and collect inside marginals</span>
                 <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">transition</span> <span class="ow">in</span> <span class="n">cell</span><span class="o">.</span><span class="n">transitions</span><span class="p">():</span>
                     <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">transition</span><span class="o">.</span><span class="n">inside_marginals</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">non_term_loc</span><span class="p">,</span>
                                                     <span class="n">inside_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">,</span>
-                                                    <span class="n">terminal_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_chart</span><span class="p">,</span>
-                                                    <span class="n">value</span><span class="o">=</span><span class="n">non_term_value</span><span class="p">)</span>
+                                                    <span class="n">terminal_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">terminal_chart</span><span class="p">)</span>
                     <span class="p">)</span>
-                <span class="c1"># compute the mixture over inside marginals and update chart for variable(s)</span>
+                <span class="c1"># compute the mixture over inside marginals</span>
+                <span class="n">inside_mixture</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">inside_mixture</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">)</span>
+                <span class="c1"># update chart for variable(s)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">update_inside_chart</span><span class="p">(</span><span class="n">var_idx</span><span class="o">=</span><span class="n">non_term_idx</span><span class="p">,</span>
                                          <span class="n">locations</span><span class="o">=</span><span class="n">non_term_loc</span><span class="p">,</span>
-                                         <span class="n">values</span><span class="o">=</span><span class="n">cell</span><span class="o">.</span><span class="n">inside_mixture</span><span class="p">(</span><span class="n">inside_marginals</span><span class="p">))</span>
+                                         <span class="n">values</span><span class="o">=</span><span class="n">inside_mixture</span><span class="p">)</span>
         <span class="c1"># add the prior likelihood for the root location</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">marginal_likelihood</span><span class="p">(</span><span class="n">root_location</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">root_location</span><span class="p">,</span>
-                                                <span class="n">inside_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">)</span></div>
+                                              <span class="n">inside_chart</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">)</span></div>
 </div>
 
 
@@ -241,7 +232,7 @@
 <div class="viewcode-block" id="Transition.inside_marginals">
 <a class="viewcode-back" href="../../_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the marginals over inside probabilities</span>
 
@@ -271,10 +262,6 @@
 <span class="sd">        :param location: location of the variable for which to compute the inside marginals</span>
 <span class="sd">        :param inside_chart: a lookup chart with inside probabilities for other variables</span>
 <span class="sd">        :param terminal_chart: a lookup chart with values of the terminal variables</span>
-<span class="sd">        :param value: value of the variable for which to compute the inside marginals or ``None``; if value is</span>
-<span class="sd">         provided this means that *conditional* inside probabilities should be computed (for the given value);</span>
-<span class="sd">         otherwise general inside marginals (as a function of the variable) should be computed; also see</span>
-<span class="sd">         :meth:`RBN.non_terminals`</span>
 <span class="sd">        :return: array-like or iterable with inside probabilities</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
@@ -412,7 +399,7 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cells</span> <span class="o">=</span> <span class="n">ConstrainedModuleList</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span> <span class="o">=</span> <span class="n">ConstrainedModuleList</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span> <span class="o">=</span> <span class="n">prior</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_terminal_chart</span> <span class="o">=</span> <span class="kc">None</span>
@@ -423,7 +410,7 @@
     <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_terminal_chart</span> <span class="o">=</span> <span class="n">sequence</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_chart</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_chart</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="SequentialRBN.inside_schedule">
@@ -438,11 +425,10 @@
     <span class="k">def</span> <span class="nf">root_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
 
-<div class="viewcode-block" id="SequentialRBN.non_terminals">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.non_terminals">[docs]</a>
-    <span class="k">def</span> <span class="nf">non_terminals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c</span></div>
+<div class="viewcode-block" id="SequentialRBN.cells">
+<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.cells">[docs]</a>
+    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span></div>
 
 
 <div class="viewcode-block" id="SequentialRBN.update_inside_chart">

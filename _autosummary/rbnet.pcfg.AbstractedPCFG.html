@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.pcfg.AbstractedPCFG &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -14,15 +16,11 @@
       <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -55,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery and Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbnet.autoencoder.html">rbnet.autoencoder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a><ul class="current">
@@ -108,8 +107,9 @@
 <dt class="sig sig-object py" id="rbnet.pcfg.AbstractedPCFG">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">AbstractedPCFG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_rep=&lt;class</span> <span class="pre">'rbnet.util.LogProb'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#AbstractedPCFG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.AbstractedPCFG" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
-<p>An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable
-with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.</p>
+<p>An <a class="reference internal" href="#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> defines an <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a> that has only one non-terminal and one
+terminal variable, both being discrete with a cardinality corresponding to the number of non-terminal and
+terminal symbols of the PCFG, respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -263,7 +263,7 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(non_terminals, terminals, rules, start)</p></td>
-<td><p>An AbstractedPCFG defines an RBN that has only one non-terminal and one terminal variable with the cardinality of the non-terminal and terminal symbols, respectively, of the PCFG.</p></td>
+<td><p>An <a class="reference internal" href="#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> defines an <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a> that has only one non-terminal and one terminal variable, both being discrete with a cardinality corresponding to the number of non-terminal and terminal symbols of the PCFG, respectively.</p></td>
 </tr>
 </tbody>
 </table>
@@ -294,8 +294,8 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.non_terminals" title="rbnet.base.SequentialRBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
-<td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.cells" title="rbnet.base.SequentialRBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
+<td><p>Return iterable over cells (corresponding to the non-terminal variables).</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart" title="rbnet.base.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
 <td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
@@ -310,8 +310,8 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.non_terminals" title="rbnet.base.RBN.non_terminals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_terminals</span></code></a>(locations, *args, **kwargs)</p></td>
-<td><p>Iterate through all non-terminal variables, yielding tuples of a variable's values at the specified locations and its associated cell.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.cells" title="rbnet.base.RBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
+<td><p>Return iterable over cells (corresponding to the non-terminal variables).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.init_inside" title="rbnet.base.RBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Initialise for parsing a new input.</p></td>
@@ -641,29 +641,35 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_submodule</span></code>(target)</p></td>
 <td><p>Return the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameter</span></code>(target)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_submodule</span></code>(target, module)</p></td>
+<td><p>Set the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameter</span></code>(target)</p></td>
 <td><p>Return the parameter given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code>(target)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_buffer</span></code>(target)</p></td>
 <td><p>Return the buffer given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_extra_state</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_extra_state</span></code>()</p></td>
 <td><p>Return any extra state to include in the module's state_dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_extra_state</span></code>(state)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_extra_state</span></code>(state)</p></td>
 <td><p>Set extra state contained in the loaded <cite>state_dict</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(fn)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(fn)</p></td>
 <td><p>Apply <code class="docutils literal notranslate"><span class="pre">fn</span></code> recursively to every submodule (as returned by <code class="docutils literal notranslate"><span class="pre">.children()</span></code>) as well as self.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code>([device])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cuda</span></code>([device])</p></td>
 <td><p>Move all model parameters and buffers to the GPU.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipu</span></code>([device])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipu</span></code>([device])</p></td>
 <td><p>Move all model parameters and buffers to the IPU.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpu</span></code>([device])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpu</span></code>([device])</p></td>
 <td><p>Move all model parameters and buffers to the XPU.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mtia</span></code>([device])</p></td>
+<td><p>Move all model parameters and buffers to the MTIA.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cpu</span></code>()</p></td>
 <td><p>Move all model parameters and buffers to the CPU.</p></td>
@@ -722,14 +728,20 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__delattr__</span></code>(name)</p></td>
 <td><p>Implement delattr(self, name).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_state_dict_pre_hook</span></code>(hook)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_state_dict_post_hook</span></code>(hook)</p></td>
+<td><p>Register a post-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_state_dict_pre_hook</span></code>(hook)</p></td>
 <td><p>Register a pre-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> method.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code>(*args[, destination, prefix, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">state_dict</span></code>(*args[, destination, prefix, ...])</p></td>
 <td><p>Return a dictionary containing references to the whole state of the module.</p></td>
 </tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_load_state_dict_pre_hook</span></code>(hook)</p></td>
+<td><p>Register a pre-hook to be run before module's <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code> is called.</p></td>
+</tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_load_state_dict_post_hook</span></code>(hook)</p></td>
-<td><p>Register a post hook to be run after module's <code class="docutils literal notranslate"><span class="pre">load_state_dict</span></code> is called.</p></td>
+<td><p>Register a post-hook to be run after module's <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code> is called.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_state_dict</span></code>(state_dict[, strict, assign])</p></td>
 <td><p>Copy parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into this module and its descendants.</p></td>
@@ -1109,13 +1121,13 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_register_state_dict_hook</span></code>(hook)</p></td>
-<td><p>Register a state-dict hook.</p></td>
+<td><p>Register a post-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">state_dict()</span></code> method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_save_to_state_dict</span></code>(destination, prefix, ...)</p></td>
 <td><p>Save module state to the <cite>destination</cite> dictionary.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_register_load_state_dict_pre_hook</span></code>(hook[, ...])</p></td>
-<td><p>Register a pre-hook for the <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code> method.</p></td>
+<td><p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">register_load_state_dict_pre_hook()</span></code> for details.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_from_state_dict</span></code>(state_dict, prefix, ...)</p></td>
 <td><p>Copy parameters and buffers from <code class="xref py py-attr docutils literal notranslate"><span class="pre">state_dict</span></code> into only this module, but not its descendants.</p></td>

@@ -1,6 +1,0 @@
-rbnet.util.to\_log
-==================
-
-.. currentmodule:: rbnet.util
-
-.. autofunction:: to_log

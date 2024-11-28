@@ -1,0 +1,11 @@
+rbnet.autoencoder.AutoencoderCell
+=================================
+
+.. currentmodule:: rbnet.autoencoder
+
+.. autoclass:: AutoencoderCell
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Abstracted PCFGs &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -14,20 +16,16 @@
       <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Discrete RBN" href="plot_discrete_RBN.html" />
-    <link rel="prev" title="Plot Vector/Gradient Field" href="plot_vec_grad.html" /> 
+    <link rel="next" title="API Summary" href="../api_summary.html" />
+    <link rel="prev" title="Discrete RBN" href="plot_discrete_RBN.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,12 +52,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../recursive_bayesian_networks.html">Recursive Bayesian Networks</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery and Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="plot_vec_grad.html">Plot Vector/Gradient Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot_discrete_RBN.html">Discrete RBN</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Abstracted PCFGs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#minimal-example">Minimal Example</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#defining-the-pcfg">Defining the PCFG</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#parsing-sentences">Parsing Sentences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-parameters">Training Parameters</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="plot_discrete_RBN.html">Discrete RBN</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
@@ -96,13 +97,101 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="abstracted-pcfgs">
 <span id="sphx-glr-auto-examples-plot-pcfg-py"></span><h1>Abstracted PCFGs<a class="headerlink" href="#abstracted-pcfgs" title="Link to this heading"></a></h1>
-<p>This is an example of defining a simple discrete RBN equivalent to a PCFG.</p>
-<section id="defining-the-pcfg">
-<h2>Defining the PCFG<a class="headerlink" href="#defining-the-pcfg" title="Link to this heading"></a></h2>
-<p>We use an <a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a></p>
+<p>This is an example of defining a simple discrete RBN equivalent to a PCFG using the <a class="reference internal" href="../_autosummary/rbnet.pcfg.AbstractedPCFG.html#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> class.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rbnet.pcfg</span> <span class="kn">import</span> <span class="n">AbstractedPCFG</span>
 </pre></div>
 </div>
+<section id="minimal-example">
+<h2>Minimal Example<a class="headerlink" href="#minimal-example" title="Link to this heading"></a></h2>
+<p>We start with a minimal example (also used in <a class="reference internal" href="plot_discrete_RBN.html"><span class="doc">Discrete RBN</span></a>):</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">pcfg</span> <span class="o">=</span> <span class="n">AbstractedPCFG</span><span class="p">(</span><span class="n">non_terminals</span><span class="o">=</span><span class="s2">&quot;SAB&quot;</span><span class="p">,</span> <span class="n">terminals</span><span class="o">=</span><span class="s2">&quot;ab&quot;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">rules</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;S --&gt; A B&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;S --&gt; B A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># prior + first transition</span>
+    <span class="p">(</span><span class="s2">&quot;A --&gt; B A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B --&gt; A B&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># non-terminal transitions</span>
+    <span class="p">(</span><span class="s2">&quot;A --&gt; a&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B --&gt; b&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>       <span class="c1"># terminal transition</span>
+<span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;aaaa&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;bbbb&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside</span><span class="p">(</span><span class="n">sequence</span><span class="o">=</span><span class="s2">&quot;aaab&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="o">.</span><span class="n">inside_chart</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pretty</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tensor(0., dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
+tensor(0., dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
+tensor(0.0078, dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
+                                                                   ╱╲
+                                                                  ╱  ╲
+                                                                 ╱    ╲
+                                                                ╱      ╲
+                                                               ╱        ╲
+                                                              ╱          ╲
+                                                             ╱            ╲
+                                                            ╱              ╲
+                                                           ╱                ╲
+                                                          ╱                  ╲
+                                                         ╱                    ╲
+                                                        ╱                      ╲
+                                                       ╱                        ╲
+                                                      ╱                          ╲
+                                                     ╱                            ╲
+                                                    ╱                              ╲
+                                                   ╱ [0.0078125 0.        0.0078125]╲
+                                                  ╱╲                                ╱╲
+                                                 ╱  ╲                              ╱  ╲
+                                                ╱    ╲                            ╱    ╲
+                                               ╱      ╲                          ╱      ╲
+                                              ╱        ╲                        ╱        ╲
+                                             ╱          ╲                      ╱          ╲
+                                            ╱            ╲                    ╱            ╲
+                                           ╱              ╲                  ╱              ╲
+                                          ╱                ╲                ╱                ╲
+                                         ╱                  ╲              ╱                  ╲
+                                        ╱                    ╲            ╱                    ╲
+                                       ╱                      ╲          ╱                      ╲
+                                      ╱                        ╲        ╱                        ╲
+                                     ╱                          ╲      ╱                          ╲
+                                    ╱                            ╲    ╱                            ╲
+                                   ╱                              ╲  ╱                              ╲
+                                  ╱                      [0. 0. 0.]╲╱       [0.03125 0.      0.03125]╲
+                                 ╱╲                                ╱╲                                ╱╲
+                                ╱  ╲                              ╱  ╲                              ╱  ╲
+                               ╱    ╲                            ╱    ╲                            ╱    ╲
+                              ╱      ╲                          ╱      ╲                          ╱      ╲
+                             ╱        ╲                        ╱        ╲                        ╱        ╲
+                            ╱          ╲                      ╱          ╲                      ╱          ╲
+                           ╱            ╲                    ╱            ╲                    ╱            ╲
+                          ╱              ╲                  ╱              ╲                  ╱              ╲
+                         ╱                ╲                ╱                ╲                ╱                ╲
+                        ╱                  ╲              ╱                  ╲              ╱                  ╲
+                       ╱                    ╲            ╱                    ╲            ╱                    ╲
+                      ╱                      ╲          ╱                      ╲          ╱                      ╲
+                     ╱                        ╲        ╱                        ╲        ╱                        ╲
+                    ╱                          ╲      ╱                          ╲      ╱                          ╲
+                   ╱                            ╲    ╱                            ╲    ╱                            ╲
+                  ╱                              ╲  ╱                              ╲  ╱                              ╲
+                 ╱                      [0. 0. 0.]╲╱                      [0. 0. 0.]╲╱             [0.125 0.    0.125]╲
+                ╱╲                                ╱╲                                ╱╲                                ╱╲
+               ╱  ╲                              ╱  ╲                              ╱  ╲                              ╱  ╲
+              ╱    ╲                            ╱    ╲                            ╱    ╲                            ╱    ╲
+             ╱      ╲                          ╱      ╲                          ╱      ╲                          ╱      ╲
+            ╱        ╲                        ╱        ╲                        ╱        ╲                        ╱        ╲
+           ╱          ╲                      ╱          ╲                      ╱          ╲                      ╱          ╲
+          ╱            ╲                    ╱            ╲                    ╱            ╲                    ╱            ╲
+         ╱              ╲                  ╱              ╲                  ╱              ╲                  ╱              ╲
+        ╱                ╲                ╱                ╲                ╱                ╲                ╱                ╲
+       ╱                  ╲              ╱                  ╲              ╱                  ╲              ╱                  ╲
+      ╱                    ╲            ╱                    ╲            ╱                    ╲            ╱                    ╲
+     ╱                      ╲          ╱                      ╲          ╱                      ╲          ╱                      ╲
+    ╱                        ╲        ╱                        ╲        ╱                        ╲        ╱                        ╲
+   ╱                          ╲      ╱                          ╲      ╱                          ╲      ╱                          ╲
+  ╱                            ╲    ╱                            ╲    ╱                            ╲    ╱                            ╲
+ ╱                              ╲  ╱                              ╲  ╱                              ╲  ╱                              ╲
+╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.  0.5]╲
+</pre></div>
+</div>
+</section>
+<section id="defining-the-pcfg">
+<h2>Defining the PCFG<a class="headerlink" href="#defining-the-pcfg" title="Link to this heading"></a></h2>
 <p>First we define a number of words (terminal symbols) of different categories that sentences can be composed of:</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">subjects</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;You&quot;</span><span class="p">,</span> <span class="s2">&quot;We&quot;</span><span class="p">,</span> <span class="s2">&quot;They&quot;</span><span class="p">]</span>
 <span class="n">verbs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="s2">&quot;drink&quot;</span><span class="p">,</span> <span class="s2">&quot;sleep&quot;</span><span class="p">]</span>
@@ -113,7 +202,7 @@ to download the full example code.</p>
 <span class="n">terminals</span> <span class="o">=</span> <span class="n">subjects</span> <span class="o">+</span> <span class="n">verbs</span> <span class="o">+</span> <span class="n">adverb_non_gradable</span> <span class="o">+</span> <span class="n">adverb_gradable</span> <span class="o">+</span> <span class="n">grade</span> <span class="o">+</span> <span class="n">verb_qualifier</span>
 </pre></div>
 </div>
-<p>Then we define some non-terminals symbols (a start symbol and one symbol for each category of words used above):</p>
+<p>Then we define some non-terminal symbols (a start symbol and one symbol for each category of words used above):</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">non_terminals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;subject&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;verb&quot;</span><span class="p">,</span>
@@ -146,10 +235,6 @@ to download the full example code.</p>
                       <span class="n">start</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/RBN/RBN/rbnet/util.py:299: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ../torch/csrc/utils/tensor_new.cpp:278.)
-  return torch.tensor(t)
-</pre></div>
-</div>
 </section>
 <section id="parsing-sentences">
 <h2>Parsing Sentences<a class="headerlink" href="#parsing-sentences" title="Link to this heading"></a></h2>
@@ -171,14 +256,14 @@ to download the full example code.</p>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sentence</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">marginal_likelihood</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>I run --&gt; 0.041666667908096755
-You never run --&gt; 0.0017361111240322576
-We run very veeery slowly --&gt; 1.3563368156502012e-05
-They always run alone --&gt; 0.00028935185400537626
-I never sleep really very quickly --&gt; 1.130280679708501e-06
-You do-not drink very quickly --&gt; 9.042245437668008e-06
-I You --&gt; -5.4372458772976525e-24
-run fast --&gt; -2.0901856201675087e-24
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>I run --&gt; 0.0416666679084301
+You never run --&gt; 0.0017361111240461469
+We run very veeery slowly --&gt; 1.3563368156610522e-05
+They always run alone --&gt; 0.00028935185400769114
+I never sleep really very quickly --&gt; 1.1302806797175435e-06
+You do-not drink very quickly --&gt; 9.042245437740348e-06
+I You --&gt; 0.0
+run fast --&gt; 0.0
 </pre></div>
 </div>
 <p>We can also print a simple textual visualisation of the parse chart, which shows
@@ -198,7 +283,7 @@ run fast --&gt; -2.0901856201675087e-24
                            ╱                ╲
                           ╱                  ╲
                          ╱                    ╲
-                        ╱        start|1.74e-03╲
+                        ╱        start:1.74e-03╲
                        ╱╲                      ╱╲
                       ╱  ╲                    ╱  ╲
                      ╱    ╲                  ╱    ╲
@@ -210,7 +295,7 @@ run fast --&gt; -2.0901856201675087e-24
                ╱                ╲      ╱                ╲
               ╱                  ╲    ╱                  ╲
              ╱                    ╲  ╱                    ╲
-            ╱                    []╲╱         verb|6.94e-03╲
+            ╱                    []╲╱         verb:6.94e-03╲
            ╱╲                      ╱╲                      ╱╲
           ╱  ╲                    ╱  ╲                    ╱  ╲
          ╱    ╲                  ╱    ╲                  ╱    ╲
@@ -222,10 +307,67 @@ run fast --&gt; -2.0901856201675087e-24
    ╱                ╲      ╱                ╲      ╱                ╲
   ╱                  ╲    ╱                  ╲    ╱                  ╲
  ╱                    ╲  ╱                    ╲  ╱                    ╲
-╱       subject|2.5e-01╲╱verb_qualifier|2.5e-01╲╱         verb|1.67e-01╲
+╱       subject:2.5e-01╲╱verb_qualifier:2.5e-01╲╱         verb:1.67e-01╲
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.026 seconds)</p>
+</section>
+<section id="training-parameters">
+<h2>Training Parameters<a class="headerlink" href="#training-parameters" title="Link to this heading"></a></h2>
+<p>For a given dataset of sentences, we can train the model parameters</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">SequenceDataModule</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">pcfg</span><span class="p">)</span>
+<span class="n">pcfg</span><span class="o">.</span><span class="n">auto_tokenise</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># pcfg.cells[0].variable.chart_type = &quot;dict&quot;</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">SequenceDataModule</span><span class="p">([</span><span class="n">pcfg</span><span class="o">.</span><span class="n">tokenise</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">grammatical_sentences</span><span class="p">],</span> <span class="n">val_split</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_split</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+<span class="c1"># for batch in data.train_dataloader():</span>
+<span class="c1">#     print(batch[0])</span>
+<span class="c1">#     print(pcfg.inside(batch[0]))</span>
+<span class="c1">#</span>
+<span class="c1"># for s in grammatical_sentences:</span>
+<span class="c1">#     s = pcfg.tokenise(s.split())</span>
+<span class="c1">#     print(s)</span>
+<span class="c1">#     print(pcfg.inside(s))</span>
+
+<span class="c1"># print(list(pcfg.parameters()))</span>
+
+
+
+<span class="c1"># trainer = pl.Trainer(max_epochs=100)</span>
+<span class="c1"># trainer.fit(pcfg, data.train_dataloader())</span>
+<span class="c1">#</span>
+<span class="c1"># print(list(pcfg.parameters()))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>AbstractedPCFG(
+  (_cells): ConstrainedModuleList(
+    (0): DiscreteCell(
+      (transition_probabilities): LogProb()
+      (_transitions): ConstrainedModuleList(
+        (0): DiscreteTerminalTransition(
+          (transition_probabilities): LogProb()
+        )
+        (1): DiscreteBinaryNonTerminalTransition(
+          (transition_probabilities): LogProb()
+        )
+      )
+    )
+  )
+  (_prior): DiscretePrior(
+    (structural_distribution): LogProb()
+    (prior_distributions): ConstrainedModuleList(
+      (0): LogProb()
+    )
+  )
+)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.037 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-pcfg-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/cfcf0afa49cfde57bfef252aaa21d878/plot_PCFG.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_PCFG.ipynb</span></code></a></p>
@@ -245,8 +387,8 @@ run fast --&gt; -2.0901856201675087e-24
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plot_vec_grad.html" class="btn btn-neutral float-left" title="Plot Vector/Gradient Field" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="plot_discrete_RBN.html" class="btn btn-neutral float-right" title="Discrete RBN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot_discrete_RBN.html" class="btn btn-neutral float-left" title="Discrete RBN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_summary.html" class="btn btn-neutral float-right" title="API Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

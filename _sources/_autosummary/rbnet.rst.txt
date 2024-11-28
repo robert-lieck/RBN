@@ -28,6 +28,7 @@
    :template: custom-module-template.rst
    :recursive:
 
+   autoencoder
    base
    multivariate_normal
    pcfg

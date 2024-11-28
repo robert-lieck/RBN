@@ -1,0 +1,11 @@
+rbnet.autoencoder.AutoencoderTransition
+=======================================
+
+.. currentmodule:: rbnet.autoencoder
+
+.. autoclass:: AutoencoderTransition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

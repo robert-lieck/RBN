@@ -15,12 +15,11 @@ rbnet.util
       :toctree:
    
       as_detached_tensor
-      from_log
+      ensure_is_floating_point
       log_normalize
       normalize_non_zero
       plot_grad
       plot_vec
-      to_log
    
    
 
@@ -37,6 +36,7 @@ rbnet.util
       LogProb
       Prob
       SequenceDataModule
+      TupleTMap
    
    
 

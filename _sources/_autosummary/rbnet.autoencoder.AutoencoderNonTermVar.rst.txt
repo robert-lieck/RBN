@@ -1,0 +1,11 @@
+rbnet.autoencoder.AutoencoderNonTermVar
+=======================================
+
+.. currentmodule:: rbnet.autoencoder
+
+.. autoclass:: AutoencoderNonTermVar
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

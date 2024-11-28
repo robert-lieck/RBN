@@ -26,7 +26,11 @@ This examples goes through all the steps involved in defining a discrete RBN for
 Discrete RBNs are equivalent to PCFGs and, compared to continuous RBNs, easier to inspect and instructive as a first
 step before moving towards continuous variables.
 
-.. GENERATED FROM PYTHON SOURCE LINES 12-31
+.. note::
+    If you are only interested in defining and using a PCFG, see :doc:`/auto_examples/plot_PCFG` for a more
+    realistic example using the :class:`~rbnet.pcfg.AbstractedPCFG` class.
+
+.. GENERATED FROM PYTHON SOURCE LINES 17-36
 
 Abstract PCFG
 -------------
@@ -48,7 +52,7 @@ way (`expansion`) of using a PCFG to define an RBN.
 
 We start by importing some classes for discrete RBNs from the ``pcfg`` submodule.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-36
+.. GENERATED FROM PYTHON SOURCE LINES 36-41
 
 .. code-block:: Python
 
@@ -64,17 +68,19 @@ We start by importing some classes for discrete RBNs from the ``pcfg`` submodule
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-39
+.. GENERATED FROM PYTHON SOURCE LINES 42-46
 
+Defining Variables and Transitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 We first define a discrete binary non-terminal variable (:class:`~rbnet.pcfg.DiscreteNonTermVar`) and a corresponding
 :class:`~rbnet.pcfg.DiscretePrior` that always generates this one variable with a uniform distribution over its value
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-42
+.. GENERATED FROM PYTHON SOURCE LINES 46-49
 
 .. code-block:: Python
 
     non_term_var = DiscreteNonTermVar(cardinality=2)
-    prior = DiscretePrior(struc_weights=[1], prior_weights=[[0.5, 0.5]])
+    prior = DiscretePrior(struc_weights=[1.], prior_weights=[[0.5, 0.5]])
 
 
 
@@ -83,13 +89,13 @@ We first define a discrete binary non-terminal variable (:class:`~rbnet.pcfg.Dis
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-46
+.. GENERATED FROM PYTHON SOURCE LINES 50-53
 
 For the transitions, we use a :class:`~rbnet.pcfg.DiscreteBinaryNonTerminalTransition` ``p(a, b | c)`` were the
 left child ``a`` is always the opposite of the parent ``c`` while the right child ``b`` is always the same; and a
 :class:`~rbnet.pcfg.DiscreteTerminalTransition` that produces a binary observation without changing value
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-56
+.. GENERATED FROM PYTHON SOURCE LINES 53-63
 
 .. code-block:: Python
 
@@ -110,12 +116,14 @@ left child ``a`` is always the opposite of the parent ``c`` while the right chil
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-59
+.. GENERATED FROM PYTHON SOURCE LINES 64-68
 
+Defining the Cell and RBN
+^^^^^^^^^^^^^^^^^^^^^^^^^
 We can now create a :class:`~rbnet.pcfg.StaticCell` for the non-terminal variable, which chooses the terminal
 transition 50% of the time, and define our :class:`~rbnet.base.SequentialRBN`
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-64
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
 
 .. code-block:: Python
 
@@ -131,32 +139,7 @@ transition 50% of the time, and define our :class:`~rbnet.base.SequentialRBN`
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
-
-An equivalent RBN can be defined using the :class:`~rbnet.pcfg.AbstractedPCFG` class (see
-:doc:`/auto_examples/plot_PCFG` for a more realistic example using :class:`~rbnet.pcfg.AbstractedPCFG`)
-
-.. GENERATED FROM PYTHON SOURCE LINES 67-76
-
-.. code-block:: Python
-
-    from rbnet.pcfg import AbstractedPCFG
-
-    pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
-        ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
-        ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
-        ("A --> a", 2), ("B --> b", 2)       # terminal transition
-    ])
-
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 77-82
+.. GENERATED FROM PYTHON SOURCE LINES 74-79
 
 Parsing Sequences
 ^^^^^^^^^^^^^^^^^
@@ -164,12 +147,13 @@ It is impossible to generate sequences with all zeros or all ones, because child
 terminal transition does not change the value. Thus, the marginal likelihood for these sequences, returned by the
 :meth:`~rbnet.base.RBN.inside` method, is always zero
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-85
+.. GENERATED FROM PYTHON SOURCE LINES 79-83
 
 .. code-block:: Python
 
-    print(rbn.inside(sequence=[[0], [0], [0], [0]]), pcfg.inside(sequence="aaaa"))
-    print(rbn.inside(sequence=[[1], [1], [1], [1]]), pcfg.inside(sequence="bbbb"))
+
+    print(rbn.inside(sequence=[[0], [0], [0], [0]]))
+    print(rbn.inside(sequence=[[1], [1], [1], [1]]))
 
 
 
@@ -179,23 +163,125 @@ terminal transition does not change the value. Thus, the marginal likelihood for
 
  .. code-block:: none
 
-    tensor(-4.6865e-26, grad_fn=<SumBackward0>) tensor(-2.4137e-25, dtype=torch.float64, grad_fn=<SumBackward0>)
-    tensor(-4.6865e-26, grad_fn=<SumBackward0>) tensor(-2.4137e-25, dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-88
+.. GENERATED FROM PYTHON SOURCE LINES 84-86
 
 For other sequences, we see that the marginal likelihood is non-zero, and we can also inspect the parse chart, which
 contains the inside probabilities for the values of the non-terminal variable
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-92
+.. GENERATED FROM PYTHON SOURCE LINES 86-89
 
 .. code-block:: Python
 
-    print(rbn.inside(sequence=[[0], [0], [0], [1]]), pcfg.inside(sequence="aaab"))
+    print(rbn.inside(sequence=[[0], [0], [0], [1]]))
     print(rbn.inside_chart[0].pretty())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    tensor(0.0039, dtype=torch.float64, grad_fn=<SumBackward0>)
+                                                   ╱╲                                               
+                                                  ╱  ╲                                              
+                                                 ╱    ╲                                             
+                                                ╱      ╲                                            
+                                               ╱        ╲                                           
+                                              ╱          ╲                                          
+                                             ╱            ╲                                         
+                                            ╱              ╲                                        
+                                           ╱                ╲                                       
+                                          ╱                  ╲                                      
+                                         ╱                    ╲                                     
+                                        ╱ [0.        0.0078125]╲                                    
+                                       ╱╲                      ╱╲                                   
+                                      ╱  ╲                    ╱  ╲                                  
+                                     ╱    ╲                  ╱    ╲                                 
+                                    ╱      ╲                ╱      ╲                                
+                                   ╱        ╲              ╱        ╲                               
+                                  ╱          ╲            ╱          ╲                              
+                                 ╱            ╲          ╱            ╲                             
+                                ╱              ╲        ╱              ╲                            
+                               ╱                ╲      ╱                ╲                           
+                              ╱                  ╲    ╱                  ╲                          
+                             ╱                    ╲  ╱                    ╲                         
+                            ╱               [0. 0.]╲╱     [0.      0.03125]╲                        
+                           ╱╲                      ╱╲                      ╱╲                       
+                          ╱  ╲                    ╱  ╲                    ╱  ╲                      
+                         ╱    ╲                  ╱    ╲                  ╱    ╲                     
+                        ╱      ╲                ╱      ╲                ╱      ╲                    
+                       ╱        ╲              ╱        ╲              ╱        ╲                   
+                      ╱          ╲            ╱          ╲            ╱          ╲                  
+                     ╱            ╲          ╱            ╲          ╱            ╲                 
+                    ╱              ╲        ╱              ╲        ╱              ╲                
+                   ╱                ╲      ╱                ╲      ╱                ╲               
+                  ╱                  ╲    ╱                  ╲    ╱                  ╲              
+                 ╱                    ╲  ╱                    ╲  ╱                    ╲             
+                ╱               [0. 0.]╲╱               [0. 0.]╲╱         [0.    0.125]╲            
+               ╱╲                      ╱╲                      ╱╲                      ╱╲           
+              ╱  ╲                    ╱  ╲                    ╱  ╲                    ╱  ╲          
+             ╱    ╲                  ╱    ╲                  ╱    ╲                  ╱    ╲         
+            ╱      ╲                ╱      ╲                ╱      ╲                ╱      ╲        
+           ╱        ╲              ╱        ╲              ╱        ╲              ╱        ╲       
+          ╱          ╲            ╱          ╲            ╱          ╲            ╱          ╲      
+         ╱            ╲          ╱            ╲          ╱            ╲          ╱            ╲     
+        ╱              ╲        ╱              ╲        ╱              ╲        ╱              ╲    
+       ╱                ╲      ╱                ╲      ╱                ╲      ╱                ╲   
+      ╱                  ╲    ╱                  ╲    ╱                  ╲    ╱                  ╲  
+     ╱                    ╲  ╱                    ╲  ╱                    ╲  ╱                    ╲ 
+    ╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.5 0. ]╲╱             [0.  0.5]╲
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 90-97
+
+Note how
+
+ - values at the bottom are ``0.5`` because the probability of terminating is ``0.5`` and the transition is
+   deterministic otherwise.
+ - with each level, the values decrease by a factor of ``1/4``, where a factor of ``0.5`` comes from the probability
+   of (not) terminating and another factor of ``0.5`` comes from the inside probability of the left child.
+ - the marginal likelihood is ``1/2`` of the top-level inside probability, because the prior is uniform over values.
+
+.. GENERATED FROM PYTHON SOURCE LINES 99-109
+
+Using the :class:`~rbnet.pcfg.AbstractedPCFG` Class
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An equivalent RBN can be defined using the :class:`~rbnet.pcfg.AbstractedPCFG` class (see
+:doc:`/auto_examples/plot_PCFG` for a more realistic example). Note that the prior transition of an RBN provides
+slightly more freedom than a PCFG, because it defines a distribution over the first symbol, whereas a PCFG always
+starts with the start symbol. Therefore, we need combine the prior and the first non-terminal transition into the
+definition for the start symbol (essentially marginalising out the first symbol generated by the prior in the RBN).
+Internally, the :class:`~rbnet.pcfg.AbstractedPCFG` class defines a deterministic prior that generates the start
+symbol. We get identical inside probabilities to the RBN case above (the first value corresponding to the start
+symbol), but the marginal likelihood is a factor of 2 larger because of the deterministic prior.
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-124
+
+.. code-block:: Python
+
+
+    from rbnet.pcfg import AbstractedPCFG
+
+    pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
+        ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
+        ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
+        ("A --> a", 1), ("B --> b", 1)       # terminal transition
+    ])
+
+
+    print(pcfg.inside(sequence="aaaa"))
+    print(pcfg.inside(sequence="bbbb"))
+    print(pcfg.inside(sequence="aaab"))
     print(pcfg.inside_chart[0].pretty())
 
 
@@ -206,7 +292,9 @@ contains the inside probabilities for the values of the non-terminal variable
 
  .. code-block:: none
 
-    tensor(0.0039, grad_fn=<SumBackward0>) tensor(0.0110, dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0.0078, dtype=torch.float64, grad_fn=<SumBackward0>)
                                                                        ╱╲                                                                   
                                                                       ╱  ╲                                                                  
                                                                      ╱    ╲                                                                 
@@ -223,7 +311,7 @@ contains the inside probabilities for the values of the non-terminal variable
                                                           ╱                          ╲                                                      
                                                          ╱                            ╲                                                     
                                                         ╱                              ╲                                                    
-                                                       ╱ [-3.1245203e-26  7.8125000e-03]╲                                                   
+                                                       ╱ [0.0078125 0.        0.0078125]╲                                                   
                                                       ╱╲                                ╱╲                                                  
                                                      ╱  ╲                              ╱  ╲                                                 
                                                     ╱    ╲                            ╱    ╲                                                
@@ -240,7 +328,7 @@ contains the inside probabilities for the values of the non-terminal variable
                                          ╱                          ╲      ╱                          ╲                                     
                                         ╱                            ╲    ╱                            ╲                                    
                                        ╱                              ╲  ╱                              ╲                                   
-                                      ╱   [-1.874586e-25 -1.874586e-25]╲╱ [-1.2498081e-25  3.1250000e-02]╲                                  
+                                      ╱                      [0. 0. 0.]╲╱       [0.03125 0.      0.03125]╲                                  
                                      ╱╲                                ╱╲                                ╱╲                                 
                                     ╱  ╲                              ╱  ╲                              ╱  ╲                                
                                    ╱    ╲                            ╱    ╲                            ╱    ╲                               
@@ -257,7 +345,7 @@ contains the inside probabilities for the values of the non-terminal variable
                         ╱                          ╲      ╱                          ╲      ╱                          ╲                    
                        ╱                            ╲    ╱                            ╲    ╱                            ╲                   
                       ╱                              ╲  ╱                              ╲  ╱                              ╲                  
-                     ╱   [-7.498344e-25 -7.498344e-25]╲╱   [-7.498344e-25 -7.498344e-25]╲╱ [-4.9992324e-25  1.2500000e-01]╲                 
+                     ╱                      [0. 0. 0.]╲╱                      [0. 0. 0.]╲╱             [0.125 0.    0.125]╲                 
                     ╱╲                                ╱╲                                ╱╲                                ╱╲                
                    ╱  ╲                              ╱  ╲                              ╱  ╲                              ╱  ╲               
                   ╱    ╲                            ╱    ╲                            ╱    ╲                            ╱    ╲              
@@ -274,136 +362,22 @@ contains the inside probabilities for the values of the non-terminal variable
        ╱                          ╲      ╱                          ╲      ╱                          ╲      ╱                          ╲   
       ╱                            ╲    ╱                            ╲    ╱                            ╲    ╱                            ╲  
      ╱                              ╲  ╱                              ╲  ╱                              ╲  ╱                              ╲ 
-    ╱   [ 5.000000e-01 -9.996445e-25]╲╱   [ 5.000000e-01 -9.996445e-25]╲╱   [ 5.000000e-01 -9.996445e-25]╲╱   [-9.996445e-25  5.000000e-01]╲
-                                                                                                           ╱╲                                                                                                       
-                                                                                                          ╱  ╲                                                                                                      
-                                                                                                         ╱    ╲                                                                                                     
-                                                                                                        ╱      ╲                                                                                                    
-                                                                                                       ╱        ╲                                                                                                   
-                                                                                                      ╱          ╲                                                                                                  
-                                                                                                     ╱            ╲                                                                                                 
-                                                                                                    ╱              ╲                                                                                                
-                                                                                                   ╱                ╲                                                                                               
-                                                                                                  ╱                  ╲                                                                                              
-                                                                                                 ╱                    ╲                                                                                             
-                                                                                                ╱                      ╲                                                                                            
-                                                                                               ╱                        ╲                                                                                           
-                                                                                              ╱                          ╲                                                                                          
-                                                                                             ╱                            ╲                                                                                         
-                                                                                            ╱                              ╲                                                                                        
-                                                                                           ╱                                ╲                                                                                       
-                                                                                          ╱                                  ╲                                                                                      
-                                                                                         ╱                                    ╲                                                                                     
-                                                                                        ╱                                      ╲                                                                                    
-                                                                                       ╱                                        ╲                                                                                   
-                                                                                      ╱                                          ╲                                                                                  
-                                                                                     ╱                                            ╲                                                                                 
-                                                                                    ╱                                              ╲                                                                                
-                                                                                   ╱                                                ╲                                                                               
-                                                                                  ╱    [ 1.0973938e-02 -1.6457273e-25  7.3159589e-03]╲                                                                              
-                                                                                 ╱╲                                                  ╱╲                                                                             
-                                                                                ╱  ╲                                                ╱  ╲                                                                            
-                                                                               ╱    ╲                                              ╱    ╲                                                                           
-                                                                              ╱      ╲                                            ╱      ╲                                                                          
-                                                                             ╱        ╲                                          ╱        ╲                                                                         
-                                                                            ╱          ╲                                        ╱          ╲                                                                        
-                                                                           ╱            ╲                                      ╱            ╲                                                                       
-                                                                          ╱              ╲                                    ╱              ╲                                                                      
-                                                                         ╱                ╲                                  ╱                ╲                                                                     
-                                                                        ╱                  ╲                                ╱                  ╲                                                                    
-                                                                       ╱                    ╲                              ╱                    ╲                                                                   
-                                                                      ╱                      ╲                            ╱                      ╲                                                                  
-                                                                     ╱                        ╲                          ╱                        ╲                                                                 
-                                                                    ╱                          ╲                        ╱                          ╲                                                                
-                                                                   ╱                            ╲                      ╱                            ╲                                                               
-                                                                  ╱                              ╲                    ╱                              ╲                                                              
-                                                                 ╱                                ╲                  ╱                                ╲                                                             
-                                                                ╱                                  ╲                ╱                                  ╲                                                            
-                                                               ╱                                    ╲              ╱                                    ╲                                                           
-                                                              ╱                                      ╲            ╱                                      ╲                                                          
-                                                             ╱                                        ╲          ╱                                        ╲                                                         
-                                                            ╱                                          ╲        ╱                                          ╲                                                        
-                                                           ╱                                            ╲      ╱                                            ╲                                                       
-                                                          ╱                                              ╲    ╱                                              ╲                                                      
-                                                         ╱                                                ╲  ╱                                                ╲                                                     
-                                                        ╱    [-1.0861534e-24 -3.6205111e-25 -3.6205111e-25]╲╱    [ 4.9382724e-02 -7.4057724e-25  3.2921813e-02]╲                                                    
-                                                       ╱╲                                                  ╱╲                                                  ╱╲                                                   
-                                                      ╱  ╲                                                ╱  ╲                                                ╱  ╲                                                  
-                                                     ╱    ╲                                              ╱    ╲                                              ╱    ╲                                                 
-                                                    ╱      ╲                                            ╱      ╲                                            ╱      ╲                                                
-                                                   ╱        ╲                                          ╱        ╲                                          ╱        ╲                                               
-                                                  ╱          ╲                                        ╱          ╲                                        ╱          ╲                                              
-                                                 ╱            ╲                                      ╱            ╲                                      ╱            ╲                                             
-                                                ╱              ╲                                    ╱              ╲                                    ╱              ╲                                            
-                                               ╱                ╲                                  ╱                ╲                                  ╱                ╲                                           
-                                              ╱                  ╲                                ╱                  ╲                                ╱                  ╲                                          
-                                             ╱                    ╲                              ╱                    ╲                              ╱                    ╲                                         
-                                            ╱                      ╲                            ╱                      ╲                            ╱                      ╲                                        
-                                           ╱                        ╲                          ╱                        ╲                          ╱                        ╲                                       
-                                          ╱                          ╲                        ╱                          ╲                        ╱                          ╲                                      
-                                         ╱                            ╲                      ╱                            ╲                      ╱                            ╲                                     
-                                        ╱                              ╲                    ╱                              ╲                    ╱                              ╲                                    
-                                       ╱                                ╲                  ╱                                ╲                  ╱                                ╲                                   
-                                      ╱                                  ╲                ╱                                  ╲                ╱                                  ╲                                  
-                                     ╱                                    ╲              ╱                                    ╲              ╱                                    ╲                                 
-                                    ╱                                      ╲            ╱                                      ╲            ╱                                      ╲                                
-                                   ╱                                        ╲          ╱                                        ╲          ╱                                        ╲                               
-                                  ╱                                          ╲        ╱                                          ╲        ╱                                          ╲                              
-                                 ╱                                            ╲      ╱                                            ╲      ╱                                            ╲                             
-                                ╱                                              ╲    ╱                                              ╲    ╱                                              ╲                            
-                               ╱                                                ╲  ╱                                                ╲  ╱                                                ╲                           
-                              ╱          [-4.88769e-24 -1.62923e-24 -1.62923e-24]╲╱          [-4.88769e-24 -1.62923e-24 -1.62923e-24]╲╱ [ 2.22222239e-01 -1.33303895e-24  1.48148164e-01]╲                          
-                             ╱╲                                                  ╱╲                                                  ╱╲                                                  ╱╲                         
-                            ╱  ╲                                                ╱  ╲                                                ╱  ╲                                                ╱  ╲                        
-                           ╱    ╲                                              ╱    ╲                                              ╱    ╲                                              ╱    ╲                       
-                          ╱      ╲                                            ╱      ╲                                            ╱      ╲                                            ╱      ╲                      
-                         ╱        ╲                                          ╱        ╲                                          ╱        ╲                                          ╱        ╲                     
-                        ╱          ╲                                        ╱          ╲                                        ╱          ╲                                        ╱          ╲                    
-                       ╱            ╲                                      ╱            ╲                                      ╱            ╲                                      ╱            ╲                   
-                      ╱              ╲                                    ╱              ╲                                    ╱              ╲                                    ╱              ╲                  
-                     ╱                ╲                                  ╱                ╲                                  ╱                ╲                                  ╱                ╲                 
-                    ╱                  ╲                                ╱                  ╲                                ╱                  ╲                                ╱                  ╲                
-                   ╱                    ╲                              ╱                    ╲                              ╱                    ╲                              ╱                    ╲               
-                  ╱                      ╲                            ╱                      ╲                            ╱                      ╲                            ╱                      ╲              
-                 ╱                        ╲                          ╱                        ╲                          ╱                        ╲                          ╱                        ╲             
-                ╱                          ╲                        ╱                          ╲                        ╱                          ╲                        ╱                          ╲            
-               ╱                            ╲                      ╱                            ╲                      ╱                            ╲                      ╱                            ╲           
-              ╱                              ╲                    ╱                              ╲                    ╱                              ╲                    ╱                              ╲          
-             ╱                                ╲                  ╱                                ╲                  ╱                                ╲                  ╱                                ╲         
-            ╱                                  ╲                ╱                                  ╲                ╱                                  ╲                ╱                                  ╲        
-           ╱                                    ╲              ╱                                    ╲              ╱                                    ╲              ╱                                    ╲       
-          ╱                                      ╲            ╱                                      ╲            ╱                                      ╲            ╱                                      ╲      
-         ╱                                        ╲          ╱                                        ╲          ╱                                        ╲          ╱                                        ╲     
-        ╱                                          ╲        ╱                                          ╲        ╱                                          ╲        ╱                                          ╲    
-       ╱                                            ╲      ╱                                            ╲      ╱                                            ╲      ╱                                            ╲   
-      ╱                                              ╲    ╱                                              ╲    ╱                                              ╲    ╱                                              ╲  
-     ╱                                                ╲  ╱                                                ╲  ╱                                                ╲  ╱                                                ╲ 
-    ╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13  6.6666669e-01 -1.3328594e-24]╲╱    [-2.5000000e-13 -1.3328594e-24  6.6666669e-01]╲
+    ╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.  0.5]╲
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-100
-
-Note how
-
- - values at the bottom are ``0.5`` because the probability of terminating is ``0.5`` and the transition is
-   deterministic otherwise.
- - with each level, the values decrease by a factor of ``1/4``, where a factor of ``0.5`` comes from the probability
-   of (not) terminating and another factor of ``0.5`` comes from the inside probability of the left child.
- - the marginal likelihood is ``1/2`` of the top-level inside probability, because the prior is uniform over values.
-
-.. GENERATED FROM PYTHON SOURCE LINES 102-109
+.. GENERATED FROM PYTHON SOURCE LINES 125-132
 
 Expanded PCFG
-^^^^^^^^^^^^^
+-------------
 We will now define an RBN by `expanding` the same PCFG used in the example above. When expanding a PCFG to an
 RBN, each non-terminal symbol becomes a separate non-terminal variable in the RBN. The PCFG thus acts as an outer
 skeleton when being expanded, and we are required to additionally define the domain and transitions for the variables.
 The variables could be discrete or continuous, but for this example, we take the trivial case of single-valued
 discrete variable (i.e. it cannot actually change value) and all the dynamics instead happens on the structural level.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-145
+.. GENERATED FROM PYTHON SOURCE LINES 132-168
 
 .. code-block:: Python
 
@@ -451,9 +425,9 @@ discrete variable (i.e. it cannot actually change value) and all the dynamics in
 
  .. code-block:: none
 
-    tensor(0., grad_fn=<SumBackward0>)
-    tensor(0., grad_fn=<SumBackward0>)
-    tensor(0.0039, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0.0039, dtype=torch.float64, grad_fn=<SumBackward0>)
                    ╱╲               
                   ╱  ╲              
                  ╱    ╲             
@@ -505,7 +479,7 @@ discrete variable (i.e. it cannot actually change value) and all the dynamics in
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.043 seconds)
+   **Total running time of the script:** (0 minutes 0.041 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_discrete_RBN.py:

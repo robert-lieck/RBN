@@ -31,18 +31,18 @@ Gallery and Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This is an example of defining a simple discrete RBN equivalent to a PCFG.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This is an example of defining an autoencoder RBN with a single continuous variable.">
 
 .. only:: html
 
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_PCFG_thumb.png
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_autoencoder_thumb.png
     :alt:
 
-  :ref:`sphx_glr_auto_examples_plot_PCFG.py`
+  :ref:`sphx_glr_auto_examples_plot_autoencoder.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Abstracted PCFGs</div>
+      <div class="sphx-glr-thumbnail-title">Autoencoder</div>
     </div>
 
 
@@ -63,6 +63,23 @@ Gallery and Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This is an example of defining a simple discrete RBN equivalent to a PCFG using the rbnet.pcfg.AbstractedPCFG class.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_PCFG_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_PCFG.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Abstracted PCFGs</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -74,8 +91,9 @@ Gallery and Examples
    :hidden:
 
    /auto_examples/plot_vec_grad
-   /auto_examples/plot_PCFG
+   /auto_examples/plot_autoencoder
    /auto_examples/plot_discrete_RBN
+   /auto_examples/plot_PCFG
 
 
 .. only:: html

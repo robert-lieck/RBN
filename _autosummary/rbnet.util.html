@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -6,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>rbnet.util &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -14,15 +16,11 @@
       <link rel="stylesheet" type="text/css" href="../_static/autoclasstoc.css?v=08871587" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -55,22 +53,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery and Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="rbnet.autoencoder.html">rbnet.autoencoder</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">rbnet.util</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.as_detached_tensor.html">rbnet.util.as_detached_tensor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.from_log.html">rbnet.util.from_log</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ensure_is_floating_point.html">rbnet.util.ensure_is_floating_point</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.log_normalize.html">rbnet.util.log_normalize</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.normalize_non_zero.html">rbnet.util.normalize_non_zero</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_grad.html">rbnet.util.plot_grad</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_vec.html">rbnet.util.plot_vec</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.to_log.html">rbnet.util.to_log</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleList.html">rbnet.util.ConstrainedModuleList</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html">rbnet.util.ConstrainedModuleMixin</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.LogProb.html">rbnet.util.LogProb</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.Prob.html">rbnet.util.Prob</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rbnet.util.SequenceDataModule.html">rbnet.util.SequenceDataModule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.util.TupleTMap.html">rbnet.util.TupleTMap</a></li>
 </ul>
 </li>
 </ul>
@@ -112,11 +111,50 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.as_detached_tensor.html#rbnet.util.as_detached_tensor" title="rbnet.util.as_detached_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_detached_tensor</span></code></a>(t)</p></td>
 <td><p>Create a detached copy of tensor.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.from_log.html#rbnet.util.from_log" title="rbnet.util.from_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_log</span></code></a>(t[, eps])</p></td>
-<td><p>Transform tensor from log representation by computing <img class="math" src="../_images/math/a54d8e556c35beee26fdd0d67c71ff4e863b6aa3.svg" alt="\exp(t) - \epsilon"/>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.ensure_is_floating_point.html#rbnet.util.ensure_is_floating_point" title="rbnet.util.ensure_is_floating_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ensure_is_floating_point</span></code></a>(t[, msg])</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.log_normalize.html#rbnet.util.log_normalize" title="rbnet.util.log_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_normalize</span></code></a>(t, *args, **kwargs)</p></td>
-<td><p>Normalise tensor <code class="docutils literal notranslate"><span class="pre">t</span></code> in log representation by computing <img class="math" src="../_images/math/eb70b5f604d4e354bc8f916353e9e18bc10a7e21.svg" alt="t - \log \sum \exp t"/> using PyTorch logsumexp.</p></td>
+<td><p>Normalise tensor <code class="docutils literal notranslate"><span class="pre">t</span></code> in log representation by computing <aside class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">t - \log \sum \exp t</span>)</p>
+<p>latex exited with error
+[stdout]
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=latex)
+ restricted \write18 enabled.
+entering extended mode
+(./math.tex
+LaTeX2e &lt;2021-11-15&gt; patch level 1
+L3 programming layer &lt;2022-01-21&gt;
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
+
+! LaTeX Error: File `anyfontsize.sty' not found.
+
+Type X to quit or &lt;RETURN&gt; to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+&lt;read *&gt; 
+         
+l.8 \usepackage
+               {bm}^^M
+No pages of output.
+Transcript written on math.log.
+</p>
+</aside>
+ using PyTorch logsumexp.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.normalize_non_zero.html#rbnet.util.normalize_non_zero" title="rbnet.util.normalize_non_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize_non_zero</span></code></a>(a[, axis, ...])</p></td>
 <td><p>For the given ND array (NumPy or PyTorch), normalise each 1D array obtained by indexing the 'axis' dimension if the sum along the other dimensions (for that entry) is non-zero.</p></td>
@@ -126,9 +164,6 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.plot_vec.html#rbnet.util.plot_vec" title="rbnet.util.plot_vec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_vec</span></code></a>(func[, x_min, y_min, x_max, y_max, ...])</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.to_log.html#rbnet.util.to_log" title="rbnet.util.to_log"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_log</span></code></a>(t[, eps])</p></td>
-<td><p>Transform tensor to log representation by computing <img class="math" src="../_images/math/d9f7031b1eb5d6072d47ba11ede7f0b6a5c6c336.svg" alt="\log(t + \epsilon)"/>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -149,6 +184,9 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule" title="rbnet.util.SequenceDataModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequenceDataModule</span></code></a>(sequences[, val_split, ...])</p></td>
 <td><p>Attributes:</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.TupleTMap.html#rbnet.util.TupleTMap" title="rbnet.util.TupleTMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TupleTMap</span></code></a>(arrs, *args, **kwargs)</p></td>
+<td><p>A tuple of <code class="xref py py-class docutils literal notranslate"><span class="pre">TMap</span></code> objects.</p></td>
 </tr>
 </tbody>
 </table>

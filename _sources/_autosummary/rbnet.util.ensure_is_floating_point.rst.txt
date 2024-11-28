@@ -1,0 +1,6 @@
+rbnet.util.ensure\_is\_floating\_point
+======================================
+
+.. currentmodule:: rbnet.util
+
+.. autofunction:: ensure_is_floating_point

@@ -2,14 +2,31 @@
 Abstracted PCFGs
 ================
 
-This is an example of defining a simple discrete RBN equivalent to a PCFG.
+This is an example of defining a simple discrete RBN equivalent to a PCFG using the :class:`AbstractedPCFG
+<rbnet.pcfg.AbstractedPCFG>` class.
 """
+
+from rbnet.pcfg import AbstractedPCFG
+
+# %%
+# Minimal Example
+# ---------------
+# We start with a minimal example (also used in :doc:`/auto_examples/plot_discrete_RBN`):
+
+pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
+    ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
+    ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
+    ("A --> a", 1), ("B --> b", 1)       # terminal transition
+])
+
+print(pcfg.inside(sequence="aaaa"))
+print(pcfg.inside(sequence="bbbb"))
+print(pcfg.inside(sequence="aaab"))
+print(pcfg.inside_chart[0].pretty())
 
 # %%
 # Defining the PCFG
 # -----------------
-# We use an :class:`AbstractedPCFG <rbnet.pcfg.AbstractedPCFG>`
-from rbnet.pcfg import AbstractedPCFG
 
 # %%
 # First we define a number of words (terminal symbols) of different categories that sentences can be composed of:
@@ -22,7 +39,7 @@ verb_qualifier = ["rarely", "do-not", "never", "always"]
 terminals = subjects + verbs + adverb_non_gradable + adverb_gradable + grade + verb_qualifier
 
 # %%
-# Then we define some non-terminals symbols (a start symbol and one symbol for each category of words used above):
+# Then we define some non-terminal symbols (a start symbol and one symbol for each category of words used above):
 non_terminals = ["start",
                  "subject",
                  "verb",
@@ -79,3 +96,36 @@ for sentence in grammatical_sentences + ungrammatical_sentences:
 # ``non-terminal symbol|inside probability`` at each location
 pcfg.inside(sequence="You never run".split())
 print(pcfg.map_inside_chart(precision=2).pretty())
+
+# %%
+# Training Parameters
+# -------------------
+# For a given dataset of sentences, we can train the model parameters
+import pytorch_lightning as pl
+import torch
+import numpy as np
+from rbnet.util import SequenceDataModule
+
+print(pcfg)
+pcfg.auto_tokenise = False
+# pcfg.cells[0].variable.chart_type = "dict"
+data = SequenceDataModule([pcfg.tokenise(s.split()) for s in grammatical_sentences], val_split=0, test_split=0)
+data.setup()
+
+# for batch in data.train_dataloader():
+#     print(batch[0])
+#     print(pcfg.inside(batch[0]))
+#
+# for s in grammatical_sentences:
+#     s = pcfg.tokenise(s.split())
+#     print(s)
+#     print(pcfg.inside(s))
+
+# print(list(pcfg.parameters()))
+
+
+
+# trainer = pl.Trainer(max_epochs=100)
+# trainer.fit(pcfg, data.train_dataloader())
+#
+# print(list(pcfg.parameters()))

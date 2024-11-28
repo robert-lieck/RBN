@@ -1,0 +1,11 @@
+rbnet.util.TupleTMap
+====================
+
+.. currentmodule:: rbnet.util
+
+.. autoclass:: TupleTMap
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

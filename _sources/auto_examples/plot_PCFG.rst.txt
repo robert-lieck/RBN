@@ -21,17 +21,13 @@
 Abstracted PCFGs
 ================
 
-This is an example of defining a simple discrete RBN equivalent to a PCFG.
+This is an example of defining a simple discrete RBN equivalent to a PCFG using the :class:`AbstractedPCFG
+<rbnet.pcfg.AbstractedPCFG>` class.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-12
-
-Defining the PCFG
------------------
-We use an :class:`AbstractedPCFG <rbnet.pcfg.AbstractedPCFG>`
-
-.. GENERATED FROM PYTHON SOURCE LINES 12-14
+.. GENERATED FROM PYTHON SOURCE LINES 8-11
 
 .. code-block:: Python
+
 
     from rbnet.pcfg import AbstractedPCFG
 
@@ -42,11 +38,121 @@ We use an :class:`AbstractedPCFG <rbnet.pcfg.AbstractedPCFG>`
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
+.. GENERATED FROM PYTHON SOURCE LINES 12-15
+
+Minimal Example
+---------------
+We start with a minimal example (also used in :doc:`/auto_examples/plot_discrete_RBN`):
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-27
+
+.. code-block:: Python
+
+
+    pcfg = AbstractedPCFG(non_terminals="SAB", terminals="ab", start="S", rules=[
+        ("S --> A B", 1), ("S --> B A", 1),  # prior + first transition
+        ("A --> B A", 1), ("B --> A B", 1),  # non-terminal transitions
+        ("A --> a", 1), ("B --> b", 1)       # terminal transition
+    ])
+
+    print(pcfg.inside(sequence="aaaa"))
+    print(pcfg.inside(sequence="bbbb"))
+    print(pcfg.inside(sequence="aaab"))
+    print(pcfg.inside_chart[0].pretty())
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0., dtype=torch.float64, grad_fn=<SumBackward0>)
+    tensor(0.0078, dtype=torch.float64, grad_fn=<SumBackward0>)
+                                                                       ╱╲                                                                   
+                                                                      ╱  ╲                                                                  
+                                                                     ╱    ╲                                                                 
+                                                                    ╱      ╲                                                                
+                                                                   ╱        ╲                                                               
+                                                                  ╱          ╲                                                              
+                                                                 ╱            ╲                                                             
+                                                                ╱              ╲                                                            
+                                                               ╱                ╲                                                           
+                                                              ╱                  ╲                                                          
+                                                             ╱                    ╲                                                         
+                                                            ╱                      ╲                                                        
+                                                           ╱                        ╲                                                       
+                                                          ╱                          ╲                                                      
+                                                         ╱                            ╲                                                     
+                                                        ╱                              ╲                                                    
+                                                       ╱ [0.0078125 0.        0.0078125]╲                                                   
+                                                      ╱╲                                ╱╲                                                  
+                                                     ╱  ╲                              ╱  ╲                                                 
+                                                    ╱    ╲                            ╱    ╲                                                
+                                                   ╱      ╲                          ╱      ╲                                               
+                                                  ╱        ╲                        ╱        ╲                                              
+                                                 ╱          ╲                      ╱          ╲                                             
+                                                ╱            ╲                    ╱            ╲                                            
+                                               ╱              ╲                  ╱              ╲                                           
+                                              ╱                ╲                ╱                ╲                                          
+                                             ╱                  ╲              ╱                  ╲                                         
+                                            ╱                    ╲            ╱                    ╲                                        
+                                           ╱                      ╲          ╱                      ╲                                       
+                                          ╱                        ╲        ╱                        ╲                                      
+                                         ╱                          ╲      ╱                          ╲                                     
+                                        ╱                            ╲    ╱                            ╲                                    
+                                       ╱                              ╲  ╱                              ╲                                   
+                                      ╱                      [0. 0. 0.]╲╱       [0.03125 0.      0.03125]╲                                  
+                                     ╱╲                                ╱╲                                ╱╲                                 
+                                    ╱  ╲                              ╱  ╲                              ╱  ╲                                
+                                   ╱    ╲                            ╱    ╲                            ╱    ╲                               
+                                  ╱      ╲                          ╱      ╲                          ╱      ╲                              
+                                 ╱        ╲                        ╱        ╲                        ╱        ╲                             
+                                ╱          ╲                      ╱          ╲                      ╱          ╲                            
+                               ╱            ╲                    ╱            ╲                    ╱            ╲                           
+                              ╱              ╲                  ╱              ╲                  ╱              ╲                          
+                             ╱                ╲                ╱                ╲                ╱                ╲                         
+                            ╱                  ╲              ╱                  ╲              ╱                  ╲                        
+                           ╱                    ╲            ╱                    ╲            ╱                    ╲                       
+                          ╱                      ╲          ╱                      ╲          ╱                      ╲                      
+                         ╱                        ╲        ╱                        ╲        ╱                        ╲                     
+                        ╱                          ╲      ╱                          ╲      ╱                          ╲                    
+                       ╱                            ╲    ╱                            ╲    ╱                            ╲                   
+                      ╱                              ╲  ╱                              ╲  ╱                              ╲                  
+                     ╱                      [0. 0. 0.]╲╱                      [0. 0. 0.]╲╱             [0.125 0.    0.125]╲                 
+                    ╱╲                                ╱╲                                ╱╲                                ╱╲                
+                   ╱  ╲                              ╱  ╲                              ╱  ╲                              ╱  ╲               
+                  ╱    ╲                            ╱    ╲                            ╱    ╲                            ╱    ╲              
+                 ╱      ╲                          ╱      ╲                          ╱      ╲                          ╱      ╲             
+                ╱        ╲                        ╱        ╲                        ╱        ╲                        ╱        ╲            
+               ╱          ╲                      ╱          ╲                      ╱          ╲                      ╱          ╲           
+              ╱            ╲                    ╱            ╲                    ╱            ╲                    ╱            ╲          
+             ╱              ╲                  ╱              ╲                  ╱              ╲                  ╱              ╲         
+            ╱                ╲                ╱                ╲                ╱                ╲                ╱                ╲        
+           ╱                  ╲              ╱                  ╲              ╱                  ╲              ╱                  ╲       
+          ╱                    ╲            ╱                    ╲            ╱                    ╲            ╱                    ╲      
+         ╱                      ╲          ╱                      ╲          ╱                      ╲          ╱                      ╲     
+        ╱                        ╲        ╱                        ╲        ╱                        ╲        ╱                        ╲    
+       ╱                          ╲      ╱                          ╲      ╱                          ╲      ╱                          ╲   
+      ╱                            ╲    ╱                            ╲    ╱                            ╲    ╱                            ╲  
+     ╱                              ╲  ╱                              ╲  ╱                              ╲  ╱                              ╲ 
+    ╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.5 0. ]╲╱                   [0.  0.  0.5]╲
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 28-30
+
+Defining the PCFG
+-----------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 32-33
 
 First we define a number of words (terminal symbols) of different categories that sentences can be composed of:
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-24
+.. GENERATED FROM PYTHON SOURCE LINES 33-41
 
 .. code-block:: Python
 
@@ -65,11 +171,11 @@ First we define a number of words (terminal symbols) of different categories tha
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
-Then we define some non-terminals symbols (a start symbol and one symbol for each category of words used above):
+Then we define some non-terminal symbols (a start symbol and one symbol for each category of words used above):
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-34
+.. GENERATED FROM PYTHON SOURCE LINES 43-51
 
 .. code-block:: Python
 
@@ -88,11 +194,11 @@ Then we define some non-terminals symbols (a start symbol and one symbol for eac
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Finally, we define the rules and give them a weight (for simplicity we use a weight of 1 everywhere):
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-50
+.. GENERATED FROM PYTHON SOURCE LINES 53-67
 
 .. code-block:: Python
 
@@ -117,11 +223,11 @@ Finally, we define the rules and give them a weight (for simplicity we use a wei
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 68-69
 
 Now we can define our PCFG by providing it with the terminals, non-terminals, rules, and start symbol.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-56
+.. GENERATED FROM PYTHON SOURCE LINES 69-73
 
 .. code-block:: Python
 
@@ -133,24 +239,17 @@ Now we can define our PCFG by providing it with the terminals, non-terminals, ru
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /home/runner/work/RBN/RBN/rbnet/util.py:299: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ../torch/csrc/utils/tensor_new.cpp:278.)
-      return torch.tensor(t)
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 57-61
+.. GENERATED FROM PYTHON SOURCE LINES 74-78
 
 Parsing Sentences
 -----------------
 Let's test the grammar by computing the marginal likelihood of some grammatical sentences
 (which should be greater than zero) and for some un-grammatical ones (which should have zero marginal likelihood)
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-77
+.. GENERATED FROM PYTHON SOURCE LINES 78-94
 
 .. code-block:: Python
 
@@ -178,29 +277,30 @@ Let's test the grammar by computing the marginal likelihood of some grammatical 
 
  .. code-block:: none
 
-    I run --> 0.041666667908096755
-    You never run --> 0.0017361111240322576
-    We run very veeery slowly --> 1.3563368156502012e-05
-    They always run alone --> 0.00028935185400537626
-    I never sleep really very quickly --> 1.130280679708501e-06
-    You do-not drink very quickly --> 9.042245437668008e-06
-    I You --> -5.4372458772976525e-24
-    run fast --> -2.0901856201675087e-24
+    I run --> 0.0416666679084301
+    You never run --> 0.0017361111240461469
+    We run very veeery slowly --> 1.3563368156610522e-05
+    They always run alone --> 0.00028935185400769114
+    I never sleep really very quickly --> 1.1302806797175435e-06
+    You do-not drink very quickly --> 9.042245437740348e-06
+    I You --> 0.0
+    run fast --> 0.0
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-80
+.. GENERATED FROM PYTHON SOURCE LINES 95-97
 
 We can also print a simple textual visualisation of the parse chart, which shows
 ``non-terminal symbol|inside probability`` at each location
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-82
+.. GENERATED FROM PYTHON SOURCE LINES 97-100
 
 .. code-block:: Python
 
     pcfg.inside(sequence="You never run".split())
     print(pcfg.map_inside_chart(precision=2).pretty())
+
 
 
 
@@ -220,7 +320,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                                ╱                ╲                           
                               ╱                  ╲                          
                              ╱                    ╲                         
-                            ╱        start|1.74e-03╲                        
+                            ╱        start:1.74e-03╲                        
                            ╱╲                      ╱╲                       
                           ╱  ╲                    ╱  ╲                      
                          ╱    ╲                  ╱    ╲                     
@@ -232,7 +332,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
                    ╱                ╲      ╱                ╲               
                   ╱                  ╲    ╱                  ╲              
                  ╱                    ╲  ╱                    ╲             
-                ╱                    []╲╱         verb|6.94e-03╲            
+                ╱                    []╲╱         verb:6.94e-03╲            
                ╱╲                      ╱╲                      ╱╲           
               ╱  ╲                    ╱  ╲                    ╱  ╲          
              ╱    ╲                  ╱    ╲                  ╱    ╲         
@@ -244,7 +344,78 @@ We can also print a simple textual visualisation of the parse chart, which shows
        ╱                ╲      ╱                ╲      ╱                ╲   
       ╱                  ╲    ╱                  ╲    ╱                  ╲  
      ╱                    ╲  ╱                    ╲  ╱                    ╲ 
-    ╱       subject|2.5e-01╲╱verb_qualifier|2.5e-01╲╱         verb|1.67e-01╲
+    ╱       subject:2.5e-01╲╱verb_qualifier:2.5e-01╲╱         verb:1.67e-01╲
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 101-104
+
+Training Parameters
+-------------------
+For a given dataset of sentences, we can train the model parameters
+
+.. GENERATED FROM PYTHON SOURCE LINES 104-132
+
+.. code-block:: Python
+
+    import pytorch_lightning as pl
+    import torch
+    import numpy as np
+    from rbnet.util import SequenceDataModule
+
+    print(pcfg)
+    pcfg.auto_tokenise = False
+    # pcfg.cells[0].variable.chart_type = "dict"
+    data = SequenceDataModule([pcfg.tokenise(s.split()) for s in grammatical_sentences], val_split=0, test_split=0)
+    data.setup()
+
+    # for batch in data.train_dataloader():
+    #     print(batch[0])
+    #     print(pcfg.inside(batch[0]))
+    #
+    # for s in grammatical_sentences:
+    #     s = pcfg.tokenise(s.split())
+    #     print(s)
+    #     print(pcfg.inside(s))
+
+    # print(list(pcfg.parameters()))
+
+
+
+    # trainer = pl.Trainer(max_epochs=100)
+    # trainer.fit(pcfg, data.train_dataloader())
+    #
+    # print(list(pcfg.parameters()))
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    AbstractedPCFG(
+      (_cells): ConstrainedModuleList(
+        (0): DiscreteCell(
+          (transition_probabilities): LogProb()
+          (_transitions): ConstrainedModuleList(
+            (0): DiscreteTerminalTransition(
+              (transition_probabilities): LogProb()
+            )
+            (1): DiscreteBinaryNonTerminalTransition(
+              (transition_probabilities): LogProb()
+            )
+          )
+        )
+      )
+      (_prior): DiscretePrior(
+        (structural_distribution): LogProb()
+        (prior_distributions): ConstrainedModuleList(
+          (0): LogProb()
+        )
+      )
+    )
 
 
 
@@ -252,7 +423,7 @@ We can also print a simple textual visualisation of the parse chart, which shows
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.026 seconds)
+   **Total running time of the script:** (0 minutes 0.037 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_PCFG.py:
