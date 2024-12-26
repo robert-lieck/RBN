@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 from numpy.testing import assert_array_equal
 
-from rbnet.base import SequentialRBN
+from rbnet.sequential import SequentialRBN
 from rbnet.pcfg import (AbstractedPCFG, DiscreteNonTermVar, DiscretePrior, DiscreteBinaryNonTerminalTransition,
                         DiscreteTerminalTransition, StaticCell)
 from rbnet.util import Prob

@@ -7,7 +7,8 @@ import pytorch_lightning as pl
 from triangularmap import TMap
 
 from rbnet.util import normalize_non_zero, as_detached_tensor, ConstrainedModuleMixin, ConstrainedModuleList, LogProb
-from rbnet.base import Cell, Transition, Prior, NonTermVar, SequentialRBN
+from rbnet.base import Cell, Transition, Prior, NonTermVar
+from rbnet.sequential import SequentialRBN, SequentialBinaryTransition, SequentialTerminalTransition
 
 
 class PCFG(SequentialRBN):
@@ -272,7 +273,7 @@ class DiscretePrior(Prior, ConstrainedModuleMixin):
         )).sum()
 
 
-class DiscreteBinaryNonTerminalTransition(Transition, ConstrainedModuleMixin):
+class DiscreteBinaryNonTerminalTransition(SequentialBinaryTransition, ConstrainedModuleMixin):
 
     """
     A binary non-terminal transition for discrete non-terminal variables.
@@ -302,26 +303,19 @@ class DiscreteBinaryNonTerminalTransition(Transition, ConstrainedModuleMixin):
         self.right_idx = right_idx
 
     def inside_marginals(self, location, inside_chart, terminal_chart, **kwargs):
-        if isinstance(location, tuple) and len(location) == 2:
-            start, end = location
-            if end - start <= 1:
-                # no splitting possible
-                return []
-            else:
-                inside_marginals = []
-                for split in range(start + 1, end):
-                    # get inside probabilities (clone to avoid problems with inplace operations below – not sure why)
-                    left_inside = inside_chart[self.left_idx][start, split].clone()
-                    right_inside = inside_chart[self.right_idx][split, end].clone()
-                    inside_marginals.append(
-                        (self.transition_probabilities.p * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
-                    )
-                return inside_marginals
-        else:
-            raise ValueError(f"Expected locations to be (start, end) index, but got: {location}")
+        inside_marginals = []
+        for start, split, end in self.iterate_inside_splits(location):
+            # get inside probabilities (clone to avoid problems with inplace operations below – not sure why)
+            left_inside = inside_chart[self.left_idx][start, split].clone()
+            right_inside = inside_chart[self.right_idx][split, end].clone()
+            inside_marginals.append(
+                (self.transition_probabilities.p * left_inside[:, None, None] * right_inside[None, :, None]).sum(dim=(0, 1))
+            )
+        return inside_marginals
 
 
-class DiscreteTerminalTransition(Transition, ConstrainedModuleMixin):
+
+class DiscreteTerminalTransition(SequentialTerminalTransition, ConstrainedModuleMixin):
     """
     A binary terminal transition for discrete non-terminal and terminal variables.
     """
@@ -348,20 +342,15 @@ class DiscreteTerminalTransition(Transition, ConstrainedModuleMixin):
         self.term_idx = term_idx
 
     def inside_marginals(self, location, inside_chart, terminal_chart, **kwargs):
-        if isinstance(location, tuple) and len(location) == 2:
-            start, end = location
-            if end - start > 1:
-                # no terminal transition possible
+        for start in self.iterate_inside_splits(location):
+            var_val = terminal_chart[start][self.term_idx]
+            if var_val is None:
+                # no terminal transition to THIS terminal variable possible
                 return []
             else:
-                var_val = terminal_chart[start][self.term_idx]
-                if var_val is None:
-                    # no terminal transition to THIS terminal variable possible
-                    return []
-                else:
-                    return self.transition_probabilities.p[var_val, :][None, :]
-        else:
-            raise ValueError(f"Expected locations to be (start, end) index, but got: {location}")
+                return self.transition_probabilities.p[var_val, :][None, :]
+        return []
+
 
 
 class DiscreteCell(Cell, ConstrainedModuleMixin):
