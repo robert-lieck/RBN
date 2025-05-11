@@ -18,9 +18,7 @@ jobs:
       - name: Install LaTeX for math support
         run: |
           sudo apt-get update
-          sudo apt-get install texlive-science
-          sudo tlmgr install anyfontsize
-          sudo tlmgr install bm
+          sudo apt-get install texlive
       - name: generate doc
         run: |
           pip install -r requirements.txt
