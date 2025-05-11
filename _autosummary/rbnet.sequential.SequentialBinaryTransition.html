@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rbnet.util.LogProb &mdash; rbnet  documentation</title>
+  <title>rbnet.sequential.SequentialBinaryTransition &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rbnet.util.Prob" href="rbnet.util.Prob.html" />
-    <link rel="prev" title="rbnet.util.ConstrainedModuleMixin" href="rbnet.util.ConstrainedModuleMixin.html" /> 
+    <link rel="next" title="rbnet.sequential.SequentialRBN" href="rbnet.sequential.SequentialRBN.html" />
+    <link rel="prev" title="rbnet.sequential" href="rbnet.sequential.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -57,22 +57,13 @@
 <li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="rbnet.util.html">rbnet.util</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.as_detached_tensor.html">rbnet.util.as_detached_tensor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ensure_is_floating_point.html">rbnet.util.ensure_is_floating_point</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.log_normalize.html">rbnet.util.log_normalize</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.normalize_non_zero.html">rbnet.util.normalize_non_zero</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_grad.html">rbnet.util.plot_grad</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.plot_vec.html">rbnet.util.plot_vec</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleList.html">rbnet.util.ConstrainedModuleList</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html">rbnet.util.ConstrainedModuleMixin</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.util.LogProb</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.Prob.html">rbnet.util.Prob</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.SequenceDataModule.html">rbnet.util.SequenceDataModule</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.util.TupleTMap.html">rbnet.util.TupleTMap</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.sequential.SequentialBinaryTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialRBN.html">rbnet.sequential.SequentialRBN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialTerminalTransition.html">rbnet.sequential.SequentialTerminalTransition</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
 </ul>
 </li>
 </ul>
@@ -95,8 +86,8 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
-          <li class="breadcrumb-item"><a href="rbnet.util.html">rbnet.util</a></li>
-      <li class="breadcrumb-item active">rbnet.util.LogProb</li>
+          <li class="breadcrumb-item"><a href="rbnet.sequential.html">rbnet.sequential</a></li>
+      <li class="breadcrumb-item active">rbnet.sequential.SequentialBinaryTransition</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -105,23 +96,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rbnet-util-logprob">
-<h1>rbnet.util.LogProb<a class="headerlink" href="#rbnet-util-logprob" title="Link to this heading"></a></h1>
+  <section id="rbnet-sequential-sequentialbinarytransition">
+<h1>rbnet.sequential.SequentialBinaryTransition<a class="headerlink" href="#rbnet-sequential-sequentialbinarytransition" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="rbnet.util.LogProb">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.util.</span></span><span class="sig-name descname"><span class="pre">LogProb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raise_zero_norms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#LogProb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.LogProb" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
-<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialBinaryTransition">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.sequential.</span></span><span class="sig-name descname"><span class="pre">SequentialBinaryTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/sequential.html#SequentialBinaryTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.sequential.SequentialBinaryTransition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></p>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.util.LogProb.p" title="rbnet.util.LogProb.p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.sequential.SequentialBinaryTransition.training" title="rbnet.sequential.SequentialBinaryTransition.training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.training" title="rbnet.base.Transition.training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
 <td><p></p></td>
@@ -142,21 +157,22 @@
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>([p, log_p, dim, raise_zero_norms])</p></td>
-<td><p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.util.LogProb.remap" title="rbnet.util.LogProb.remap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap</span></code></a>(param[, _top_level, prefix])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.util.LogProb.enforce_constraints" title="rbnet.util.LogProb.enforce_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enforce_constraints</span></code></a>([recurse])</p></td>
-<td><p>Enforce constraints for module parameters and child modules.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.util.LogProb.project_grad" title="rbnet.util.LogProb.project_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_grad</span></code></a>(grad)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits" title="rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterate_inside_splits</span></code></a>(location)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
+<td><p>Compute the marginals over inside probabilities</p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
 <td><p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p></td>
@@ -337,20 +353,139 @@
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details></div>
+<div class="autoclasstoc docutils container">
+<p class="rubric">Private Data Attributes:</p>
+<table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.enforce_constraints" title="rbnet.util.ConstrainedModuleMixin.enforce_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enforce_constraints</span></code></a>([recurse])</p></td>
-<td><p>Enforce constraints for module parameters and child modules.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin.remap" title="rbnet.util.ConstrainedModuleMixin.remap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remap</span></code></a>(param[, _top_level, prefix])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
-</details></div>
-<div class="autoclasstoc docutils container">
-<p class="rubric">Private Data Attributes:</p>
-<details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
 <td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
@@ -460,27 +595,13 @@
 </details></div>
 <hr class="docutils" />
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.util.LogProb.enforce_constraints">
-<span class="sig-name descname"><span class="pre">enforce_constraints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#LogProb.enforce_constraints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.LogProb.enforce_constraints" title="Link to this definition"></a></dt>
-<dd><p>Enforce constraints for module parameters and child modules.</p>
-<p>If modules have constrained parameters, they should override this method to enforce these constraints. If
-they also have child modules and <code class="docutils literal notranslate"><span class="pre">recurse=True</span></code>, they should additionally call
-<code class="docutils literal notranslate"><span class="pre">super().enforce_constraints()</span></code> to recursively propagate the call.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rbnet.util.LogProb.p">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">p</span></span><a class="headerlink" href="#rbnet.util.LogProb.p" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits">
+<span class="sig-name descname"><span class="pre">iterate_inside_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/sequential.html#SequentialBinaryTransition.iterate_inside_splits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.util.LogProb.project_grad">
-<span class="sig-name descname"><span class="pre">project_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#LogProb.project_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.LogProb.project_grad" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.util.LogProb.remap">
-<span class="sig-name descname"><span class="pre">remap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_top_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#LogProb.remap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.LogProb.remap" title="Link to this definition"></a></dt>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialBinaryTransition.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#rbnet.sequential.SequentialBinaryTransition.training" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -491,8 +612,8 @@ they also have child modules and <code class="docutils literal notranslate"><spa
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.util.ConstrainedModuleMixin.html" class="btn btn-neutral float-left" title="rbnet.util.ConstrainedModuleMixin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rbnet.util.Prob.html" class="btn btn-neutral float-right" title="rbnet.util.Prob" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rbnet.sequential.html" class="btn btn-neutral float-left" title="rbnet.sequential" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.sequential.SequentialRBN.html" class="btn btn-neutral float-right" title="rbnet.sequential.SequentialRBN" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

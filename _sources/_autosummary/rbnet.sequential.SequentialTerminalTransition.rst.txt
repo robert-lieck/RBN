@@ -1,0 +1,11 @@
+rbnet.sequential.SequentialTerminalTransition
+=============================================
+
+.. currentmodule:: rbnet.sequential
+
+.. autoclass:: SequentialTerminalTransition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

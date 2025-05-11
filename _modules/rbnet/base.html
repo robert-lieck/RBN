@@ -81,8 +81,6 @@
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">ConstrainedModuleList</span>
-
 
 <div class="viewcode-block" id="RBN">
 <a class="viewcode-back" href="../../_autosummary/rbnet.base.RBN.html#rbnet.base.RBN">[docs]</a>
@@ -390,64 +388,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
-
-
-
-<div class="viewcode-block" id="SequentialRBN">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN">[docs]</a>
-<span class="k">class</span> <span class="nc">SequentialRBN</span><span class="p">(</span><span class="n">RBN</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">prior</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span> <span class="o">=</span> <span class="n">ConstrainedModuleList</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span> <span class="o">=</span> <span class="n">prior</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_terminal_chart</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span> <span class="o">=</span> <span class="kc">None</span>
-
-<div class="viewcode-block" id="SequentialRBN.init_inside">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.init_inside">[docs]</a>
-    <span class="k">def</span> <span class="nf">init_inside</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequence</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_terminal_chart</span> <span class="o">=</span> <span class="n">sequence</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">get_chart</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="SequentialRBN.inside_schedule">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule">[docs]</a>
-    <span class="k">def</span> <span class="nf">inside_schedule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">span</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="n">span</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">start</span><span class="p">,</span> <span class="n">start</span> <span class="o">+</span> <span class="n">span</span></div>
-
-
-    <span class="nd">@RBN</span><span class="o">.</span><span class="n">root_location</span><span class="o">.</span><span class="n">getter</span>
-    <span class="k">def</span> <span class="nf">root_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
-
-<div class="viewcode-block" id="SequentialRBN.cells">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.cells">[docs]</a>
-    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span></div>
-
-
-<div class="viewcode-block" id="SequentialRBN.update_inside_chart">
-<a class="viewcode-back" href="../../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart">[docs]</a>
-    <span class="k">def</span> <span class="nf">update_inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span><span class="p">[</span><span class="n">var_idx</span><span class="p">][</span><span class="n">locations</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span></div>
-
-
-    <span class="nd">@RBN</span><span class="o">.</span><span class="n">inside_chart</span><span class="o">.</span><span class="n">getter</span>
-    <span class="k">def</span> <span class="nf">inside_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inside_chart</span>
-
-    <span class="nd">@RBN</span><span class="o">.</span><span class="n">terminal_chart</span><span class="o">.</span><span class="n">getter</span>
-    <span class="k">def</span> <span class="nf">terminal_chart</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_terminal_chart</span>
-
-    <span class="nd">@RBN</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">getter</span>
-    <span class="k">def</span> <span class="nf">prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span></div>
 
 
 

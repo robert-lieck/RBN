@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rbnet.base.SequentialRBN &mdash; rbnet  documentation</title>
+  <title>rbnet.sequential.SequentialTerminalTransition &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rbnet.base.Transition" href="rbnet.base.Transition.html" />
-    <link rel="prev" title="rbnet.base.RBN" href="rbnet.base.RBN.html" /> 
+    <link rel="next" title="rbnet.util" href="rbnet.util.html" />
+    <link rel="prev" title="rbnet.sequential.SequentialRBN" href="rbnet.sequential.SequentialRBN.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,18 +54,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="rbnet.autoencoder.html">rbnet.autoencoder</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="rbnet.base.html">rbnet.base</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.main.html">rbnet.base.main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Cell.html">rbnet.base.Cell</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.NonTermVar.html">rbnet.base.NonTermVar</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Prior.html">rbnet.base.Prior</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.RBN.html">rbnet.base.RBN</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.base.SequentialRBN</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Transition.html">rbnet.base.Transition</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html">rbnet.sequential.SequentialBinaryTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialRBN.html">rbnet.sequential.SequentialRBN</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">rbnet.sequential.SequentialTerminalTransition</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
 </ul>
 </li>
@@ -89,8 +86,8 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
-          <li class="breadcrumb-item"><a href="rbnet.base.html">rbnet.base</a></li>
-      <li class="breadcrumb-item active">rbnet.base.SequentialRBN</li>
+          <li class="breadcrumb-item"><a href="rbnet.sequential.html">rbnet.sequential</a></li>
+      <li class="breadcrumb-item active">rbnet.sequential.SequentialTerminalTransition</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -99,43 +96,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="rbnet-base-sequentialrbn">
-<h1>rbnet.base.SequentialRBN<a class="headerlink" href="#rbnet-base-sequentialrbn" title="Link to this heading"></a></h1>
+  <section id="rbnet-sequential-sequentialterminaltransition">
+<h1>rbnet.sequential.SequentialTerminalTransition<a class="headerlink" href="#rbnet-sequential-sequentialterminaltransition" title="Link to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.base.</span></span><span class="sig-name descname"><span class="pre">SequentialRBN</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialTerminalTransition">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.sequential.</span></span><span class="sig-name descname"><span class="pre">SequentialTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/sequential.html#SequentialTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.sequential.SequentialTerminalTransition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></p>
 <div class="autoclasstoc docutils container">
 <p class="rubric">Public Data Attributes:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.root_location" title="rbnet.base.SequentialRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a></p></td>
-<td><p>Return the location of the root variables.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.inside_chart" title="rbnet.base.SequentialRBN.inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_chart</span></code></a></p></td>
-<td><p>Return the chart with inside probabilities for all variables.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.sequential.SequentialTerminalTransition.training" title="rbnet.sequential.SequentialTerminalTransition.training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.terminal_chart" title="rbnet.base.SequentialRBN.terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal_chart</span></code></a></p></td>
-<td><p>Return the chart with terminal variables.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.prior" title="rbnet.base.SequentialRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a></p></td>
-<td><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.root_location" title="rbnet.base.RBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a></p></td>
-<td><p>Return the location of the root variables.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside_chart" title="rbnet.base.RBN.inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_chart</span></code></a></p></td>
-<td><p>Return the chart with inside probabilities for all variables.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.training" title="rbnet.base.Transition.training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></a></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.terminal_chart" title="rbnet.base.RBN.terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal_chart</span></code></a></p></td>
-<td><p>Return the chart with terminal variables.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.prior" title="rbnet.base.RBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a></p></td>
-<td><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code>(*input)</p></td>
+<td><p>Define the computation performed at every call.</p></td>
 </tr>
 </tbody>
 </table>
@@ -160,42 +157,18 @@
 <p class="rubric">Public Methods:</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.sequential.SequentialTerminalTransition.iterate_inside_splits" title="rbnet.sequential.SequentialTerminalTransition.iterate_inside_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterate_inside_splits</span></code></a>(location)</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.init_inside" title="rbnet.base.SequentialRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
-<td><p>Initialise for parsing a new input.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.cells" title="rbnet.base.SequentialRBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
-<td><p>Return iterable over cells (corresponding to the non-terminal variables).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.base.SequentialRBN.update_inside_chart" title="rbnet.base.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
-<td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule" title="rbnet.base.RBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.cells" title="rbnet.base.RBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
-<td><p>Return iterable over cells (corresponding to the non-terminal variables).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.init_inside" title="rbnet.base.RBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Initialise for parsing a new input.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.update_inside_chart" title="rbnet.base.RBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
-<td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN.inside" title="rbnet.base.RBN.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Compute the inside probabilities and return the marginal data likelihood.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_marginals</span></code></a>(location, inside_chart, ...)</p></td>
+<td><p>Compute the marginals over inside probabilities</p></td>
 </tr>
 </tbody>
 </table>
@@ -388,11 +361,119 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
-<details><summary>Inherited from <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_version</span></code></p></td>
+<td><p>This allows better BC support for <code class="xref py py-meth docutils literal notranslate"><span class="pre">load_state_dict()</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_parameters</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_buffers</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_non_persistent_buffers_set</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_backward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_full_backward_hook</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_hooks_always_called</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_forward_pre_hooks_with_kwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_state_dict_pre_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_state_dict_post_hooks</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_modules</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_compiled_call_impl</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -514,365 +595,14 @@
 </details></div>
 <hr class="docutils" />
 <dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.cells">
-<span class="sig-name descname"><span class="pre">cells</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.cells"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.cells" title="Link to this definition"></a></dt>
-<dd><p>Return iterable over cells (corresponding to the non-terminal variables).</p>
-</dd></dl>
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialTerminalTransition.iterate_inside_splits">
+<span class="sig-name descname"><span class="pre">iterate_inside_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/sequential.html#SequentialTerminalTransition.iterate_inside_splits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.sequential.SequentialTerminalTransition.iterate_inside_splits" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.init_inside">
-<span class="sig-name descname"><span class="pre">init_inside</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.init_inside"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.init_inside" title="Link to this definition"></a></dt>
-<dd><p>Initialise for parsing a new input. This function is called by <code class="xref py py-meth docutils literal notranslate"><span class="pre">inside()</span></code> with all provided parameters.
-Derived classes may override it to implement tasks such as initialising charts for the non-terminal variables.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.inside_chart">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">inside_chart</span></span><a class="headerlink" href="#rbnet.base.SequentialRBN.inside_chart" title="Link to this definition"></a></dt>
-<dd><p>Return the chart with inside probabilities for all variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>inside chart</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.inside_schedule">
-<span class="sig-name descname"><span class="pre">inside_schedule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.inside_schedule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.inside_schedule" title="Link to this definition"></a></dt>
-<dd><p>Iterate through (batches of) non-terminal locations for computing inside probabilities. The iteration order
-has to respect dependencies, i.e., non-terminals <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x'</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- that depend on another non-terminal <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- (in
-the generative direction, i.e. <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- generates <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x'</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-: <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x \rightarrow x'</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-) have to be iterated
-BEFORE the non-terminals they depend on (<aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x'</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- has to be visited before <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">x</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>location or batch of locations</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.prior">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prior</span></span><a class="headerlink" href="#rbnet.base.SequentialRBN.prior" title="Link to this definition"></a></dt>
-<dd><p>Return the prior transition (typically an instance of <a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code></a>), which has to implement
-<a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior.marginal_likelihood" title="rbnet.base.Prior.marginal_likelihood"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>prior</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.root_location">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root_location</span></span><a class="headerlink" href="#rbnet.base.SequentialRBN.root_location" title="Link to this definition"></a></dt>
-<dd><p>Return the location of the root variables. This is typically the value returned in the last iteration of
-<a class="reference internal" href="#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_schedule()</span></code></a></p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>location of the root variables</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.terminal_chart">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">terminal_chart</span></span><a class="headerlink" href="#rbnet.base.SequentialRBN.terminal_chart" title="Link to this definition"></a></dt>
-<dd><p>Return the chart with terminal variables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>terminal chart</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="rbnet.base.SequentialRBN.update_inside_chart">
-<span class="sig-name descname"><span class="pre">update_inside_chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#SequentialRBN.update_inside_chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.SequentialRBN.update_inside_chart" title="Link to this definition"></a></dt>
-<dd><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>var_idx</strong> – specifies the variable</p></li>
-<li><p><strong>locations</strong> – locations to update</p></li>
-<li><p><strong>values</strong> – values to store in chart</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rbnet.sequential.SequentialTerminalTransition.training">
+<span class="sig-name descname"><span class="pre">training</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#rbnet.sequential.SequentialTerminalTransition.training" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -882,8 +612,8 @@ Transcript written on math.log.
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.base.RBN.html" class="btn btn-neutral float-left" title="rbnet.base.RBN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rbnet.base.Transition.html" class="btn btn-neutral float-right" title="rbnet.base.Transition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rbnet.sequential.SequentialRBN.html" class="btn btn-neutral float-left" title="rbnet.sequential.SequentialRBN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.util.html" class="btn btn-neutral float-right" title="rbnet.util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

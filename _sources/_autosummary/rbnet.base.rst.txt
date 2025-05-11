@@ -30,7 +30,6 @@ rbnet.base
       NonTermVar
       Prior
       RBN
-      SequentialRBN
       Transition
    
    

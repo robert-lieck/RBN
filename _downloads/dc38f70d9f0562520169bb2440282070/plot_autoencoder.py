@@ -10,7 +10,7 @@ This is an example of defining an autoencoder RBN with a single continuous varia
 
 import torch
 
-from rbnet.base import SequentialRBN
+from rbnet.sequential import SequentialRBN
 from rbnet.autoencoder import AutoencoderCell, AutoencoderTransition, AutoencoderNonTermVar, AutoencoderPrior
 
 cell = AutoencoderCell(

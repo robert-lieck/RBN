@@ -125,7 +125,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.cells">cells() (rbnet.base.RBN method)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.cells">(rbnet.base.SequentialRBN method)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.cells">(rbnet.sequential.SequentialRBN method)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product.commuting_product">commuting_product() (rbnet.multivariate_normal.Product method)</a>
@@ -203,9 +203,9 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.init_inside">init_inside() (rbnet.base.RBN method)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.init_inside">(rbnet.base.SequentialRBN method)</a>
-</li>
         <li><a href="_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.init_inside">(rbnet.pcfg.PCFG method)</a>
+</li>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.init_inside">(rbnet.sequential.SequentialRBN method)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside">inside() (rbnet.base.RBN method)</a>
@@ -213,7 +213,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside_chart">inside_chart (rbnet.base.RBN property)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_chart">(rbnet.base.SequentialRBN property)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.inside_chart">(rbnet.sequential.SequentialRBN property)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.autoencoder.AutoencoderTransition.html#rbnet.autoencoder.AutoencoderTransition.inside_marginals">inside_marginals() (rbnet.autoencoder.AutoencoderTransition method)</a>
@@ -239,11 +239,17 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.inside_schedule">inside_schedule() (rbnet.base.RBN method)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule">(rbnet.base.SequentialRBN method)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.inside_schedule">(rbnet.sequential.SequentialRBN method)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.multivariate_normal.Product.html#rbnet.multivariate_normal.Product.iter_product">iter_product() (rbnet.multivariate_normal.Product class method)</a>
 </li>
+      <li><a href="_autosummary/rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits">iterate_inside_splits() (rbnet.sequential.SequentialBinaryTransition method)</a>
+
+      <ul>
+        <li><a href="_autosummary/rbnet.sequential.SequentialTerminalTransition.html#rbnet.sequential.SequentialTerminalTransition.iterate_inside_splits">(rbnet.sequential.SequentialTerminalTransition method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -302,6 +308,8 @@
 </li>
         <li><a href="_autosummary/rbnet.pcfg.html#module-rbnet.pcfg">rbnet.pcfg</a>
 </li>
+        <li><a href="_autosummary/rbnet.sequential.html#module-rbnet.sequential">rbnet.sequential</a>
+</li>
         <li><a href="_autosummary/rbnet.util.html#module-rbnet.util">rbnet.util</a>
 </li>
       </ul></li>
@@ -348,7 +356,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.prior">prior (rbnet.base.RBN property)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.prior">(rbnet.base.SequentialRBN property)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.prior">(rbnet.sequential.SequentialRBN property)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.util.Prob.html#rbnet.util.Prob">Prob (class in rbnet.util)</a>
@@ -409,6 +417,13 @@
 </li>
       </ul></li>
       <li>
+    rbnet.sequential
+
+      <ul>
+        <li><a href="_autosummary/rbnet.sequential.html#module-rbnet.sequential">module</a>
+</li>
+      </ul></li>
+      <li>
     rbnet.util
 
       <ul>
@@ -424,7 +439,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.root_location">root_location (rbnet.base.RBN property)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.root_location">(rbnet.base.SequentialRBN property)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.root_location">(rbnet.sequential.SequentialRBN property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -435,12 +450,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule">SequenceDataModule (class in rbnet.util)</a>
 </li>
-      <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN">SequentialRBN (class in rbnet.base)</a>
+      <li><a href="_autosummary/rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition">SequentialBinaryTransition (class in rbnet.sequential)</a>
 </li>
-      <li><a href="_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.setup">setup() (rbnet.util.SequenceDataModule method)</a>
+      <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN">SequentialRBN (class in rbnet.sequential)</a>
+</li>
+      <li><a href="_autosummary/rbnet.sequential.SequentialTerminalTransition.html#rbnet.sequential.SequentialTerminalTransition">SequentialTerminalTransition (class in rbnet.sequential)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.setup">setup() (rbnet.util.SequenceDataModule method)</a>
+</li>
       <li><a href="_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell">StaticCell (class in rbnet.pcfg)</a>
 </li>
       <li><a href="_autosummary/rbnet.multivariate_normal.PairwiseProduct.html#rbnet.multivariate_normal.PairwiseProduct.sum_cov">sum_cov (rbnet.multivariate_normal.PairwiseProduct property)</a>
@@ -456,7 +475,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.terminal_chart">terminal_chart (rbnet.base.RBN property)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.terminal_chart">(rbnet.base.SequentialRBN property)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.terminal_chart">(rbnet.sequential.SequentialRBN property)</a>
 </li>
       </ul></li>
       <li><a href="_autosummary/rbnet.util.SequenceDataModule.html#rbnet.util.SequenceDataModule.test_dataloader">test_dataloader() (rbnet.util.SequenceDataModule method)</a>
@@ -479,6 +498,12 @@
         <li><a href="_autosummary/rbnet.base.Transition.html#rbnet.base.Transition.training">(rbnet.base.Transition attribute)</a>
 </li>
         <li><a href="_autosummary/rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG.training">(rbnet.pcfg.PCFG attribute)</a>
+</li>
+        <li><a href="_autosummary/rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition.training">(rbnet.sequential.SequentialBinaryTransition attribute)</a>
+</li>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.training">(rbnet.sequential.SequentialRBN attribute)</a>
+</li>
+        <li><a href="_autosummary/rbnet.sequential.SequentialTerminalTransition.html#rbnet.sequential.SequentialTerminalTransition.training">(rbnet.sequential.SequentialTerminalTransition attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -504,7 +529,7 @@
       <li><a href="_autosummary/rbnet.base.RBN.html#rbnet.base.RBN.update_inside_chart">update_inside_chart() (rbnet.base.RBN method)</a>
 
       <ul>
-        <li><a href="_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart">(rbnet.base.SequentialRBN method)</a>
+        <li><a href="_autosummary/rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.update_inside_chart">(rbnet.sequential.SequentialRBN method)</a>
 </li>
       </ul></li>
   </ul></td>

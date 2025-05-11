@@ -35,7 +35,7 @@ step before moving towards continuous variables.
 # We start by importing some classes for discrete RBNs from the ``pcfg`` submodule.
 
 from rbnet.pcfg import DiscreteNonTermVar, DiscretePrior, DiscreteBinaryNonTerminalTransition, DiscreteTerminalTransition, StaticCell
-from rbnet.base import SequentialRBN
+from rbnet.sequential import SequentialRBN
 import numpy as np
 
 # %%

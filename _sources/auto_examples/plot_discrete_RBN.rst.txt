@@ -58,7 +58,7 @@ We start by importing some classes for discrete RBNs from the ``pcfg`` submodule
 
 
     from rbnet.pcfg import DiscreteNonTermVar, DiscretePrior, DiscreteBinaryNonTerminalTransition, DiscreteTerminalTransition, StaticCell
-    from rbnet.base import SequentialRBN
+    from rbnet.sequential import SequentialRBN
     import numpy as np
 
 
@@ -479,7 +479,7 @@ discrete variable (i.e. it cannot actually change value) and all the dynamics in
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.039 seconds)
+   **Total running time of the script:** (0 minutes 0.038 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_discrete_RBN.py:

@@ -68,6 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.StaticCell.html">rbnet.pcfg.StaticCell</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
 </ul>
 </li>
@@ -106,7 +107,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteBinaryNonTerminalTransition">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">DiscreteBinaryNonTerminalTransition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_idx=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_idx=0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_rep=&lt;class</span> <span class="pre">'rbnet.util.LogProb'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteBinaryNonTerminalTransition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteBinaryNonTerminalTransition" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition" title="rbnet.sequential.SequentialBinaryTransition"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialBinaryTransition</span></code></a>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
 <p>A binary non-terminal transition for discrete non-terminal variables.</p>
 <p>Initialise a non-terminal transition p(a, b | c) for random variables <cite>a</cite>, <cite>b</cite>, <cite>c</cite>. The child variables <cite>b</cite> and
 <cite>c</cite> may be different variables than <cite>a</cite> (if the RBN has multiple non-terminal variables), which is determined by
@@ -169,7 +170,14 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition" title="rbnet.sequential.SequentialBinaryTransition"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialBinaryTransition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits" title="rbnet.sequential.SequentialBinaryTransition.iterate_inside_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iterate_inside_splits</span></code></a>(location)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(*args, **kwargs)</p></td>
 <td><p></p></td>
@@ -380,7 +388,14 @@ cardinalities of the variables a, b, c, respectively.</p></li>
 </tr>
 </tbody>
 </table>
-<details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<details><summary>Inherited from <a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition" title="rbnet.sequential.SequentialBinaryTransition"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialBinaryTransition</span></code></a></summary><table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transition</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>

@@ -1,0 +1,11 @@
+rbnet.sequential.SequentialBinaryTransition
+===========================================
+
+.. currentmodule:: rbnet.sequential
+
+.. autoclass:: SequentialBinaryTransition
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+   .. autoclasstoc::

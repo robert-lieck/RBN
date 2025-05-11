@@ -32,5 +32,6 @@
    base
    multivariate_normal
    pcfg
+   sequential
    util
 

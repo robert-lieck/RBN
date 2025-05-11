@@ -68,6 +68,7 @@
 <li class="toctree-l4"><a class="reference internal" href="rbnet.pcfg.StaticCell.html">rbnet.pcfg.StaticCell</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
 </ul>
 </li>
@@ -140,24 +141,24 @@ symbols, where w is the rule weight, and t is the transition for the correspondi
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN" title="rbnet.sequential.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.root_location" title="rbnet.base.SequentialRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.root_location" title="rbnet.sequential.SequentialRBN.root_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_location</span></code></a></p></td>
 <td><p>Return the location of the root variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_chart" title="rbnet.base.SequentialRBN.inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_chart</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.inside_chart" title="rbnet.sequential.SequentialRBN.inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_chart</span></code></a></p></td>
 <td><p>Return the chart with inside probabilities for all variables.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.terminal_chart" title="rbnet.base.SequentialRBN.terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal_chart</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.terminal_chart" title="rbnet.sequential.SequentialRBN.terminal_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">terminal_chart</span></code></a></p></td>
 <td><p>Return the chart with terminal variables.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.prior" title="rbnet.base.SequentialRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.prior" title="rbnet.sequential.SequentialRBN.prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prior</span></code></a></p></td>
 <td><p>Return the prior transition (typically an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Prior</span></code>), which has to implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">Prior.marginal_likelihood()</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dump_patches</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.training" title="rbnet.sequential.SequentialRBN.training"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">call_super_init</span></code></p></td>
@@ -226,21 +227,21 @@ symbols, where w is the rule weight, and t is the transition for the correspondi
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN" title="rbnet.sequential.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(cells, prior, *args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.init_inside" title="rbnet.base.SequentialRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.init_inside" title="rbnet.sequential.SequentialRBN.init_inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_inside</span></code></a>(sequence)</p></td>
 <td><p>Initialise for parsing a new input.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.inside_schedule" title="rbnet.base.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.inside_schedule" title="rbnet.sequential.SequentialRBN.inside_schedule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_schedule</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Iterate through (batches of) non-terminal locations for computing inside probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.cells" title="rbnet.base.SequentialRBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.cells" title="rbnet.sequential.SequentialRBN.cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cells</span></code></a>()</p></td>
 <td><p>Return iterable over cells (corresponding to the non-terminal variables).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN.update_inside_chart" title="rbnet.base.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN.update_inside_chart" title="rbnet.sequential.SequentialRBN.update_inside_chart"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_inside_chart</span></code></a>(var_idx, locations, values)</p></td>
 <td><p>For the specified variable, update the chart for inside probabilities with given values at given locations.</p></td>
 </tr>
 </tbody>
@@ -519,7 +520,7 @@ symbols, where w is the rule weight, and t is the transition for the correspondi
 </tr>
 </tbody>
 </table>
-</details><details><summary>Inherited from <a class="reference internal" href="rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
+</details><details><summary>Inherited from <a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN" title="rbnet.sequential.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_abc_impl</span></code></p></td>
 <td><p></p></td>

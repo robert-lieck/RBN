@@ -243,7 +243,7 @@ but we will here build one from scratch for demonstration purposes. The second e
 way (<cite>expansion</cite>) of using a PCFG to define an RBN.</p>
 <p>We start by importing some classes for discrete RBNs from the <code class="docutils literal notranslate"><span class="pre">pcfg</span></code> submodule.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rbnet.pcfg</span> <span class="kn">import</span> <span class="n">DiscreteNonTermVar</span><span class="p">,</span> <span class="n">DiscretePrior</span><span class="p">,</span> <span class="n">DiscreteBinaryNonTerminalTransition</span><span class="p">,</span> <span class="n">DiscreteTerminalTransition</span><span class="p">,</span> <span class="n">StaticCell</span>
-<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">SequentialRBN</span>
+<span class="kn">from</span> <span class="nn">rbnet.sequential</span> <span class="kn">import</span> <span class="n">SequentialRBN</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
@@ -273,7 +273,7 @@ left child <code class="docutils literal notranslate"><span class="pre">a</span>
 <section id="defining-the-cell-and-rbn">
 <h3>Defining the Cell and RBN<a class="headerlink" href="#defining-the-cell-and-rbn" title="Link to this heading"></a></h3>
 <p>We can now create a <a class="reference internal" href="../_autosummary/rbnet.pcfg.StaticCell.html#rbnet.pcfg.StaticCell" title="rbnet.pcfg.StaticCell"><code class="xref py py-class docutils literal notranslate"><span class="pre">StaticCell</span></code></a> for the non-terminal variable, which chooses the terminal
-transition 50% of the time, and define our <a class="reference internal" href="../_autosummary/rbnet.base.SequentialRBN.html#rbnet.base.SequentialRBN" title="rbnet.base.SequentialRBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a></p>
+transition 50% of the time, and define our <code class="xref py py-class docutils literal notranslate"><span class="pre">SequentialRBN</span></code></p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cell</span> <span class="o">=</span> <span class="n">StaticCell</span><span class="p">(</span><span class="n">variable</span><span class="o">=</span><span class="n">non_term_var</span><span class="p">,</span>
                   <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
                   <span class="n">transitions</span><span class="o">=</span><span class="p">[</span><span class="n">non_term_transition</span><span class="p">,</span> <span class="n">term_transition</span><span class="p">])</span>
@@ -556,7 +556,7 @@ tensor(0.0039, dtype=torch.float64, grad_fn=&lt;SumBackward0&gt;)
 ╱        [0.]╲╱        [0.]╲╱        [0.]╲╱       [0.5]╲
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.039 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.038 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-discrete-rbn-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/541a486d46921e429bc6d69b693c24a9/plot_discrete_RBN.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_discrete_RBN.ipynb</span></code></a></p>

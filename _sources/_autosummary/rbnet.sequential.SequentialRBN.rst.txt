@@ -1,7 +1,7 @@
-rbnet.base.SequentialRBN
-========================
+rbnet.sequential.SequentialRBN
+==============================
 
-.. currentmodule:: rbnet.base
+.. currentmodule:: rbnet.sequential
 
 .. autoclass:: SequentialRBN
    :members:

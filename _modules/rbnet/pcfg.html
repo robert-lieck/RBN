@@ -85,7 +85,8 @@
 <span class="kn">from</span> <span class="nn">triangularmap</span> <span class="kn">import</span> <span class="n">TMap</span>
 
 <span class="kn">from</span> <span class="nn">rbnet.util</span> <span class="kn">import</span> <span class="n">normalize_non_zero</span><span class="p">,</span> <span class="n">as_detached_tensor</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">,</span> <span class="n">ConstrainedModuleList</span><span class="p">,</span> <span class="n">LogProb</span>
-<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span><span class="p">,</span> <span class="n">SequentialRBN</span>
+<span class="kn">from</span> <span class="nn">rbnet.base</span> <span class="kn">import</span> <span class="n">Cell</span><span class="p">,</span> <span class="n">Transition</span><span class="p">,</span> <span class="n">Prior</span><span class="p">,</span> <span class="n">NonTermVar</span>
+<span class="kn">from</span> <span class="nn">rbnet.sequential</span> <span class="kn">import</span> <span class="n">SequentialRBN</span><span class="p">,</span> <span class="n">SequentialBinaryTransition</span><span class="p">,</span> <span class="n">SequentialTerminalTransition</span>
 
 
 <div class="viewcode-block" id="PCFG">
@@ -385,7 +386,7 @@
 
 <div class="viewcode-block" id="DiscreteBinaryNonTerminalTransition">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html#rbnet.pcfg.DiscreteBinaryNonTerminalTransition">[docs]</a>
-<span class="k">class</span> <span class="nc">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DiscreteBinaryNonTerminalTransition</span><span class="p">(</span><span class="n">SequentialBinaryTransition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A binary non-terminal transition for discrete non-terminal variables.</span>
@@ -417,30 +418,23 @@
 <div class="viewcode-block" id="DiscreteBinaryNonTerminalTransition.inside_marginals">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteBinaryNonTerminalTransition.html#rbnet.pcfg.DiscreteBinaryNonTerminalTransition.inside_marginals">[docs]</a>
     <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">location</span>
-            <span class="k">if</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="c1"># no splitting possible</span>
-                <span class="k">return</span> <span class="p">[]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
-                    <span class="c1"># get inside probabilities (clone to avoid problems with inplace operations below – not sure why)</span>
-                    <span class="n">left_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span><span class="p">][</span><span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-                    <span class="n">right_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span><span class="p">][</span><span class="n">split</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-                    <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">left_inside</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">right_inside</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-                    <span class="p">)</span>
-                <span class="k">return</span> <span class="n">inside_marginals</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected locations to be (start, end) index, but got: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">inside_marginals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterate_inside_splits</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+            <span class="c1"># get inside probabilities (clone to avoid problems with inplace operations below – not sure why)</span>
+            <span class="n">left_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">left_idx</span><span class="p">][</span><span class="n">start</span><span class="p">,</span> <span class="n">split</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">right_inside</span> <span class="o">=</span> <span class="n">inside_chart</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right_idx</span><span class="p">][</span><span class="n">split</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+            <span class="n">inside_marginals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span> <span class="o">*</span> <span class="n">left_inside</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">right_inside</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">inside_marginals</span></div>
 </div>
+
 
 
 
 <div class="viewcode-block" id="DiscreteTerminalTransition">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition">[docs]</a>
-<span class="k">class</span> <span class="nc">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">Transition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DiscreteTerminalTransition</span><span class="p">(</span><span class="n">SequentialTerminalTransition</span><span class="p">,</span> <span class="n">ConstrainedModuleMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A binary terminal transition for discrete non-terminal and terminal variables.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -469,21 +463,16 @@
 <div class="viewcode-block" id="DiscreteTerminalTransition.inside_marginals">
 <a class="viewcode-back" href="../../_autosummary/rbnet.pcfg.DiscreteTerminalTransition.html#rbnet.pcfg.DiscreteTerminalTransition.inside_marginals">[docs]</a>
     <span class="k">def</span> <span class="nf">inside_marginals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">inside_chart</span><span class="p">,</span> <span class="n">terminal_chart</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">location</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">location</span>
-            <span class="k">if</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="c1"># no terminal transition possible</span>
+        <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterate_inside_splits</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+            <span class="n">var_val</span> <span class="o">=</span> <span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">term_idx</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">var_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># no terminal transition to THIS terminal variable possible</span>
                 <span class="k">return</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">var_val</span> <span class="o">=</span> <span class="n">terminal_chart</span><span class="p">[</span><span class="n">start</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">term_idx</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">var_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="c1"># no terminal transition to THIS terminal variable possible</span>
-                    <span class="k">return</span> <span class="p">[]</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">var_val</span><span class="p">,</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected locations to be (start, end) index, but got: </span><span class="si">{</span><span class="n">location</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transition_probabilities</span><span class="o">.</span><span class="n">p</span><span class="p">[</span><span class="n">var_val</span><span class="p">,</span> <span class="p">:][</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
 </div>
+
 
 
 

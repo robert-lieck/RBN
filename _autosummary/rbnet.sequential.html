@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rbnet.base &mdash; rbnet  documentation</title>
+  <title>rbnet.sequential &mdash; rbnet  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
@@ -24,8 +24,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="rbnet.base.main" href="rbnet.base.main.html" />
-    <link rel="prev" title="rbnet.autoencoder.AutoencoderTransition" href="rbnet.autoencoder.AutoencoderTransition.html" /> 
+    <link rel="next" title="rbnet.sequential.SequentialBinaryTransition" href="rbnet.sequential.SequentialBinaryTransition.html" />
+    <link rel="prev" title="rbnet.pcfg.StaticCell" href="rbnet.pcfg.StaticCell.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,18 +54,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="rbnet.html">rbnet</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="rbnet.autoencoder.html">rbnet.autoencoder</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">rbnet.base</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.main.html">rbnet.base.main</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Cell.html">rbnet.base.Cell</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.NonTermVar.html">rbnet.base.NonTermVar</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Prior.html">rbnet.base.Prior</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.RBN.html">rbnet.base.RBN</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rbnet.base.Transition.html">rbnet.base.Transition</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="rbnet.base.html">rbnet.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.multivariate_normal.html">rbnet.multivariate_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.pcfg.html">rbnet.pcfg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rbnet.sequential.html">rbnet.sequential</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">rbnet.sequential</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html">rbnet.sequential.SequentialBinaryTransition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialRBN.html">rbnet.sequential.SequentialRBN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rbnet.sequential.SequentialTerminalTransition.html">rbnet.sequential.SequentialTerminalTransition</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="rbnet.util.html">rbnet.util</a></li>
 </ul>
 </li>
@@ -89,7 +86,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="rbnet.html">rbnet</a></li>
-      <li class="breadcrumb-item active">rbnet.base</li>
+      <li class="breadcrumb-item active">rbnet.sequential</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -98,33 +95,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-rbnet.base">
-<span id="rbnet-base"></span><h1>rbnet.base<a class="headerlink" href="#module-rbnet.base" title="Link to this heading"></a></h1>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.main.html#rbnet.base.main" title="rbnet.base.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">main</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
+  <section id="module-rbnet.sequential">
+<span id="rbnet-sequential"></span><h1>rbnet.sequential<a class="headerlink" href="#module-rbnet.sequential" title="Link to this heading"></a></h1>
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Cell.html#rbnet.base.Cell" title="rbnet.base.Cell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cell</span></code></a>(variable, *args, **kwargs)</p></td>
-<td><p>Base class for RBN cells associated to a non-terminal template variable.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialBinaryTransition.html#rbnet.sequential.SequentialBinaryTransition" title="rbnet.sequential.SequentialBinaryTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialBinaryTransition</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.NonTermVar.html#rbnet.base.NonTermVar" title="rbnet.base.NonTermVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NonTermVar</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Base class for non-terminal variables.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="rbnet.sequential.SequentialRBN.html#rbnet.sequential.SequentialRBN" title="rbnet.sequential.SequentialRBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialRBN</span></code></a>(cells, prior, *args, **kwargs)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Prior.html#rbnet.base.Prior" title="rbnet.base.Prior"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Prior</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Base class for prior transitions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RBN</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Base class for RBNs.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition" title="rbnet.base.Transition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transition</span></code></a>(*args, **kwargs)</p></td>
-<td><p>Base class for RBN transitions, which have to implement <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">inside_marginals()</span></code></a>.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="rbnet.sequential.SequentialTerminalTransition.html#rbnet.sequential.SequentialTerminalTransition" title="rbnet.sequential.SequentialTerminalTransition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequentialTerminalTransition</span></code></a>(*args, **kwargs)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -134,8 +117,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="rbnet.autoencoder.AutoencoderTransition.html" class="btn btn-neutral float-left" title="rbnet.autoencoder.AutoencoderTransition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rbnet.base.main.html" class="btn btn-neutral float-right" title="rbnet.base.main" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rbnet.pcfg.StaticCell.html" class="btn btn-neutral float-left" title="rbnet.pcfg.StaticCell" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rbnet.sequential.SequentialBinaryTransition.html" class="btn btn-neutral float-right" title="rbnet.sequential.SequentialBinaryTransition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
