@@ -105,7 +105,7 @@
 <h1>rbnet.pcfg.AbstractedPCFG<a class="headerlink" href="#rbnet-pcfg-abstractedpcfg" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rbnet.pcfg.AbstractedPCFG">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">AbstractedPCFG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_rep=&lt;class</span> <span class="pre">'rbnet.util.LogProb'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#AbstractedPCFG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.AbstractedPCFG" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rbnet.pcfg.</span></span><span class="sig-name descname"><span class="pre">AbstractedPCFG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">non_terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">terminals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rules</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_rep=&lt;class</span> <span class="pre">'rbnet.util.LogProb'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#AbstractedPCFG"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.AbstractedPCFG" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="rbnet.pcfg.PCFG.html#rbnet.pcfg.PCFG" title="rbnet.pcfg.PCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">PCFG</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code>, <a class="reference internal" href="rbnet.util.ConstrainedModuleMixin.html#rbnet.util.ConstrainedModuleMixin" title="rbnet.util.ConstrainedModuleMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConstrainedModuleMixin</span></code></a></p>
 <p>An <a class="reference internal" href="#rbnet.pcfg.AbstractedPCFG" title="rbnet.pcfg.AbstractedPCFG"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractedPCFG</span></code></a> defines an <a class="reference internal" href="rbnet.base.RBN.html#rbnet.base.RBN" title="rbnet.base.RBN"><code class="xref py py-class docutils literal notranslate"><span class="pre">RBN</span></code></a> that has only one non-terminal and one
 terminal variable, both being discrete with a cardinality corresponding to the number of non-terminal and
@@ -411,7 +411,7 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <td><p>Primary way of loading a model from a checkpoint.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getstate__</span></code>()</p></td>
-<td><p></p></td>
+<td><p>Helper for pickle.</p></td>
 </tr>
 </tbody>
 </table>
@@ -641,7 +641,7 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_submodule</span></code>(target)</p></td>
 <td><p>Return the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_submodule</span></code>(target, module)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_submodule</span></code>(target, module[, strict])</p></td>
 <td><p>Set the submodule given by <code class="docutils literal notranslate"><span class="pre">target</span></code> if it exists, otherwise throw an error.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_parameter</span></code>(target)</p></td>
@@ -714,7 +714,7 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <td><p>Call self as a function.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getstate__</span></code>()</p></td>
-<td><p></p></td>
+<td><p>Helper for pickle.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setstate__</span></code>(state)</p></td>
 <td><p></p></td>
@@ -786,7 +786,7 @@ arbitrary symbols, where w is the rule weight.</p></li>
 <td><p>See <code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor.share_memory_()</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">extra_repr</span></code>()</p></td>
-<td><p>Set the extra representation of the module.</p></td>
+<td><p>Return the extra representation of the module.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code>()</p></td>
 <td><p>Return repr(self).</p></td>
