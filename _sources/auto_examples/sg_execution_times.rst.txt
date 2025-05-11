@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.199** total execution time for 4 files **from auto_examples**:
+**00:00.208** total execution time for 4 files **from auto_examples**:
 
 .. container::
 
@@ -33,13 +33,13 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_plot_vec_grad.py` (``plot_vec_grad.py``)
-     - 00:00.120
+     - 00:00.127
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_discrete_RBN.py` (``plot_discrete_RBN.py``)
-     - 00:00.038
+     - 00:00.039
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_PCFG.py` (``plot_PCFG.py``)
-     - 00:00.034
+     - 00:00.035
      - 0.0
    * - :ref:`sphx_glr_auto_examples_plot_autoencoder.py` (``plot_autoencoder.py``)
      - 00:00.007

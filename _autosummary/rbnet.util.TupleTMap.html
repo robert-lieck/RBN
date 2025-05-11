@@ -174,175 +174,19 @@ calls to these objects.</p>
 <details><summary>Inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">TMap</span></code></summary><table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">size_from_n</span></code>(n)</p></td>
-<td><p>Calculate the size <cite>N</cite> of the underlying 1D array for a given width <code class="docutils literal notranslate"><span class="pre">n</span></code> of the triangular map: <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">N = n (n + 1)) / 2</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-.</p></td>
+<td><p>Calculate the size <cite>N</cite> of the underlying 1D array for a given width <code class="docutils literal notranslate"><span class="pre">n</span></code> of the triangular map: <img class="math" src="../_images/math/96eb59f20854c1a713d5a01f0b51a8c9fd086be1.svg" alt="N = n (n + 1)) / 2"/>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_from_size</span></code>(n)</p></td>
-<td><p>Calculate width <code class="docutils literal notranslate"><span class="pre">n</span></code> of the map given the size <cite>N</cite> of the underlying 1D array: <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">n = (\sqrt{8 * N + 1} - 1) / 2</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-.</p></td>
+<td><p>Calculate width <code class="docutils literal notranslate"><span class="pre">n</span></code> of the map given the size <cite>N</cite> of the underlying 1D array: <img class="math" src="../_images/math/87a679804299843f99e0f44432737f5775d0c7bd.svg" alt="n = (\sqrt{8 * N + 1} - 1) / 2"/>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reindex_from_start_end_to_top_down</span></code>(n)</p></td>
-<td><p>For a map of width <code class="docutils literal notranslate"><span class="pre">n</span></code>, get an index array of length <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">n (n + 1)) / 2</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- to reindex from start-end order to top-down order.</p></td>
+<td><p>For a map of width <code class="docutils literal notranslate"><span class="pre">n</span></code>, get an index array of length <img class="math" src="../_images/math/7601cc1dd0cc91a01fedac7c42bdbb4e6e017ae8.svg" alt="n (n + 1)) / 2"/> to reindex from start-end order to top-down order.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reindex_from_start_end_to_top_down</span></code>(arr)</p></td>
 <td><p>Reindex <code class="docutils literal notranslate"><span class="pre">arr</span></code> from start-end order to top-down order.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_reindex_from_top_down_to_start_end</span></code>(n)</p></td>
-<td><p>For a map of width <code class="docutils literal notranslate"><span class="pre">n</span></code>, get an index array of length <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">n (n + 1)) / 2</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- to reindex from top-down order to start-end order.</p></td>
+<td><p>For a map of width <code class="docutils literal notranslate"><span class="pre">n</span></code>, get an index array of length <img class="math" src="../_images/math/7601cc1dd0cc91a01fedac7c42bdbb4e6e017ae8.svg" alt="n (n + 1)) / 2"/> to reindex from top-down order to start-end order.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reindex_from_top_down_to_start_end</span></code>(arr)</p></td>
 <td><p>Reindex <code class="docutils literal notranslate"><span class="pre">arr</span></code> from top-down order to start-end order.</p></td>

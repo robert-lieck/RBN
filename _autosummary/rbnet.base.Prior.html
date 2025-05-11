@@ -520,48 +520,9 @@ terminal variables and have no parent variables.</p>
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">marginal_likelihood</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_location</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inside_chart</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/base.html#Prior.marginal_likelihood"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.base.Prior.marginal_likelihood" title="Link to this definition"></a></dt>
 <dd><p>Compute the marginal data likelihood</p>
 <blockquote>
-<div><aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">p(\mathbf{Y}) = \sum_{x\in\mathcal{X}} w_x \int \beta(x_{0:n}) \ p_P(x_{0:n}) \ dx_{0:n},
-
-</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-</div></blockquote>
+<div><div class="math">
+<p><img src="../_images/math/179c5f838f13a4e1ddbc3afdbee6db76d1b9f409.svg" alt="p(\mathbf{Y}) = \sum_{x\in\mathcal{X}} w_x \int \beta(x_{0:n}) \ p_P(x_{0:n}) \ dx_{0:n},"/></p>
+</div></div></blockquote>
 <p>as described in more detail <a class="reference internal" href="../recursive_bayesian_networks.html#marginal-likelihood"><span class="std std-ref">here</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

@@ -113,46 +113,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>variable</strong> – the discrete non-terminal variable for this cell</p></li>
-<li><p><strong>weights</strong> – 2D weights with shape <code class="docutils literal notranslate"><span class="pre">(|z|,</span> <span class="pre">|x|)</span></code> for the structural transition <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">p(z | x)</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-,
+<li><p><strong>weights</strong> – 2D weights with shape <code class="docutils literal notranslate"><span class="pre">(|z|,</span> <span class="pre">|x|)</span></code> for the structural transition <img class="math" src="../_images/math/ae77c9dec724d1a8ee4cc4171c953affed03d437.svg" alt="p(z | x)"/>,
 where <code class="docutils literal notranslate"><span class="pre">|z|</span></code> and <code class="docutils literal notranslate"><span class="pre">|x|</span></code> are the number of transitions and the cardinality of the variable, respectively.</p></li>
 <li><p><strong>transitions</strong> – iterable over transitions in this cell</p></li>
 <li><p><strong>args</strong> – passed on to super().__init__</p></li>
@@ -206,46 +167,7 @@ where <code class="docutils literal notranslate"><span class="pre">|z|</span></c
 <td><p>Iterate through all possible transitions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.pcfg.DiscreteCell.inside_mixture" title="rbnet.pcfg.DiscreteCell.inside_mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_mixture</span></code></a>(inside_marginals)</p></td>
-<td><p>For a list of inside marginals <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\widetilde{\beta}_{i:\ldots:k}(x_{i:k})</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-, compute the mixture</p></td>
+<td><p>For a list of inside marginals <img class="math" src="../_images/math/1a553e1552dd63399f9c62567051189758dc49e7.svg" alt="\widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/>, compute the mixture</p></td>
 </tr>
 </tbody>
 </table>
@@ -258,46 +180,7 @@ Transcript written on math.log.
 <td><p>Iterate through all possible transitions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.base.Cell.html#rbnet.base.Cell.inside_mixture" title="rbnet.base.Cell.inside_mixture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside_mixture</span></code></a>(inside_marginals)</p></td>
-<td><p>For a list of inside marginals <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\widetilde{\beta}_{i:\ldots:k}(x_{i:k})</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-, compute the mixture</p></td>
+<td><p>For a list of inside marginals <img class="math" src="../_images/math/1a553e1552dd63399f9c62567051189758dc49e7.svg" alt="\widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/>, compute the mixture</p></td>
 </tr>
 </tbody>
 </table>
@@ -682,92 +565,14 @@ Transcript written on math.log.
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.pcfg.DiscreteCell.inside_mixture">
 <span class="sig-name descname"><span class="pre">inside_mixture</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inside_marginals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/pcfg.html#DiscreteCell.inside_mixture"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.pcfg.DiscreteCell.inside_mixture" title="Link to this definition"></a></dt>
-<dd><p>For a list of inside marginals <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\widetilde{\beta}_{i:\ldots:k}(x_{i:k})</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-, compute the mixture</p>
-<aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\beta(x_{i:k})
+<dd><p>For a list of inside marginals <img class="math" src="../_images/math/1a553e1552dd63399f9c62567051189758dc49e7.svg" alt="\widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/>, compute the mixture</p>
+<div class="math">
+<p><img src="../_images/math/40118ae506b0bd1079e2bc9dbf7d92e90f98b133.svg" alt="\beta(x_{i:k})
 =
 \sum_{\tau \in \mathcal{T}_x}
 p_S(z_{i:k}=\tau \mid x_{i:k})
-{\sum\cdots\sum}_{i&lt;j_1&lt;\ldots&lt;j_{\eta-1}&lt;k} \ \widetilde{\beta}_{i:\ldots:k}(x_{i:k})
-
-</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-<p>as described in more detail <a class="reference internal" href="../recursive_bayesian_networks.html#general-inside-probabilities"><span class="std std-ref">here</span></a>.</p>
+{\sum\cdots\sum}_{i&lt;j_1&lt;\ldots&lt;j_{\eta-1}&lt;k} \ \widetilde{\beta}_{i:\ldots:k}(x_{i:k})"/></p>
+</div><p>as described in more detail <a class="reference internal" href="../recursive_bayesian_networks.html#general-inside-probabilities"><span class="std std-ref">here</span></a>.</p>
 <p>The inside marginals are typically computed by a custom implementation of
 <a class="reference internal" href="rbnet.base.Transition.html#rbnet.base.Transition.inside_marginals" title="rbnet.base.Transition.inside_marginals"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code></a></p>
 <dl class="field-list simple">
@@ -775,46 +580,7 @@ Transcript written on math.log.
 <dd class="field-odd"><p><strong>inside_marginals</strong> – iterable over inside marginals (as returned by <code class="xref py py-meth docutils literal notranslate"><span class="pre">Transition.inside_marginals()</span></code>)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>representation of the inside probability <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\beta(x_{i:k})</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-</p>
+<dd class="field-even"><p>representation of the inside probability <img class="math" src="../_images/math/682589f31212b4fdfee6416784fa8161d192bb85.svg" alt="\beta(x_{i:k})"/></p>
 </dd>
 </dl>
 </dd></dl>

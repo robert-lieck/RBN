@@ -116,46 +116,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="rbnet.util.log_normalize.html#rbnet.util.log_normalize" title="rbnet.util.log_normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_normalize</span></code></a>(t, *args, **kwargs)</p></td>
-<td><p>Normalise tensor <code class="docutils literal notranslate"><span class="pre">t</span></code> in log representation by computing <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">t - \log \sum \exp t</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
- using PyTorch logsumexp.</p></td>
+<td><p>Normalise tensor <code class="docutils literal notranslate"><span class="pre">t</span></code> in log representation by computing <img class="math" src="../_images/math/eb70b5f604d4e354bc8f916353e9e18bc10a7e21.svg" alt="t - \log \sum \exp t"/> using PyTorch logsumexp.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="rbnet.util.normalize_non_zero.html#rbnet.util.normalize_non_zero" title="rbnet.util.normalize_non_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize_non_zero</span></code></a>(a[, axis, ...])</p></td>
 <td><p>For the given ND array (NumPy or PyTorch), normalise each 1D array obtained by indexing the 'axis' dimension if the sum along the other dimensions (for that entry) is non-zero.</p></td>

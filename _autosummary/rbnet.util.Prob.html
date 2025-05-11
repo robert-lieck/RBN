@@ -156,46 +156,7 @@ gradient in backward passes.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#rbnet.util.Prob.project_grad" title="rbnet.util.Prob.project_grad"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_grad</span></code></a>(grad)</p></td>
-<td><p>Projects the gradient to the tangent space <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\bar{g} = g - 1/|g| \sum g</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-, registered as a hook on the parameter.</p></td>
+<td><p>Projects the gradient to the tangent space <img class="math" src="../_images/math/1a89bdde50c189d4b9d872628b895112f806592d.svg" alt="\bar{g} = g - 1/|g| \sum g"/>, registered as a hook on the parameter.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#rbnet.util.Prob.enforce_constraints" title="rbnet.util.Prob.enforce_constraints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">enforce_constraints</span></code></a>([recurse])</p></td>
 <td><p>Enforces positivity constraints (by clipping) and normalisation constraints.</p></td>
@@ -514,46 +475,7 @@ Transcript written on math.log.
 <dl class="py method">
 <dt class="sig sig-object py" id="rbnet.util.Prob.project_grad">
 <span class="sig-name descname"><span class="pre">project_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grad</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rbnet/util.html#Prob.project_grad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rbnet.util.Prob.project_grad" title="Link to this definition"></a></dt>
-<dd><p>Projects the gradient to the tangent space <aside class="system-message">
-<p class="system-message-title">System Message: WARNING/2 (<span class="docutils literal">\bar{g} = g - 1/|g| \sum g</span>)</p>
-<p>latex exited with error
-[stdout]
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=latex)
- restricted \write18 enabled.
-entering extended mode
-(./math.tex
-LaTeX2e &lt;2023-11-01&gt; patch level 1
-L3 programming layer &lt;2024-01-22&gt;
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
-Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo))
-(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
-(/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty)
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amssymb.sty
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/amsfonts.sty))
-
-! LaTeX Error: File `anyfontsize.sty' not found.
-
-Type X to quit or &lt;RETURN&gt; to proceed,
-or enter new name. (Default extension: sty)
-
-Enter file name: 
-! Emergency stop.
-&lt;read *&gt; 
-         
-l.8 \usepackage
-               {bm}^^M
-No pages of output.
-Transcript written on math.log.
-</p>
-</aside>
-, registered as a hook on the
+<dd><p>Projects the gradient to the tangent space <img class="math" src="../_images/math/1a89bdde50c189d4b9d872628b895112f806592d.svg" alt="\bar{g} = g - 1/|g| \sum g"/>, registered as a hook on the
 parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
